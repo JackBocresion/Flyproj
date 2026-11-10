@@ -112,3 +112,73 @@ Attributed by a Hackaday commenter to the Gaggiuino team, 2022-23, WEAK, [source
 - Gaggiuino LICENSE text and Gen 3 source location unconfirmed; GaggiMate star/release data come from one fetch.
 - Meticulous firmware/schematic openness unconfirmed.
 - No verified direct quotations meeting the two-search standard.
+
+## Second-pass research (gap fill)
+
+Date: 2026-11-10. Method: WebSearch only (WebFetch not used; non-GitHub hosts are blocked). All results are search-engine summaries, so forum detail is second-hand. Evidence level is marked per item: retailer/buying guides are opinion with inconsistent numbers; forum posts are anecdote; manufacturer pages are primary.
+
+### Search log (19 of 24 used; stopped early because the remaining gaps needed page text that search summaries do not give)
+1. Thermoblock vs thermocoil vs boiler (extended): buying guides, inconsistent figures.
+2. Gaggiuino transducer / flow meter / Fluid-o-Tech parts and prices (extended): Peak Coffee prices, HB sensor thread, a build log.
+3. OPV and pressurestat set points (standard): vendor and forum material.
+4. GaggiMate Pro kit price and reviews (extended): official shop page, one review site.
+5. Gaggiuino total cost (standard): Reddit and forum cost comments.
+6. E61 vs saturated vs lever groups (extended): retailer blogs; no lever data.
+7. Lead in brass, CW617N/CW511L (extended): vendor and Barista Hustle.
+8. Boiler safety valve and pressurestat, DIY boiler, PED (extended): retailer and HB threads.
+9. GaggiMate reviews, install experience (extended): nothing specific.
+10. Brushless gear pump / Fluid-o-Tech profiling (extended): manufacturer page and HB TMFR thread.
+11. GaggiMate vs Gaggiuino community (extended): nothing useful.
+12. Digmesa flow meter and Huba transducer prices (standard): distributor listings.
+13. PED scope for small espresso boilers (extended): UK/EU/US regulatory fragments.
+14. DIY thermoblock builds (standard): HB and Hackaday.io builds.
+15. GaggiMate hands-on review (standard): shop and docs only.
+16. Fluid-o-Tech / Scace TMFR profiling results and cost (standard): no prices.
+17. Relief valve set pressure, hydrotest (extended): retailers and an SCA article.
+18. Gaggiuino beginner overview and cost (standard): Papel Espresso guide.
+19. EN 14222 and stainless boiler standards (standard): standard is for sterilizer boilers, not coffee.
+
+### Gap 1: boiler vs thermoblock vs thermocoil
+- Heat-up (buying guides, rough): thermoblock about 3-60 s, thermocoil about 1-3 min, boilers 5-30 min depending on size and dual-boiler design ([Craft Coffee Spot](https://craftcoffeespot.com/espresso/thermoblock-vs-thermocoil-vs-boiler/), [Espresso Gadgets](https://espressogadgets.com/boiler-vs-thermoblock-espresso-machines/), [Kairos](https://www.kairos-coffee.com/blogs/coffee-machine/thermoblock-vs-boiler-espresso)). Figures disagree widely between sources.
+- Stability and steam: boilers act as a heat battery with the best stability and strongest, driest steam; thermoblock/thermocoil steam is wetter and weaker; a single boiler needs a wait to switch from brew to steam temperature (same guides). Opinion from sellers, not measured tests.
+- DIY thermoblock evidence (forum, anecdote): a back-of-envelope estimate that a 1000 W block with a roughly 6 ml path tops out near 3 ml/s while still reaching about 100 C; lever builders warn a thermoblock may not keep up with the burst of flow at shot start, so a fast PID or a restrictor may be needed; one build used a stepper-driven piston pump per thermoblock to set flow directly ([HB dual thermoblock build](https://www.home-barista.com/espresso-machines/diy-espresso-machine-dual-thermoblock-dual-piston-pump-single-group-t77501.html)). Flow-based feed-forward kept the temperature dip small in one open project ([Hackaday.io OXIMITE](https://hackaday.io/project/205153-oximite-rust-espresso-control/log/248518-temperature-pid-flow-based-feed-forward-and-first-shots)); a basic thermocouple-and-relay loop already improved a stock thermostat a lot in another build.
+- Safety angle (inference): thermoblocks and thermocoils hold a few ml, so they are the easiest route to avoid a large stored-energy vessel; this is my reasoning, not a sourced rule. A steam boiler is where the hazard is.
+
+### Gap 2: transducers, flow meters, pumps (names and rough prices)
+- Pressure transducer: Peak Coffee lists a G1/4, 0-12 bar (1.2 MPa), 0.5-4.5 V, 304 stainless sensor at $38 (US shop, cached) ([Peak Coffee](https://www.peakcoffee.cc/product/gaggiuino-pressure-sensor/)); the same store showed a Gaggiuino GEN2 complete kit at $278 and a pressure tap block at $48 ([category page](https://www.peakcoffee.cc/product-category/gaggiuino/)). An older HB thread reports a used Huba 501 bought for about $80 and a Digmesa flow sensor on the pump's low-pressure side ([HB](https://www.home-barista.com/espresso-machines/adding-flow-and-pressure-sensors-to-gaggia-classic-pro-t79061.html), thread several years old).
+- Flow meter: Digmesa turbine meters appear at roughly 8-78 GBP on TME depending on model ([TME Digmesa](https://www.tme.eu/gb/katalog/p,digmesa_820/)); espresso-specific Digmesa units cost more (about 229 AUD, out of stock) ([Coffee Parts AU](https://www.coffeeparts.com.au/619595-flowmeter-digmesa-1-4-with-cable)); Espressoparts lists an NSF-approved Digmesa 0.033-0.40 L/min meter ([Espressoparts](https://www.espressoparts.com/products/digmesa-fhksc-three-pin-flowmeter)). Whether these match Gaggiuino or GaggiMate inputs is not confirmed.
+- Gear/brushless pumps: Fluid-o-Tech FG200-300-400 series is a 316L pump-motor unit with PEEK/PTFE gears, 24 V brushless drive with speed control, 30-210 l/h, up to 12 bar differential (FG309: 40-190 l/h, 9 bar max) ([Fluid-o-Tech](https://www.fluidotech.it/en/products/technologies/external-gear-pumps/fg200-300-series/), primary). A dealer lists a 24 V external gear pump at $1,808 ([Espressoparts](https://www.espressoparts.com/products/fluid-o-tech-24v-external-gear-pump)); used Fluid-o-Tech pumps on eBay run roughly $100-300 (search-summary, unverified).
+- Profiling practice (HB, 4-6 years old): builders vary pump speed and read a transducer with an Arduino; speed-to-pressure is non-linear because of internal slip; with a bypass valve, speed mainly sets ramp rate; a Fluid-o-Tech contact warned the FG100 with 9 mm gears barely reaches 9 bar from atmospheric inlet, so inlet pressure helps; the FG204 gear set uses a flat Teflon seal that can leak, FG304 uses O-rings ([TMFR thread](https://www.home-barista.com/espresso-machines/pressure-profiling-with-fluid-o-tech-tmfr-pump-or-wholesale-copying-greg-scaces-ideas-t12179-40.html), [MGFR test thread](https://www.home-barista.com/espresso-machines/testing-fluid-o-tech-mgfr-4mm-and-9mm-gear-sets-t31577.html)). Sensor noise: a La Marzocco GS/3 profiling project saw unstable pressure and jumpy flow readings, possibly missed Arduino interrupts ([HB](https://www.home-barista.com/repairs/flow-pressure-profiling-for-la-marzocco-gs3-t46565-40.html)).
+- Relevance: a motor-driven gear pump with speed control is the natural actuator for a hybrid machine, and a separate spring/lever stage is not required for it.
+
+### Gap 3: OPV, pressurestat, safety valve, pressure-vessel rules
+- OPV: spring valve opening near 9 bar (9-9.5 bar common on Breville per a forum), returns water to the tank; a 9 bar Lelit OPV is a retail part ([HB](https://www.home-barista.com/espresso-machines/rocket-r58-v2-opv-t100705.html), [Jet Black](https://www.jetblackespresso.com.au/shop/p/lelit-OPV-9BAR/)).
+- Boiler safety valve: Espressoparts sells a 2.1 bar (about 30 psi) valve for home single boilers and says it replaces a 1.8 bar part; it warns against fitting a lower-rated valve or bypassing it ([Espressoparts](https://www.espressoparts.com/products/espresso-machine-1-4-boiler-safety-valve)). Forum values range from about 1.6 to 3 bar and conflict. Pressurestat: steam boilers typically held near 1-1.5 bar; a stuck pressurestat is the usual cause of a valve lifting; adjustment is fine (about 0.1 bar per six half-turns of the screw, per [La Valentina guide](https://www.home-barista.com/valentina-buyers-guide-getting-started.html)). A reported failure: [Pasquini Livia 90 blew up, pressure keeps rising](https://www.home-barista.com/repairs/pasquini-livia-90-blew-up-pressure-keeps-rising-t100112.html) (thread title only, details not read).
+- SCA: regulations generally require relief valves to be factory-set and marked with the activation pressure ([SCA article](https://sca.coffee/sca-news/community/the-wonderful-world-of-pressure-relief-valves-kjp7g)). Use certified, marked valves; never lower or bypass.
+- Rules: EU PED 2014/68/EU applies to stationary equipment above 0.5 bar; smaller items fall to "sound engineering practice" ([PED guidelines](https://www.ce-richtlinien.eu/richtlinien/Druckgeraete/Leitlinie/PED_2014-68-EU_Guidelines_EN_v6.0.pdf)). UK Safed guidance treats cafe boilers as minor pressure systems ([Safed PSG08](https://www.safed.co.uk/publications-home/tc-1/current-guidelines-for-download/20-psg08-guidelines-examination-of-electrically-heated-cafe-boilers/file)). Iowa exempts electric boilers of six gallons or less that are integral to an espresso machine ([Iowa code 89.4](https://www.legis.iowa.gov/docs/code/89.4.pdf)). The PS x V category limits, and how a one-off home-built boiler is treated, were not found. EN 14222 is a stainless steam boiler standard for sterilizers, not espresso machines ([NBN](https://www.nbn.be/shop/en/standard/nbn-en-14222-2003~123564/)). No hydrotest rule found.
+- Practical read (inference): the lowest-risk design keeps pressure under 0.5 bar or uses thermoblocks; if a steam boiler is built, use certified valve and pressurestat, professional welding or a bought boiler, and check local rules.
+
+### Gap 4: GaggiMate price and reviews; Gaggiuino cost
+- GaggiMate Pro Kit: EUR 213.49 on the official shop, about 2 weeks lead time, 378 shop reviews with 331 top-rated (shop-hosted, not independent) ([shop](https://shop.gaggimate.eu/products/gaggimate-pro-kit)). Third-party listings show about $199-203; a launch-review site says about $211 and stable since launch ([launchdealhub](https://launchdealhub.com/gaggimate-review/)). Docs: aimed at Gaggia Classic Pro/Evo/E24 (2019-2025); pressure and flow-controlled profiles are Pro-only; stable release v1.7.3 per the docs listing, which conflicts with the v1.9.0 in the first pass, so versions are unverified ([docs](https://docs.gaggimate.eu/)). Complaints on the shop page: picture-based instructions hard for beginners. No independent hands-on review found.
+- Gaggiuino cost (forum anecdote): $388 for a Full V4 Premium kit; a general guess of $200-400 for a Gaggiuino or GaggiMate kit; one commenter spent about $550 total (with machine upgrades) and calls the install "not easy"; a build log estimates about $400 including tools, shipping and prints, and hard to go below about $250 ([build log, 2024](https://kozikow.wordpress.com/2024/02/22/gaggiuino-build-log/), [Papel Espresso](https://www.papelespresso.com/gaggiuino-project-beginner-overview/)). Sourcing from AliExpress took about 21 days to 3 months; counterfeit chips cause bad temperature readings. Machine cost (Classic Pro about $399-429 on sale per Slickdeals) is extra. No official Gen 3 price found.
+
+### Gap 5: E61 vs saturated vs lever
+- Retailer comparisons: saturated group is bolted to the boiler, gives tight PID control and faster warm-up (about 5-10 min); E61 uses a thermosyphon loop and heavy brass mass, passive stability, 20-45 min warm-up, gasket upkeep, widely available spares ([Complete Home Barista](https://completehomebarista.com/guides/saturated-vs-e61-group-head/), [Coffeeionado](https://www.coffeeionado.com/blogs/the-academy/e61-vs-saturated-group-head-whats-the-difference-3), [Kairos](https://www.kairos-coffee.com/blogs/coffee-machine/e61-group-head-explained)). Sources disagree on warm-up and on spares availability.
+- For a DIY: E61 needs a bought group and a boiler with a thermosyphon loop; saturated needs a custom boiler flange (the harder fabrication). Neither supports a hand-lever stroke. No lever-group thermal-stability data found; the earlier ~$495 spring group plus thermoblocks remains the documented hybrid route.
+
+### Gap 6: lead and food-safe materials
+- CW617N is a leaded forging brass; "lead-free CW617N" does not exist, lead-free brass is a separate alloy family (silicon/bismuth) ([IFAN](https://www.ifanholding.com/news/cw617n-lead-free-brass), vendor).
+- "Lead-free" often means under 0.25% lead; stagnant water can still pick up lead; La Marzocco reportedly moved to steel for groups and boilers ([Barista Hustle](https://www.baristahustle.com/wheels-of-steel/)).
+- Example: Lelit Elizabeth vendor page lists a CW510L boiler top (0.2% max lead) with a chrome-treated lower section, and CW617N nickel-plated fittings and valves ([Comiso](https://comisocoffee.com/blogs/blog/lelit-elizabeth-overview)). HB threads include a user-measured lead report ([HB](https://www.home-barista.com/espresso-machines/my-experience-with-lead-t55755.html)) and coating-damage worries.
+- Practical guidance (partly my inference): choose 316 stainless or potable-rated (NSF/ANSI 61/372) parts for water contact, keep brass for non-wetted parts, and flush new brass. No authoritative espresso-specific rule found.
+
+### New quotes
+No PRIMARY quotes. WEAK only: a Slickdeals commenter on Gaggiuino: "not an easy mod and requires quite a bit of brain juice or experience with electrical wiring, soldering, and water pressure system to install" ([Slickdeals thread](https://slickdeals.net/f/15813616-gaggia-classic-pro-espresso-machine-thunder-black-399-20-free-shipping), date unknown, WEAK).
+
+### Gaps still open
+- Independent GaggiMate hands-on reviews and current firmware version (v1.7.3 vs v1.9.0).
+- Current Gaggiuino Gen 3 official kit price and licence text.
+- Measured heat-up and stability data (independent tests) for thermoblock vs thermocoil vs boiler.
+- EU PED category limits and how a one-off home-built boiler is treated; any hydrotest guidance.
+- Brushless gear pump prices for new units and any complete DIY gear-pump profiling build with a parts list; flow-meter compatibility with open controllers.
+- Lever-group thermal behaviour; documented motor-assisted lever builds (still none).
