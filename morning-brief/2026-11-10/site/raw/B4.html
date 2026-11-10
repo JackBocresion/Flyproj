@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>B4 raw research &middot; Morning Brief No. 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&display=swap">
+<style>
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+:root {
+  /* Layout: one ~68ch reading column; a mono metadata rail (contents, provenance) in the left gutter on wide screens */
+  --paper: #F1F2EF;
+  --paper-2: #E7E9E4;
+  --ink: #1C1D1A;
+  --muted: #5A5D56;
+  --rule: #D2D5CD;
+  --crema: #94531C;
+  --crema-soft: #EADBCB;
+  --ok: #2C6847;
+  --warn: #84640E;
+  --bad: #9A372B;
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", system-ui, sans-serif;
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+    --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+  --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 19px;
+  line-height: 1.58;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration-color: var(--crema); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+a:hover { color: var(--crema); }
+a:focus-visible { outline: 2px solid var(--crema); outline-offset: 2px; border-radius: 2px; }
+
+.band { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.band-top { background: var(--paper-2); border-bottom: 1px solid var(--rule); padding-block: 40px 36px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+
+/* masthead */
+.slug { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.slug b { color: var(--ink); font-weight: 500; }
+.title { font-family: var(--display); font-stretch: 72%; font-weight: 800; font-size: clamp(54px, 10vw, 112px); line-height: 0.9; letter-spacing: -0.01em; margin: 18px 0 10px; text-wrap: balance; }
+.title .no { color: var(--crema); font-stretch: 100%; font-weight: 500; font-size: 0.42em; letter-spacing: 0.02em; vertical-align: 0.95em; margin-left: 0.18em; }
+.deck { font-style: italic; font-size: clamp(19px, 2.2vw, 23px); color: var(--muted); max-width: 46em; margin: 0 0 30px; text-wrap: pretty; }
+
+.bluf { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 2px solid var(--ink); }
+.bluf > div { padding: 16px 22px 4px 0; min-width: 0; }
+.bluf > div + div { padding-left: 22px; border-left: 1px solid var(--rule); }
+.bluf h2 { font-family: var(--display); font-stretch: 85%; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 8px; color: var(--crema); }
+.bluf p { margin: 0 0 12px; font-size: 18px; line-height: 1.5; }
+
+.stats { margin-top: 22px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 22px; font-variant-numeric: tabular-nums; }
+.stats span b { color: var(--ink); font-weight: 500; }
+
+/* body grid */
+.band-body { padding-block: 44px 72px; }
+.grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 56px; }
+.rail { min-width: 0; }
+.rail nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); font-family: var(--mono); font-size: 12.5px; line-height: 1.45; }
+.rail .label { text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 0 0 10px; }
+.rail ol, .rail ul { list-style: none; margin: 0 0 26px; padding: 0; display: grid; gap: 7px; }
+.rail a { text-decoration: none; color: var(--muted); }
+.rail a:hover { color: var(--crema); }
+.rail li.sub a { padding-left: 12px; display: inline-block; }
+
+.prose { min-width: 0; max-width: 68ch; }
+.prose h2 { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: clamp(34px, 5vw, 50px); line-height: 1; letter-spacing: -0.005em; margin: 64px 0 22px; padding-top: 18px; border-top: 2px solid var(--ink); text-wrap: balance; }
+.prose > h2:first-child, .prose > .part:first-child h2:first-child { margin-top: 0; }
+.prose h3 { font-family: var(--display); font-stretch: 88%; font-weight: 700; font-size: 25px; line-height: 1.2; margin: 42px 0 12px; text-wrap: balance; }
+.prose h4 { font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; margin: 30px 0 8px; color: var(--muted); }
+.prose p { margin: 0 0 1.05em; text-wrap: pretty; }
+.prose ul, .prose ol { padding-left: 1.3em; margin: 0 0 1.1em; }
+.prose li { margin: 0 0 0.45em; }
+.prose li::marker { color: var(--crema); }
+.prose strong { font-weight: 650; }
+.prose hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
+.prose blockquote { margin: 22px 0 24px; padding: 2px 0 2px 20px; border-left: 3px solid var(--crema); font-style: italic; font-size: 20px; line-height: 1.5; }
+.prose blockquote p:last-child { margin-bottom: 0; }
+.prose blockquote em { font-style: normal; }
+.prose code { font-family: var(--mono); font-size: 0.82em; background: var(--paper-2); padding: 1px 5px; border-radius: 3px; }
+.prose pre { font-family: var(--mono); font-size: 13.5px; line-height: 1.5; background: var(--paper-2); border: 1px solid var(--rule); padding: 16px 18px; overflow-x: auto; border-radius: 4px; }
+.prose pre code { background: none; padding: 0; font-size: inherit; }
+
+.tablewrap { overflow-x: auto; margin: 22px 0 28px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); }
+.prose table { border-collapse: collapse; width: 100%; font-family: var(--display); font-stretch: 92%; font-size: 15px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.prose th { text-align: left; font-weight: 700; font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 10px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: bottom; }
+.prose td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top; min-width: 7em; }
+.prose tr:last-child td { border-bottom: 0; }
+
+figure.profile { margin: 8px 0 34px; }
+figure.profile svg { width: 100%; height: auto; display: block; }
+figure.profile figcaption { font-family: var(--mono); font-size: 12.5px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+.ax { stroke: var(--rule); stroke-width: 1; fill: none; }
+.axl { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+.c-lever { stroke: var(--crema); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.c-pump { stroke: var(--ink); stroke-width: 1.6; fill: none; stroke-dasharray: 5 5; }
+.c-lbl { font-family: var(--mono); font-size: 11.5px; }
+.c-lbl.l { fill: var(--crema); }
+.c-lbl.p { fill: var(--ink); }
+
+/* provenance + ledger */
+.ledger { width: 100%; }
+.chip { display: inline-block; font-family: var(--mono); font-size: 11.5px; line-height: 1; padding: 4px 6px; border-radius: 3px; border: 1px solid currentColor; margin: 0 4px 4px 0; white-space: nowrap; }
+.chip.ok { color: var(--ok); }
+.chip.warn { color: var(--warn); }
+.chip.bad { color: var(--bad); }
+.stack-list { list-style: none; padding: 0 !important; margin: 18px 0 26px !important; border-top: 2px solid var(--ink); }
+.stack-list li { margin: 0 !important; padding: 14px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 3.2em minmax(0, 1fr); gap: 0 12px; }
+.stack-list .id { font-family: var(--mono); font-size: 14px; color: var(--crema); padding-top: 3px; }
+.stack-list .t { font-family: var(--display); font-stretch: 90%; font-weight: 700; font-size: 18px; line-height: 1.3; }
+.stack-list .m { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.6; }
+.stack-list li::marker { content: none; }
+
+.backlink { font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--muted); }
+.backlink:hover { color: var(--crema); }
+.raw-head .title { font-size: clamp(36px, 6vw, 64px); font-stretch: 78%; }
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .rail nav { position: static; }
+  .rail ol, .rail ul { margin-bottom: 18px; }
+}
+@media (max-width: 640px) {
+  body { font-size: 18px; }
+  .bluf { grid-template-columns: minmax(0, 1fr); }
+  .bluf > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--rule); }
+  .band-top { padding-block: 28px 26px; }
+  .prose blockquote { font-size: 19px; padding-left: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+
+</style>
+</head>
+<body>
+<header class="band band-top raw-head">
+  <div class="wrap">
+    <div class="slug"><a class="backlink" href="../index.html">&larr; Morning Brief No. 1</a><span>Raw research &middot; slice B4</span></div>
+    <h1 class="title">Waking up to espresso: robotics and automation</h1>
+    <div class="stats"><span><b>32</b> searches</span><span><b>16</b> items fact-checked</span><span><b>3</b> verified</span><span><b>9</b> partial</span><span><b>4</b> dropped or flagged</span></div>
+  </div>
+</header>
+<main class="band band-body">
+  <div class="wrap grid">
+    <aside class="rail"><nav aria-label="Sections"><p class="label">Sections</p><ol><li><a href="#scope">Scope</a></li><li><a href="#method-and-search-log">Method and search log</a></li><li><a href="#findings">Findings</a></li><li><a href="#quote-bank">Quote bank</a></li><li><a href="#disagreements-failure-modes-and-caveats">Disagreements, failure modes and caveats</a></li><li><a href="#sources">Sources</a></li><li><a href="#gaps">Gaps</a></li><li><a href="#verification-log-independent-fact-check">Verification log (independent fact-check)</a></li></ol>
+    <p class="label">Other slices</p><ul><li><a href="A1.html">A1 &middot; Briefing for a living</a></li><li><a href="A2.html">A2 &middot; Scientists and the daily stream</a></li><li><a href="A3.html">A3 &middot; AI-written briefs</a></li><li><a href="A4.html">A4 &middot; The case against</a></li><li><a href="B1.html">B1 &middot; Building from scratch</a></li><li><a href="B2.html">B2 &middot; Levers and hybrids</a></li><li><a href="B3.html">B3 &middot; Grinders and motors</a></li><li><a href="B5.html">B5 &middot; What to buy</a></li></ul></nav></aside>
+    <article class="prose">
+<h2 id="scope">Scope</h2>
+<p>Precedents for wake-up beverage machines (Teasmade, Barisieur), home-automation hooks for espresso machines (first-party vs community), robot baristas and low-cost arms, bedside practicalities (noise, safety, standards, espresso degradation), and existing DIY scheduled-brew projects. Goal context: an integrated machine with mixed manual/automatic function, not an arm on a stock machine.</p>
+<h2 id="method-and-search-log">Method and search log</h2>
+<p>Method: WebSearch only (32 calls, budget used in full) plus free WebFetch of GitHub READMEs (several 504s/404s; those that worked are cited). Search results are server-side summaries, so most numbers are second-hand; items needing a primary check are flagged in Gaps.</p>
+<p>Searches (S# = order):</p>
+<ol type="1">
+<li>S1 standard - Teasmade history/how it worked/safety. Yielded: patent history (Rowbottom 1891-92, Absolom 1932), Goblin 1936/37 dates conflicting, steam-pressure mechanism, decline, Swan now makes them. Safety thin.</li>
+<li>S2 standard - Barisieur price/reviews. Yielded: price $399-445 US, BGR scald concern, Trustpilot mixed aftercare, no WiFi.</li>
+<li>S3 standard - HA La Marzocco integration. Yielded: official HA docs page; schedules read-only; models Linea Mini/Mini R/Micra/GS3 AV/MP; cloud API.</li>
+<li>S4 standard - GaggiMate/Gaggiuino HA. Yielded: GaggiMate MQTT plugin docs; ALERTua/hass-gaggiuino HACS.</li>
+<li>S5 standard - Cafe X closures. Yielded: Jan 2020 SF closures, Aug 2020 airports, pivot to selling $200k kiosk.</li>
+<li>S6 standard - LeRobot SO-101 ACT success rates. Yielded: small-sample HF model cards (85% cube, 40-60% folding); no pour benchmark.</li>
+<li>S7 standard - Artly/Crown/Rozum/Costa. Yielded: Artly funding history only ($8M 2022, $340k crowdfund 2023), robot learns from master barista, slower than human.</li>
+<li>S8 standard - EU 801/2013 coffee machine auto power-down. Yielded: regulation amends 1275/2008; 15/30 min defaults per Topten; EUR-Lex “no longer in force”; 2022 draft annex 30/40 min.</li>
+<li>S9 standard - espresso crema collapse/cooling study. Yielded: Arii and Nishizawa via InsideHook (15 min); blogs 1-3 min crema.</li>
+<li>S10 standard - DIY scheduled espresso projects. Yielded: delayed Nespresso (ESP32+HA), Keurig+cron, timed Silvia, hackster/hackaday.io list; none deliver to bed.</li>
+<li>S11 standard - noise dB pumps/grinders. Yielded: only estimates (vibe 60-75, rotary 50-60; grinders 70-90), conflicting.</li>
+<li>S12 standard - Meticulous/Decent API. Yielded: decent-advanced-rest-api (community), community MCP servers for Meticulous.</li>
+<li>S13 extended - Physical Intelligence espresso. Yielded: pi*0.6 RECAP espresso doubling throughput; pi0.7 (Apr 2026) espresso out of the box (third-party).</li>
+<li>S14 standard - motorized hand grinder conversions. Yielded: nothing relevant (generic drill adapters; Wondermill 160 RPM note).</li>
+<li>S15 standard - automated lever/hybrid machines. Yielded: Meticulous “robotic lever”, La Pavoni profiling threads, Lelit paddle.</li>
+<li>S16 standard - IEC 60335-2-15 / UL 1082. Yielded: edition 7.0 (2024-11), clause 19 abnormal operation, UL 1082 thermal cutoffs; no unattended text.</li>
+<li>S17 standard - Breville app/smart plug. Yielded: Stark Insider on Breville app schedule; sageha HA integration; Barista Express Shelly hack.</li>
+<li>S18 standard - Teasmade safety/recalls. Yielded: no Teasmade recalls found (unrelated kettle recalls only).</li>
+<li>S19 extended - robot barista failures (Briggo, Crown, Rozum). Yielded: Briggo to Coca-Cola/Costa 2020, Cafe X closures; no Crown detail.</li>
+<li>S20 standard - Arii/Nishizawa check. Yielded: confirmed InsideHook (2017) coverage and quote; original paper not returned.</li>
+<li>S21 standard - SO-ARM101 prices. Yielded: HF ~$130 non-printed parts, Seeed $220 preorder, <span class="math inline">199 − 312<em>k</em><em>i</em><em>t</em><em>s</em>, <em>A</em></span>714 assembled.</li>
+<li>S22 standard - Barisieur mechanism. Yielded: induction heating in borosilicate glass, 94 C, Kickstarter &gt;$700k (secondary), 2.0 immersion brewer.</li>
+<li>S23 standard - HA espresso smart-plug automations. Yielded: HA blueprint, 15 min pre-alarm warm-up, 25 min full warm-up anecdote, Stark Insider.</li>
+<li>S24 standard - Meticulous API. Yielded: MCP servers using local IP; protocol undocumented in results.</li>
+<li>S25 standard - DIY linear-actuator lever builds. Yielded: Home-Barista lever threads, 4-5:1 mechanical advantage target, NEMA17 actuator force caution.</li>
+<li>S26 standard - SO-101 coffee demos. Yielded: SIGRobotics matcha bot (bimanual SO-101); no espresso demo.</li>
+<li>S27 standard - cup preheat/insulated vessels. Yielded: vendor blog readings (ceramic 65 to 54 C in 1-3 min), Tasting Table 54 vs 37 degree drop.</li>
+<li>S28 standard - Teasmade mechanism (Hackaday). Yielded: sealed kettle, steam pressure pushes water to pot, switch released cuts element and sounds buzzer.</li>
+<li>S29 standard - Rozum/Crown. Yielded: Rozum Cafe <span class="math inline">100<em>k</em><em>p</em><em>a</em><em>c</em><em>k</em><em>a</em><em>g</em><em>e</em>/</span>22k arm (2020), Cafe X arm is Mitsubishi industrial arm, Artly learned from Joe Yang.</li>
+<li>S30 standard - grinder sound meter. Yielded: Eureka Silenzio 67-68 dB (SCG) vs 55-60 (Clive); distances vary.</li>
+<li>S31 standard - Cafe X/Artly 2025-26 status. Yielded: nothing current; Artly Portland in retail store.</li>
+<li>S32 standard - espresso flavour vs temperature. Yielded: Klotz brew-temp study; serving-temp claims anecdotal. WebFetch (GitHub, not counted): jniebuhr/gaggimate, decent-advanced-rest-api readme, zweckj/pylamarzocco, huggingface/lerobot, MeticulousHome/pyMeticulous, ALERTua/hass-gaggiuino README, simonjgreen/sageha. Failed: first hass-gaggiuino fetch (504), hallboyone/RaspberryLatte (504, then 404 on raw).</li>
+</ol>
+<h2 id="findings">Findings</h2>
+<h3 id="1-precedents-teasmade">1. Precedents: Teasmade</h3>
+<ul>
+<li>Pre-Goblin patents: Samuel Rowbottom (Derby) applied 1891, granted 1892; Frank Clarke 1902; neither mass-produced. George Absolom applied 1932; Goblin (British Vacuum Cleaner and Engineering Co.) marketed the Teasmade, first model dated 1936 or 1937 depending on source <a href="https://en.wikipedia.org/wiki/Teasmade">Wikipedia</a>, <a href="https://www.teasmade.uk/1936-goblin-teasmade/">teasmade.uk</a>, <a href="https://gracesguide.co.uk/Goblin_Teasmade">Grace’s Guide</a>. Dates conflict; unresolved.</li>
+<li>Mechanism (documented): a sealed kettle is heated by an element switched on by an alarm clock; steam pressure forces the boiled water up a tube into the teapot; once water leaves, a switch under the kettle is released, cutting the element and triggering buzzer and lamp <a href="https://hackaday.com/2020/01/30/retrotechtacular-teasmade">Hackaday</a>. teasmade.uk adds a separate bimetallic thermostat cut-off and notes a leaking seal means pressure never builds <a href="https://www.teasmade.uk/how-does-a-teasmade-work/">teasmade.uk</a>. Sources differ on whether the cutoff is the lifted pad or the thermostat; likely both.</li>
+<li>Decline: Goblin sold on to Swan; by the 1980s the item was less popular; Swan still makes Teasmades in China for the UK; trademark reportedly SEB-owned (Wikipedia and teasmade.uk, conflicting on years).</li>
+<li>Safety: no recall or injury data for Teasmade found. Evidence is anecdotal: a teasmade.uk user complaint about no fail-safe if the unit is not pre-prepared; a 2016 Endeavour TV episode used a Teasmade explosion as a plot device (fiction, not evidence). Design lesson: the 1930s design had a mechanically self-terminating cycle (pressure expulsion then cut-off), a pattern worth copying for unattended heating.</li>
+<li>Why it endured (interpretation, not sourced as a study): single-purpose, cheap, and the “tea ready on waking” ritual needs no skill; the weakness was prefilled water standing overnight and a pot of tea going stewed/cold if not drunk promptly.</li>
+</ul>
+<h3 id="2-precedents-barisieur-and-other-bedside-brewers">2. Precedents: Barisieur and other bedside brewers</h3>
+<ul>
+<li>Barisieur (Joy Resolve, London; designer Joshua Renouf, Nottingham Trent graduate project, then Kickstarter, reportedly &gt;$700k): induction coil heats water in borosilicate glass, one source says boils in 3-5 min and pours at about 94 C; fill water and coffee the night before, choose whether coffee is ready before, at or after the alarm; 2.0 uses an immersion brewer; milk cooler (Peltier, per one source) <a href="https://mymodernmet.com/joshua-renouf-barisieur">My Modern Met</a>, <a href="https://www.yankodesign.com/2020/07/03/the-bariseur-2-0-wakes-you-up-each-morning-with-a-fresh-cup-of-coffee-and-a-charged-phone/amp/">Yanko Design</a>, <a href="https://www.salon.com/2019/04/06/this-coffee-maker-alarm-clock-will-change-your-am-game">Salon</a>.</li>
+<li>It is filter/pour-over or tea, not espresso. Price: $399 discounted from $445 (Salon, 2019); about $450 and one cup (ABC7); EUR 365 (another outlet). Check current price.</li>
+<li>Criticism: BGR questioned scald/knock-over safety; no Bluetooth or WiFi; one review noted about five minutes to brew; Trustpilot reviews of Joy Resolve are mixed on aftercare, with some praising service <a href="https://www.trustpilot.com/review/www.joyresolve.com?page=2">Trustpilot</a>, <a href="https://bgr.com/?p=4701227">BGR</a>.</li>
+<li>Pattern across Teasmade and Barisieur: both avoid pressurised extraction; hot water plus a loose infusion is forgiving of waiting. Espresso is the opposite (see section 5).</li>
+</ul>
+<h3 id="3-home-automation-hooks-for-espresso">3. Home-automation hooks for espresso</h3>
+<p>First-party or official:</p>
+<ul>
+<li>La Marzocco, Home Assistant core integration (official HA docs page; it talks to La Marzocco’s cloud API; machine must be added in the official La Marzocco app first). Supports Linea Mini, Mini R, Micra, GS3 AV and GS3 MP. Schedules are view-only in HA (calendar), editing only in the La Marzocco app; users build HA automations instead <a href="https://www.home-assistant.io/integrations/lamarzocco">HA docs</a>. Whether the HA integration is La Marzocco-authored: it is in HA core; the underlying library is community-maintained (below). La Marzocco itself offers app smart schedule <a href="https://nz.lamarzoccohome.com/?p=81353">La Marzocco</a>.</li>
+<li>Underlying library: zweckj/pylamarzocco, “unofficial”, cloud client with websocket plus Bluetooth client; power on/off works over cloud or Bluetooth; shot counter via BLE for ESP-gateway models <a href="https://github.com/zweckj/pylamarzocco">GitHub</a>.</li>
+<li>Meticulous: official TypeScript API exists (MeticulousHome/meticulous-typescript-api); pyMeticulous (community wrapper, v0.3.0, GPL-3.0) uses REST plus Socket.IO; supports start, stop, tare, preheat, profiles, shot history, settings <a href="https://github.com/MeticulousHome/pyMeticulous">GitHub</a>. Community MCP servers drive machines over the LAN <a href="https://glama.ai/mcp/servers/q8p9xyba0o">glama</a>.</li>
+<li>Breville/Sage: the consumer app can toggle on or schedule ready-time on Wi-Fi models <a href="https://www.starkinsider.com/2023/04/how-to-automatically-turn-your-espresso-or-coffee-machine-each-morning.html">Stark Insider</a>. No official HA integration found. Community: simonjgreen/sageha, via reverse-engineered cloud websocket (iot-api-ws.breville.com), wake/sleep and <code>set_wake_schedule</code>; only the Oracle Dual Boiler (BES995) is listed; explicitly unofficial, use at own risk <a href="https://github.com/simonjgreen/sageha">GitHub</a>. Non-Wi-Fi models (e.g. Barista Express) need hardware mods (Shelly relay) <a href="https://community.home-assistant.io/t/modifying-a-breville-sage-barista-express-coffee-machine-to-integrate-with-home-assistant/487575">HA forum</a>. Community or open hardware:</li>
+<li>GaggiMate (jniebuhr, CC BY-NC-SA 4.0): Gaggia retrofit with display; brew timer, steam/hot water, safety shutoff on unresponsive or over-temperature; documented WebSocket API (docs/websocket-api.yaml); docs describe an MQTT/Home Assistant plugin <a href="https://github.com/jniebuhr/gaggimate">GitHub</a>, <a href="https://docs.gaggimate.eu/docs/usage-configuration">docs</a>. README itself did not mention HA/MQTT; the docs site does.</li>
+<li>Gaggiuino: ALERTua/hass-gaggiuino (HACS custom): profile select entity; polls every 30 s so not usable for shot monitoring <a href="https://github.com/ALERTua/hass-gaggiuino">GitHub</a>.</li>
+<li>Decent: randomcoffeesnob/decent-advanced-rest-api (community, TCL): state, standby/enable, shots, profiles, HA example config <a href="https://github.com/randomcoffeesnob/decent-advanced-rest-api/blob/main/readme.md">GitHub</a>.</li>
+<li>Smart plug approach for simple/PID machines: HA community blueprint for schedule or wattage detection <a href="https://community.home-assistant.io/t/coffee-machine-switch-automation-schedule-based-or-wattage-detection/757018">HA forum</a>; anecdote of HA starting machine about 15 min before alarm; another says about 25 min to fully warm (anecdote, machine unspecified) <a href="https://dev.to/stefanoero/my-favorite-home-assistant-automation-waking-up-to-the-smell-of-coffee-27kk">dev.to</a>. Plug-cycling only works for machines with a mechanical power switch left on; many PID/electronic machines need a button press (the Breville mod above).</li>
+<li>Design takeaway: wake scheduling is solved (cloud or LAN). What none of these give is the physical delivery (cup placement, puck eject), which is what an integrated machine must add.</li>
+</ul>
+<h3 id="4-robotics">4. Robotics</h3>
+<p>Robot baristas:</p>
+<ul>
+<li>Cafe X: first SF site 2017; closed three SF sites Jan 2020 (CEO called them “prototypes” per ABC7/Crunchbase summaries), closed SFO and San Jose airport sites Aug 2020 citing pandemic traffic; pivoted to selling kiosks at $200,000 <a href="https://news.crunchbase.com/venture/robotic-coffee-startup-cafe-x-shutters-stores-pivots-to-airports/">Crunchbase News</a>, <a href="https://abc7news.com/post/robot-baristas-cafe-x-closes-sf-locations-/5830767/">ABC7</a>, <a href="https://thespoon.tech/cafe-x-closed-its-airport-locations-and-laid-off-staff-now-its-planning-for-the-future/">The Spoon</a>. Its arm is a Mitsubishi industrial arm (secondary summary).</li>
+<li>Briggo (Austin): acquired by a Coca-Cola subsidiary Oct 2020, kiosks rebranded Costa BaristaBot; five active Briggo kiosks then <a href="https://austin.culturemap.com/news/restaurants-bars/10-30-20-briggo-austin-coffee-robot-company-purchased-by-coca-cola-company/">CultureMap</a>, <a href="https://thespoon.tech/briggos-coffee-haus-becomes-costa-coffee-baristabot/">The Spoon</a>. Briggo was a purpose-built enclosed machine, not a general arm: closer to what the reader wants.</li>
+<li>Artly: $8M pre-Series A 2022, $340k+ crowdfunding 2023; arm learns from a master barista (Joe Yang); a 2022 report said service was slower than a human; CES 2026 latte-art demo <a href="https://www.geekwire.com/2022/robotic-coffee-barista-maker-led-by-ex-aws-engineer-raises-8-3m-to-open-more-retail-locations/">GeekWire</a>, <a href="https://www.yankodesign.com/2026/01/07/artly-robots-master-latte-art-and-drinks-for-ces-2026-debut/">Yanko Design</a>. No store count found.</li>
+<li>Rozum Cafe: own collaborative arm; 2020 pricing $100k full cafe, $22k arm <a href="https://dailycoffeenews.com/2020/04/24/the-rozum-cafe-offers-a-customizable-robotic-espresso-setup">Daily Coffee News</a>. Crown Coffee: only named in lists; nothing found.</li>
+<li>Lessons (interpretation from sources): robot cafes failed on foot traffic, slow throughput, limited menus, and loss of human connection, not on pulling a shot. Success stories are enclosed fixed-layout machines (Briggo) or niche placement (airports). Engineering lesson for a bedside machine: constrain the workspace. Low-cost arms and learning:</li>
+<li>LeRobot supports SO101, Koch, OpenARM, LeKiwi, Unitree G1 and others; policies include ACT, Diffusion, SmolVLA, pi0 <a href="https://github.com/huggingface/lerobot">GitHub</a>. SO-101 cost: HF estimated about $130 non-printed parts; kits <span class="math inline">199−</span>312 depending on vendor; assembled A$714 <a href="https://www.hackster.io/news/hugging-face-launches-the-so-101-an-upgraded-low-cost-3d-printable-autonomous-robot-arm-532360f441eb">Hackster</a>, <a href="https://roboticscenter.ai/learn/so-arm100-vs-so-arm101">RoboticsCenter</a>. Motors are Feetech STS3215 hobby servos (7.4 V).</li>
+<li>Realistic capability evidence (small samples, single setups): 85% (17/20) cube placing on one table <a href="https://huggingface.co/sahilapage/act_so101_pick_block_bowl">HF model card</a> (card cited by search as “cube placing”; verify); cloth folding best 40-60% after 267 demos <a href="https://tabithako.github.io/projects/policy-training">project page</a>; 40% to near 100% depending on where inference ran <a href="https://dev.classmethod.jp/en/articles/lerobot-so-arm101-act-training-eval/">Classmethod</a>. A UIUC SIGRobotics bimanual SO-101 matcha bot included pouring water <a href="https://www.hackster.io/sigrobotics/matcha-bot-sigrobotics-embodied-ai-hackathon-1st-place-f0e520">Hackster</a>. No tamping or puck-prep result on an SO-101 found. Honest reading: pick-and-place of cups is plausible; tamping force control and portafilter lock-in are beyond hobby servos without force sensing (inference; no source tests it).</li>
+<li>Frontier: Physical Intelligence pi*0.6 with RECAP reports espresso making throughput and success more than doubling after on-robot experience, running for a long deployment <a href="https://www.pi.website/blog/pistar06">PI blog</a>; pi0.7 (Apr 2026) reportedly operates an espresso machine out of the box (third-party explainer) <a href="https://robocloud-dashboard.vercel.app/learn/blog/pi0-7-steerable-generalist-robot-model-2026">robocloud</a>. These use far larger models and data than a hobby SO-101. Simpler mechanisms (design reasoning plus evidence):</li>
+<li>Meticulous is the existing commercial case of a motor-driven lever machine with ten sensors adjusting pressure, flow, temperature, weight <a href="https://new.sca.coffee/entries/meticulous-espresso">SCA entry</a>. It is not hand-operable as a lever.</li>
+<li>Hand-lever profiling culture: pressure gauges and bathroom-scale force measurements (La Pavoni about 24 lb pull for about 6 bar, 40 lb for about 9 bar) <a href="https://www.home-barista.com/levers/pressure-profiling-la-pavoni-t34126.html">Home-Barista</a>. Useful sizing numbers for a motorised lever (user-reported, not lab).</li>
+<li>DIY lever builders target 4-5:1 mechanical advantage with 60-100 cc stroke <a href="https://www.home-barista.com/levers/building-lever-machine-from-scratch-t41716.html">Home-Barista</a>. Candidate drives: lead-screw or linear actuator through a clutch/overrunning coupling so the hand lever still works (my suggestion). A small NEMA17 belt actuator at about 2.5 lbf is far too weak.</li>
+<li>Motor-driven hand grinder: no source found for conversions of Comandante/Kinu/1Zpresso; a hand grain-mill analogue recommends variable-speed drill under 160 RPM (vendor listing). Design note: hand grinders turn at tens of RPM, so a gearmotor with a removable crank or one-way clutch fits.</li>
+</ul>
+<h3 id="5-bedside-constraints">5. Bedside constraints</h3>
+<p>Noise:</p>
+<ul>
+<li>Estimates only: vibratory pump about 60-75 dB, rotary about 50-60 dB (guides stating estimates) <a href="https://completehomebarista.com/guides/espresso-machine-noise-levels-comparison/">Complete Home Barista</a>; another guide puts vibratory at 80-85 dB. Eureka Mignon Silenzio about 67-68 dB (Seattle Coffee Gear guide) vs 55-60 dB (Clive Coffee); distances and weighting differ. Forum reports say damping and mounting matter as much as pump type <a href="https://www.home-barista.com/espresso-machines/vibe-pump-vs-rotary-t10792-30.html">Home-Barista</a>. No instrument-measured hand-grinder dB found. Hand crank is silent in electrical terms, but burr grinding noise remains. Safety and standards:</li>
+<li>IEC 60335-2-15 (liquid-heating appliances incl. coffee makers), edition 7.0 published 2024-11, clause 19 abnormal operation; UL 1082 requires thermal cutoffs (single TH-100-rated or two) and abnormal-operation tests; CSA update 2022 added abnormal-operation requirements for espresso and capsule machines <a href="https://www.iecee.org/certification/iec-standards/iec-60335-2-152024">IEC</a>, <a href="https://cdn.intertek.com/www-intertek-com/dms-legacy/UL-1082-Rev-9-28-2017-ED-1-15-2020.pdf">UL 1082 text</a>, <a href="https://cdn.intertek.com/www-intertek-com/dms-legacy/CSA-C22-2-No-60335-2-15-Rev-2-1-2019-ED-6-1-2023.pdf">CSA</a>. Clause text on unattended operation not retrieved. A homemade mod is outside any certification; independent hardware over-temperature cutouts are advisable (recommendation).</li>
+<li>EU auto power-down: Regulation 801/2013 (amending 1275/2008) required default delays to standby/off, applying to coffee machines from 1 Jan 2015; defaults reported as 15 min (portioned) and 30 min (fully automatic and piston) <a href="https://storage.topten.eu/source/files/D2_1_Criteria_Paper_Coffee_Machines.pdf">Topten</a>; EUR-Lex marks 801/2013 as no longer in force; a 2022 draft annex proposes 30 min (40 for insulated-jug-less drip) <a href="https://www.energimyndigheten.se/490884/globalassets/energieffektivisering_/jag-ar-saljare-eller-tillverkare/dokument/produkter-med-krav/standby--off-mode-samt-natverksstandby/draft-annex-standby-ecodesign-reg_7january2022-2.pdf">draft</a>. Consequence: commercial EU machines cannot idle on for hours; a pre-alarm wake should be timed to the heat-up (15-25 min anecdotally) so it does not auto-off before use.</li>
+<li>Scald: Barisieur drew scald concerns (BGR); Teasmade-style sealed expulsion carries scald risk if a tube dislodges. Mitigations are design reasoning: drip tray with level sensor, enclosed cup bay, low-pressure hot path. Degradation and timing:</li>
+<li>Evidence: Arii and Nishizawa (Mukogawa Women’s Univ.), reported secondhand, found foam falls in two phases (fast phase about 15 min) and foam delays cooling; they suggested the first 15 minutes may be the best drinking window <a href="https://www.insidehook.com/culture/science-behind-espresso-foam">InsideHook</a>. Original paper not retrieved. Compare practical sources: crema gone in 1-3 min (blogs) <a href="https://clivecoffee.com/blogs/learn/is-your-espresso-dying-while-you-wait">Clive Coffee</a>. Flavour shift on cooling is anecdotal; Klotz et al. concern brew temperature, not serving temperature <a href="https://www.preprints.org/manuscript/201910.0352/v1">preprint</a>.</li>
+<li>Implication: brew timing at alarm (or a few minutes before) matters more than an espresso sitting all night; an Americano tolerates standing better because dilution and a larger hot volume slow cooling (reasoning, no study found).</li>
+<li>Cups: a vendor blog (method unstated) shows thick ceramic dropping 65 to 54 C over 1-3 min vs double-wall glass 80 to 74 C <a href="https://www.papelespresso.com/comparing-insulated-vs-non-insulated-cups-for-long-duration-espresso-sipping">Papel Espresso</a>; Tasting Table says ceramic cools espresso about 54 degrees vs about 37 for double-wall glass (undated figures, no method). Preheating narrows the gap (claim, no measured rate). A cup warmer or hot-water rinse in the bay is a design option.</li>
+<li>Cleaning and puck disposal, reservoir and drip management: no sources retrieved; flagged as gaps. Design inference: automatic puck knock-out into a bin is the hardest of the chores; Briggo/Cafe X kiosks solved it only inside enclosed machines.</li>
+</ul>
+<h3 id="6-existing-diy-projects">6. Existing DIY projects</h3>
+<ul>
+<li>Delayed Nespresso: ESP32 plus switch under Home Assistant; author rejects fixed 7am brewing in favour of queueing for tomorrow <a href="https://attentionseekingtech.substack.com/p/smart-nespresso">substack</a>.</li>
+<li>SmartKeurig: ATmega plus Raspberry Pi, cron-based <a href="https://github.com/shildenbrand/SmartKeurig">GitHub</a>.</li>
+<li>RaspberryLatte (hallboyone): Silvia PID/controller project <a href="https://github.com/hallboyone/RaspberryLatte">GitHub</a> (README not retrievable here).</li>
+<li>Hackaday.io coffee alarm clock (STM32); Raspberry Pi slow-coffee with Telegram; timed Rancilio Silvia; ML Silvia that predicts when you want a shot and preheats <a href="https://www.hackster.io/news/this-espresso-machine-knows-exactly-when-you-need-a-caffeine-shot-356d0ee9bd86">Hackster</a>.</li>
+<li>None found that delivers a finished espresso to a bed; none found with hand-lever-plus-motor hybrid.</li>
+</ul>
+<h2 id="quote-bank">Quote bank</h2>
+<blockquote>
+<p>High-quality foam plays an important role in delaying the cooling of espresso coffee Yasuhiro Arii and Kaho Nishizawa, Mukogawa Women’s University (Japan), as quoted by InsideHook, 2017 (per search summary), SECONDARY, <a href="https://www.insidehook.com/culture/science-behind-espresso-foam">source</a></p>
+</blockquote>
+<blockquote>
+<p>Due to this long refresh period, the integration can not be used to monitor shots. ALERTua, maintainer of hass-gaggiuino, README (undated), PRIMARY, <a href="https://github.com/ALERTua/hass-gaggiuino">source</a></p>
+</blockquote>
+<blockquote>
+<p>This is an unofficial integration. It is not affiliated with, endorsed by, or supported by Breville or Sage. simonjgreen, sageha README (undated), PRIMARY, <a href="https://github.com/simonjgreen/sageha">source</a></p>
+</blockquote>
+<blockquote>
+<p>Some commands, like turning the machine on and off, can be sent through bluetooth. zweckj, pylamarzocco README (unofficial library), PRIMARY, <a href="https://github.com/zweckj/pylamarzocco">source</a></p>
+</blockquote>
+<blockquote>
+<p>If the machine becomes unresponsive or the temperature goes too high, it will automatically turn off for safety. jniebuhr, GaggiMate README (undated), PRIMARY, <a href="https://github.com/jniebuhr/gaggimate">source</a></p>
+</blockquote>
+<blockquote>
+<p>An “automatic” coffee machine that runs at 7am every morning isn’t a good idea for obvious reasons. Instead of “automatic” I’m going for “delayed”. I click a button and tomorrow at 7am I get coffee. Author of the “Smart Nespresso” post, Attention Seeking Tech substack (date not seen), PRIMARY (author’s own blog), <a href="https://attentionseekingtech.substack.com/p/smart-nespresso">source</a></p>
+</blockquote>
+<blockquote>
+<p>it seems far too easy to perhaps knock something over, at best, or severely scald yourself, at worst BGR reviewer on the Barisieur (name and date not seen), SECONDARY/WEAK (paraphrase boundaries unclear in the search summary), <a href="https://bgr.com/?p=4701227">source</a></p>
+</blockquote>
+<h2 id="disagreements-failure-modes-and-caveats">Disagreements, failure modes and caveats</h2>
+<ul>
+<li>Goblin Teasmade first-model date: 1936 vs 1937; end of Goblin ownership 1984 vs late 1990s.</li>
+<li>Teasmade cutoff trigger: released pad vs thermostat.</li>
+<li>Barisieur milk cooling: Peltier (one source) vs just a cool slot (another); Opumo’s “stainless ball bearings” heating claim contradicts induction-coil accounts.</li>
+<li>Noise: vibratory 65-75 vs 80-85 dB across guides; Silenzio 67-68 vs 55-60 dB. Treat as indicative only.</li>
+<li>Crema/flavour: 15-min window (one lab group, secondhand) vs 1-3 min crema persistence (blogs); not contradictory (foam vs perceptible crema) but not a flavour study.</li>
+<li>EU standby: 801/2013 says in force from 2015 but EUR-Lex now lists it no longer in force; 15/30 min figures are from Topten criteria, not the regulation text.</li>
+<li>Artly: aggregator listing a $3.5M 2024 round conflicts with $340k 2023 crowdfund; unverified.</li>
+<li>LeRobot success rates are single-setup, small-sample model cards; not generalisable. Simulation scores do not predict real robots.</li>
+<li>Failure stories: Cafe X (closures 2020), Briggo (acquired, rebranded, small footprint), Barisieur aftercare complaints, Teasmade decline.</li>
+<li>Community integrations (pylamarzocco, sageha, hass-gaggiuino) can break if cloud APIs change; Breville and La Marzocco routes depend on vendor cloud.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Teasmade, Wikipedia, <a href="https://en.wikipedia.org/wiki/Teasmade">https://en.wikipedia.org/wiki/Teasmade</a> - reference; dates conflict with other sources.</li>
+<li>Retrotechtacular: Teasmade, Hackaday, 2020-01-30, <a href="https://hackaday.com/2020/01/30/retrotechtacular-teasmade">https://hackaday.com/2020/01/30/retrotechtacular-teasmade</a> - mechanism, reputable.</li>
+<li>teasmade.uk (history/how it works), <a href="https://www.teasmade.uk/how-does-a-teasmade-work/">https://www.teasmade.uk/how-does-a-teasmade-work/</a> - enthusiast site, detailed.</li>
+<li>Grace’s Guide Goblin Teasmade, <a href="https://gracesguide.co.uk/Goblin_Teasmade">https://gracesguide.co.uk/Goblin_Teasmade</a> - historical reference.</li>
+<li>Salon on Barisieur, 2019-04-06, <a href="https://www.salon.com/2019/04/06/this-coffee-maker-alarm-clock-will-change-your-am-game">https://www.salon.com/2019/04/06/this-coffee-maker-alarm-clock-will-change-your-am-game</a> - price, secondary.</li>
+<li>My Modern Met Barisieur, <a href="https://mymodernmet.com/joshua-renouf-barisieur">https://mymodernmet.com/joshua-renouf-barisieur</a> - design press.</li>
+<li>Trustpilot Joy Resolve, <a href="https://www.trustpilot.com/review/www.joyresolve.com?page=2">https://www.trustpilot.com/review/www.joyresolve.com?page=2</a> - user reviews, mixed reliability.</li>
+<li>Home Assistant La Marzocco, <a href="https://www.home-assistant.io/integrations/lamarzocco">https://www.home-assistant.io/integrations/lamarzocco</a> - official docs.</li>
+<li>pylamarzocco, <a href="https://github.com/zweckj/pylamarzocco">https://github.com/zweckj/pylamarzocco</a> - community library README.</li>
+<li>pyMeticulous, <a href="https://github.com/MeticulousHome/pyMeticulous">https://github.com/MeticulousHome/pyMeticulous</a> - org-hosted wrapper, v0.3.0.</li>
+<li>GaggiMate, <a href="https://github.com/jniebuhr/gaggimate">https://github.com/jniebuhr/gaggimate</a> and <a href="https://docs.gaggimate.eu">https://docs.gaggimate.eu</a> - open-source project.</li>
+<li>hass-gaggiuino, <a href="https://github.com/ALERTua/hass-gaggiuino">https://github.com/ALERTua/hass-gaggiuino</a> - community HACS.</li>
+<li>decent-advanced-rest-api, <a href="https://github.com/randomcoffeesnob/decent-advanced-rest-api">https://github.com/randomcoffeesnob/decent-advanced-rest-api</a> - community.</li>
+<li>sageha, <a href="https://github.com/simonjgreen/sageha">https://github.com/simonjgreen/sageha</a> - community, unofficial.</li>
+<li>Stark Insider Breville schedule, 2023-04, <a href="https://www.starkinsider.com/2023/04/how-to-automatically-turn-your-espresso-or-coffee-machine-each-morning.html">https://www.starkinsider.com/2023/04/how-to-automatically-turn-your-espresso-or-coffee-machine-each-morning.html</a> - blog.</li>
+<li>Crunchbase News Cafe X, 2020, <a href="https://news.crunchbase.com/venture/robotic-coffee-startup-cafe-x-shutters-stores-pivots-to-airports/">https://news.crunchbase.com/venture/robotic-coffee-startup-cafe-x-shutters-stores-pivots-to-airports/</a> - trade press.</li>
+<li>ABC7 Cafe X closures, <a href="https://abc7news.com/post/robot-baristas-cafe-x-closes-sf-locations-/5830767/">https://abc7news.com/post/robot-baristas-cafe-x-closes-sf-locations-/5830767/</a> - news.</li>
+<li>CultureMap Briggo, 2020-10-30, <a href="https://austin.culturemap.com/news/restaurants-bars/10-30-20-briggo-austin-coffee-robot-company-purchased-by-coca-cola-company/">https://austin.culturemap.com/news/restaurants-bars/10-30-20-briggo-austin-coffee-robot-company-purchased-by-coca-cola-company/</a> - news.</li>
+<li>GeekWire Artly, 2022, <a href="https://www.geekwire.com/2022/robotic-coffee-barista-maker-led-by-ex-aws-engineer-raises-8-3m-to-open-more-retail-locations/">https://www.geekwire.com/2022/robotic-coffee-barista-maker-led-by-ex-aws-engineer-raises-8-3m-to-open-more-retail-locations/</a> - news.</li>
+<li>Yanko Design Artly CES 2026, 2026-01-07, <a href="https://www.yankodesign.com/2026/01/07/artly-robots-master-latte-art-and-drinks-for-ces-2026-debut/">https://www.yankodesign.com/2026/01/07/artly-robots-master-latte-art-and-drinks-for-ces-2026-debut/</a> - design blog.</li>
+<li>Daily Coffee News Rozum, 2020-04-24, <a href="https://dailycoffeenews.com/2020/04/24/the-rozum-cafe-offers-a-customizable-robotic-espresso-setup">https://dailycoffeenews.com/2020/04/24/the-rozum-cafe-offers-a-customizable-robotic-espresso-setup</a> - trade press.</li>
+<li>huggingface/lerobot, <a href="https://github.com/huggingface/lerobot">https://github.com/huggingface/lerobot</a> - official repo.</li>
+<li>Hackster SO-101 launch, <a href="https://www.hackster.io/news/hugging-face-launches-the-so-101-an-upgraded-low-cost-3d-printable-autonomous-robot-arm-532360f441eb">https://www.hackster.io/news/hugging-face-launches-the-so-101-an-upgraded-low-cost-3d-printable-autonomous-robot-arm-532360f441eb</a> - prices, secondary.</li>
+<li>Physical Intelligence pi*0.6, <a href="https://www.pi.website/blog/pistar06">https://www.pi.website/blog/pistar06</a> - primary lab blog.</li>
+<li>Matcha bot, Hackster, <a href="https://www.hackster.io/sigrobotics/matcha-bot-sigrobotics-embodied-ai-hackathon-1st-place-f0e520">https://www.hackster.io/sigrobotics/matcha-bot-sigrobotics-embodied-ai-hackathon-1st-place-f0e520</a> - student project.</li>
+<li>IEC 60335-2-15:2024, <a href="https://www.iecee.org/certification/iec-standards/iec-60335-2-152024">https://www.iecee.org/certification/iec-standards/iec-60335-2-152024</a> - standards body.</li>
+<li>UL 1082 excerpt, <a href="https://cdn.intertek.com/www-intertek-com/dms-legacy/UL-1082-Rev-9-28-2017-ED-1-15-2020.pdf">https://cdn.intertek.com/www-intertek-com/dms-legacy/UL-1082-Rev-9-28-2017-ED-1-15-2020.pdf</a> - excerpt.</li>
+<li>Topten coffee machine criteria, <a href="https://storage.topten.eu/source/files/D2_1_Criteria_Paper_Coffee_Machines.pdf">https://storage.topten.eu/source/files/D2_1_Criteria_Paper_Coffee_Machines.pdf</a> - NGO research.</li>
+<li>EUR-Lex 801/2013, <a href="https://eur-lex.europa.eu/eli/reg/2013/801/oj">https://eur-lex.europa.eu/eli/reg/2013/801/oj</a> - legal text, status flag.</li>
+<li>InsideHook on Arii and Nishizawa, 2017, <a href="https://www.insidehook.com/culture/science-behind-espresso-foam">https://www.insidehook.com/culture/science-behind-espresso-foam</a> - secondary.</li>
+<li>Complete Home Barista noise guide, <a href="https://completehomebarista.com/guides/espresso-machine-noise-levels-comparison/">https://completehomebarista.com/guides/espresso-machine-noise-levels-comparison/</a> - estimates, low reliability.</li>
+<li>Papel Espresso insulated cups, <a href="https://www.papelespresso.com/comparing-insulated-vs-non-insulated-cups-for-long-duration-espresso-sipping">https://www.papelespresso.com/comparing-insulated-vs-non-insulated-cups-for-long-duration-espresso-sipping</a> - vendor, method unstated.</li>
+<li>Home-Barista threads (lever profiling, DIY lever), <a href="https://www.home-barista.com/levers/pressure-profiling-la-pavoni-t34126.html">https://www.home-barista.com/levers/pressure-profiling-la-pavoni-t34126.html</a> - forum anecdote.</li>
+</ul>
+<h2 id="gaps">Gaps</h2>
+<ul>
+<li>Primary text of Arii and Nishizawa paper and journal citation; any controlled sensory study of espresso held over time.</li>
+<li>Instrument-measured dB for vibratory vs rotary pumps and hand vs electric grinders.</li>
+<li>Actual clause text on unattended operation in IEC 60335-2-15 / UL 1082; current in-force EU rule replacing 801/2013 and exact default delays.</li>
+<li>Teasmade injury or recall data.</li>
+<li>Crown Coffee details; Cafe X and Artly current (2025-26) operating status; reasons for Artly outcomes.</li>
+<li>SO-101 evidence for tamping, puck prep, portafilter handling; payload and servo torque figures.</li>
+<li>Meticulous official API endpoints; GaggiMate MQTT topics README; RaspberryLatte README; Decent endpoint list.</li>
+<li>Motorised conversions of named hand grinders; any motorised-but-hand-operable lever espresso build.</li>
+<li>Cleaning, puck disposal, reservoir and drip management practices.</li>
+</ul>
+<h2 id="verification-log-independent-fact-check">Verification log (independent fact-check)</h2>
+<p>Checked 16 items with 16 WebSearch calls (budget 17). Search results are model summaries; exact wording was only treated as verified where the wording itself appeared in results. No non-GitHub pages were fetched.</p>
+<ul>
+<li>NOT_FOUND: Quote, Arii and Nishizawa, “High-quality foam plays an important role in delaying the cooling of espresso coffee”. The 2017 paper “Espresso coffee foam delays cooling of the liquid phase” (Bioscience, Biotechnology, and Biochemistry, Mukogawa Women’s University) is confirmed via PubMed, Oxford Academic and Taylor &amp; Francis, but no result showed this sentence. The summary’s claim that it appears in the full text is not backed by excerpts. Use the paper title and authors, not this wording. URL: <a href="https://pubmed.ncbi.nlm.nih.gov/28100101/">https://pubmed.ncbi.nlm.nih.gov/28100101/</a></li>
+<li>NOT_FOUND: Quote, ALERTua, “Due to this long refresh period, the integration can not be used to monitor shots.” The 30 s polling limit and the not-for-shot-monitoring point are described in a search summary of the README FAQ, but the sentence itself was not shown. URL: <a href="https://github.com/ALERTua/hass-gaggiuino">https://github.com/ALERTua/hass-gaggiuino</a></li>
+<li>PARTIAL: Quote, simonjgreen, “This is an unofficial integration. It is not affiliated with, endorsed by, or supported by Breville or Sage.” The substance (unofficial, no affiliation, use at own risk) is confirmed. The exact sentence in the results is from the companion library simonjgreen/sagecoffee (“This is an unofficial library… It is not affiliated with…”), not the sageha integration. Attribute as the sageha project’s disclaimer in substance, or cite sagecoffee for the verbatim line. URL: <a href="https://github.com/simonjgreen/sageha">https://github.com/simonjgreen/sageha</a> and <a href="https://github.com/simonjgreen/sagecoffee">https://github.com/simonjgreen/sagecoffee</a></li>
+<li>PARTIAL: Number and events, Cafe X closed three SF downtown sites in January 2020 and its SFO and San Jose airport sites in August 2020. Dates confirmed by ABC7, SF Chronicle and The Spoon (via search summaries). The $200,000 kiosk price is contested: The Spoon reports $200,000 with a $5,000 deposit, while Crunchbase reports $250,000 for orders of four or more. The “prototypes” framing is from Crunchbase, not ABC7. URL: <a href="https://abc7news.com/post/robot-baristas-cafe-x-closes-sf-locations-/5830767/">https://abc7news.com/post/robot-baristas-cafe-x-closes-sf-locations-/5830767/</a> and <a href="https://news.crunchbase.com/venture/robotic-coffee-startup-cafe-x-shutters-stores-pivots-to-airports/">https://news.crunchbase.com/venture/robotic-coffee-startup-cafe-x-shutters-stores-pivots-to-airports/</a></li>
+<li>PARTIAL: Number and events, Briggo acquired by Coca-Cola’s Costa Coffee unit and rebranded as Costa BaristaBot. The acquisition and rebrand are confirmed (BevNET, The Spoon, Marketing Dive). The timing is contested: The Spoon (26 Oct 2020) and BevNET report an October announcement, while Just Drinks says the deal was earlier in 2020. The “five active kiosks” figure is not confirmed; a brand-site summary says “a handful” in Texas. URL: <a href="https://www.bevnet.com/news/2020/costa-coffee-acquires-rebrands-briggo-machine-as-baristabot/">https://www.bevnet.com/news/2020/costa-coffee-acquires-rebrands-briggo-machine-as-baristabot/</a></li>
+<li>VERIFIED: Number, Barisieur retail price $445 with a $399 (10% off) price in Salon, 6 April 2019. The $445 retail is also shown by Uncrate. The $399 sale price appears only in Salon, and its duration is unknown. URL: <a href="https://www.salon.com/2019/04/06/this-coffee-maker-alarm-clock-will-change-your-am-game">https://www.salon.com/2019/04/06/this-coffee-maker-alarm-clock-will-change-your-am-game</a></li>
+<li>PARTIAL: Number, SO-101 about $130 for non-3D-printed parts (Hugging Face estimate). Coverage conflicts: one report gives about $130 as the total including printed parts, on a $100 base price, and TechCrunch headlines “starting at $100”. Seeed’s motor kit is $220 plus $35 for printed parts. Say “about $100 to $130, depending on what is counted.” URL: <a href="https://www.hackster.io/news/hugging-face-launches-the-so-101-an-upgraded-low-cost-3d-printable-autonomous-robot-arm-532360f441eb">https://www.hackster.io/news/hugging-face-launches-the-so-101-an-upgraded-low-cost-3d-printable-autonomous-robot-arm-532360f441eb</a></li>
+<li>PARTIAL: Number and claim, Physical Intelligence pi*0.6 RECAP. The arXiv paper (2511.14759) reports that on the hardest tasks RECAP more than doubles throughput and roughly halves failure rate, and names espresso among the largest gains (per summary). The espresso-specific “more than doubling” comes from a secondary account of the lab blog. A 2.3x figure found in one blog could not be confirmed. The blog itself (pi.website/blog/pistar06) was not checked. URL: <a href="https://arxiv.org/abs/2511.14759">https://arxiv.org/abs/2511.14759</a></li>
+<li>PARTIAL: Number, EU auto power-down defaults under Regulation 801/2013. A 2021 Topten/eceee paper supports a 30-minute factory-default auto-shutoff that users cannot lengthen. No source found ties 15 minutes to fully automatic machines, and the 15-minute figure may come from a 2022 eco-mode reference. The regulation’s status is contested (EUR-Lex lists it as no longer in force). URL: <a href="https://storage.topten.eu/source/files/D2_1_Criteria_Paper_Coffee_Machines.pdf">https://storage.topten.eu/source/files/D2_1_Criteria_Paper_Coffee_Machines.pdf</a></li>
+<li>VERIFIED: Number, Rozum Cafe package $100,000 and robot arm alone $22,000 (Daily Coffee News, 24 April 2020). Confirmed from the cited article via search summary; no independent source for the price. URL: <a href="https://dailycoffeenews.com/2020/04/24/the-rozum-cafe-offers-a-customizable-robotic-espresso-setup">https://dailycoffeenews.com/2020/04/24/the-rozum-cafe-offers-a-customizable-robotic-espresso-setup</a></li>
+<li>PARTIAL: Numbers, La Pavoni bathroom-scale force, about 24 lb at 6 bar and 40 lb at 9 bar. These figures are in a Home-Barista post by homeburrero in the Cremina profiling thread, not clearly in the cited La Pavoni thread. Other calculated and measured values for 9 bar range from about 25 lb to 48 lb. Treat as rough user-reported calibration only. URL: <a href="https://www.home-barista.com/levers/pressure-profiling-la-pavoni-t34126.html">https://www.home-barista.com/levers/pressure-profiling-la-pavoni-t34126.html</a></li>
+<li>VERIFIED: Claim, Meticulous has ten sensors covering pressure, flow, temperature and weight, plus a scale under the drip tray (SCA entry, per summary; also GadgetFlow product listing). URL: <a href="https://new.sca.coffee/entries/meticulous-espresso">https://new.sca.coffee/entries/meticulous-espresso</a></li>
+<li>NOT_FOUND: Quote, Attention Seeking Tech, “An ‘automatic’ coffee machine that runs at 7am every morning isn’t a good idea for obvious reasons.” The sentence did not appear in any result. Forum and care-site results show the premise is contested (wear on heating parts versus convenience of timers). URL: <a href="https://attentionseekingtech.substack.com/p/smart-nespresso">https://attentionseekingtech.substack.com/p/smart-nespresso</a></li>
+<li>PARTIAL: Quote, GaggiMate, “If the machine becomes unresponsive or the temperature goes too high, it will automatically turn off for safety.” Only a fork’s README (marxd262/gaggimate) showed this exact wording. The upstream project describes the same shutoff feature in different words. Use the upstream feature description, not the quote. URL: <a href="https://github.com/jniebuhr/gaggimate">https://github.com/jniebuhr/gaggimate</a></li>
+<li>PARTIAL: Dates and facts, Teasmade. Samuel Rowbottom’s patent application (17 December 1891) and grant (1892), and Frank Clarke’s 1902 patent, are reported on teasmade.uk (an enthusiast site) via search summary. Wikipedia’s content was not seen. The patent number is unverified and the claim that Walker predates Rowbottom is contested. URL: <a href="https://www.teasmade.uk/1891-samuel-rowbottom">https://www.teasmade.uk/1891-samuel-rowbottom</a></li>
+<li>CONTRADICTED: Number, “85% (17/20) cube placing on one table” attributed to the Hugging Face card sahilapage/act_so101_pick_block_bowl. That card reports no success-rate figure (one qualitative real-hardware rollout, 50 episodes). The 17/20 (85%) result belongs to a different checkpoint, omiya239532/so101_act_cotrain: a 4 cm cube placed on a white sheet, 20 fixed placements, with sim pretraining and real co-training. Cite that card, and note it is a single small-sample setup. URL: <a href="https://huggingface.co/omiya239532/so101_act_cotrain">https://huggingface.co/omiya239532/so101_act_cotrain</a> (correct source); <a href="https://huggingface.co/sahilapage/act_so101_pick_block_bowl">https://huggingface.co/sahilapage/act_so101_pick_block_bowl</a> (wrong attribution)</li>
+</ul>
+
+    </article>
+  </div>
+</main>
+</body>
+</html>

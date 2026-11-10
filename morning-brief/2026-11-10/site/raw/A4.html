@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>A4 raw research &middot; Morning Brief No. 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&display=swap">
+<style>
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+:root {
+  /* Layout: one ~68ch reading column; a mono metadata rail (contents, provenance) in the left gutter on wide screens */
+  --paper: #F1F2EF;
+  --paper-2: #E7E9E4;
+  --ink: #1C1D1A;
+  --muted: #5A5D56;
+  --rule: #D2D5CD;
+  --crema: #94531C;
+  --crema-soft: #EADBCB;
+  --ok: #2C6847;
+  --warn: #84640E;
+  --bad: #9A372B;
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", system-ui, sans-serif;
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+    --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+  --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 19px;
+  line-height: 1.58;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration-color: var(--crema); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+a:hover { color: var(--crema); }
+a:focus-visible { outline: 2px solid var(--crema); outline-offset: 2px; border-radius: 2px; }
+
+.band { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.band-top { background: var(--paper-2); border-bottom: 1px solid var(--rule); padding-block: 40px 36px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+
+/* masthead */
+.slug { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.slug b { color: var(--ink); font-weight: 500; }
+.title { font-family: var(--display); font-stretch: 72%; font-weight: 800; font-size: clamp(54px, 10vw, 112px); line-height: 0.9; letter-spacing: -0.01em; margin: 18px 0 10px; text-wrap: balance; }
+.title .no { color: var(--crema); font-stretch: 100%; font-weight: 500; font-size: 0.42em; letter-spacing: 0.02em; vertical-align: 0.95em; margin-left: 0.18em; }
+.deck { font-style: italic; font-size: clamp(19px, 2.2vw, 23px); color: var(--muted); max-width: 46em; margin: 0 0 30px; text-wrap: pretty; }
+
+.bluf { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 2px solid var(--ink); }
+.bluf > div { padding: 16px 22px 4px 0; min-width: 0; }
+.bluf > div + div { padding-left: 22px; border-left: 1px solid var(--rule); }
+.bluf h2 { font-family: var(--display); font-stretch: 85%; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 8px; color: var(--crema); }
+.bluf p { margin: 0 0 12px; font-size: 18px; line-height: 1.5; }
+
+.stats { margin-top: 22px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 22px; font-variant-numeric: tabular-nums; }
+.stats span b { color: var(--ink); font-weight: 500; }
+
+/* body grid */
+.band-body { padding-block: 44px 72px; }
+.grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 56px; }
+.rail { min-width: 0; }
+.rail nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); font-family: var(--mono); font-size: 12.5px; line-height: 1.45; }
+.rail .label { text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 0 0 10px; }
+.rail ol, .rail ul { list-style: none; margin: 0 0 26px; padding: 0; display: grid; gap: 7px; }
+.rail a { text-decoration: none; color: var(--muted); }
+.rail a:hover { color: var(--crema); }
+.rail li.sub a { padding-left: 12px; display: inline-block; }
+
+.prose { min-width: 0; max-width: 68ch; }
+.prose h2 { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: clamp(34px, 5vw, 50px); line-height: 1; letter-spacing: -0.005em; margin: 64px 0 22px; padding-top: 18px; border-top: 2px solid var(--ink); text-wrap: balance; }
+.prose > h2:first-child, .prose > .part:first-child h2:first-child { margin-top: 0; }
+.prose h3 { font-family: var(--display); font-stretch: 88%; font-weight: 700; font-size: 25px; line-height: 1.2; margin: 42px 0 12px; text-wrap: balance; }
+.prose h4 { font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; margin: 30px 0 8px; color: var(--muted); }
+.prose p { margin: 0 0 1.05em; text-wrap: pretty; }
+.prose ul, .prose ol { padding-left: 1.3em; margin: 0 0 1.1em; }
+.prose li { margin: 0 0 0.45em; }
+.prose li::marker { color: var(--crema); }
+.prose strong { font-weight: 650; }
+.prose hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
+.prose blockquote { margin: 22px 0 24px; padding: 2px 0 2px 20px; border-left: 3px solid var(--crema); font-style: italic; font-size: 20px; line-height: 1.5; }
+.prose blockquote p:last-child { margin-bottom: 0; }
+.prose blockquote em { font-style: normal; }
+.prose code { font-family: var(--mono); font-size: 0.82em; background: var(--paper-2); padding: 1px 5px; border-radius: 3px; }
+.prose pre { font-family: var(--mono); font-size: 13.5px; line-height: 1.5; background: var(--paper-2); border: 1px solid var(--rule); padding: 16px 18px; overflow-x: auto; border-radius: 4px; }
+.prose pre code { background: none; padding: 0; font-size: inherit; }
+
+.tablewrap { overflow-x: auto; margin: 22px 0 28px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); }
+.prose table { border-collapse: collapse; width: 100%; font-family: var(--display); font-stretch: 92%; font-size: 15px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.prose th { text-align: left; font-weight: 700; font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 10px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: bottom; }
+.prose td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top; min-width: 7em; }
+.prose tr:last-child td { border-bottom: 0; }
+
+figure.profile { margin: 8px 0 34px; }
+figure.profile svg { width: 100%; height: auto; display: block; }
+figure.profile figcaption { font-family: var(--mono); font-size: 12.5px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+.ax { stroke: var(--rule); stroke-width: 1; fill: none; }
+.axl { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+.c-lever { stroke: var(--crema); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.c-pump { stroke: var(--ink); stroke-width: 1.6; fill: none; stroke-dasharray: 5 5; }
+.c-lbl { font-family: var(--mono); font-size: 11.5px; }
+.c-lbl.l { fill: var(--crema); }
+.c-lbl.p { fill: var(--ink); }
+
+/* provenance + ledger */
+.ledger { width: 100%; }
+.chip { display: inline-block; font-family: var(--mono); font-size: 11.5px; line-height: 1; padding: 4px 6px; border-radius: 3px; border: 1px solid currentColor; margin: 0 4px 4px 0; white-space: nowrap; }
+.chip.ok { color: var(--ok); }
+.chip.warn { color: var(--warn); }
+.chip.bad { color: var(--bad); }
+.stack-list { list-style: none; padding: 0 !important; margin: 18px 0 26px !important; border-top: 2px solid var(--ink); }
+.stack-list li { margin: 0 !important; padding: 14px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 3.2em minmax(0, 1fr); gap: 0 12px; }
+.stack-list .id { font-family: var(--mono); font-size: 14px; color: var(--crema); padding-top: 3px; }
+.stack-list .t { font-family: var(--display); font-stretch: 90%; font-weight: 700; font-size: 18px; line-height: 1.3; }
+.stack-list .m { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.6; }
+.stack-list li::marker { content: none; }
+
+.backlink { font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--muted); }
+.backlink:hover { color: var(--crema); }
+.raw-head .title { font-size: clamp(36px, 6vw, 64px); font-stretch: 78%; }
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .rail nav { position: static; }
+  .rail ol, .rail ul { margin-bottom: 18px; }
+}
+@media (max-width: 640px) {
+  body { font-size: 18px; }
+  .bluf { grid-template-columns: minmax(0, 1fr); }
+  .bluf > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--rule); }
+  .band-top { padding-block: 28px 26px; }
+  .prose blockquote { font-size: 19px; padding-left: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+
+</style>
+</head>
+<body>
+<header class="band band-top raw-head">
+  <div class="wrap">
+    <div class="slug"><a class="backlink" href="../index.html">&larr; Morning Brief No. 1</a><span>Raw research &middot; slice A4</span></div>
+    <h1 class="title">The case against the morning brief, and the first hour</h1>
+    <div class="stats"><span><b>32</b> searches</span><span><b>15</b> items fact-checked</span><span><b>7</b> verified</span><span><b>8</b> partial</span><span><b>0</b> dropped or flagged</span></div>
+  </div>
+</header>
+<main class="band band-body">
+  <div class="wrap grid">
+    <aside class="rail"><nav aria-label="Sections"><p class="label">Sections</p><ol><li><a href="#scope">Scope</a></li><li><a href="#method-and-search-log">Method and search log</a></li><li><a href="#findings">Findings</a></li><li><a href="#quote-bank">Quote bank</a></li><li><a href="#disagreements-failure-modes-and-caveats">Disagreements, failure modes and caveats</a></li><li><a href="#net-positive-vs-net-negative-conditions-for-deep-technical-work">Net-positive vs net-negative conditions (for deep technical work)</a></li><li><a href="#sources">Sources</a></li><li><a href="#gaps">Gaps</a></li><li><a href="#verification-log-independent-fact-check">Verification log (independent fact-check)</a></li></ol>
+    <p class="label">Other slices</p><ul><li><a href="A1.html">A1 &middot; Briefing for a living</a></li><li><a href="A2.html">A2 &middot; Scientists and the daily stream</a></li><li><a href="A3.html">A3 &middot; AI-written briefs</a></li><li><a href="B1.html">B1 &middot; Building from scratch</a></li><li><a href="B2.html">B2 &middot; Levers and hybrids</a></li><li><a href="B3.html">B3 &middot; Grinders and motors</a></li><li><a href="B4.html">B4 &middot; Bedside automation</a></li><li><a href="B5.html">B5 &middot; What to buy</a></li></ul></nav></aside>
+    <article class="prose">
+<h2 id="scope">Scope</h2>
+<p>The strongest honest case against a daily morning brief (news avoidance data, interruption and checking research, Simon and Taleb on attention and noise, Knuth/Newport/Dobelli), then the chronobiology that bears on when a brief should be read. Medicine and intelligence pre-briefing is covered by another agent; only a pointer is given here.</p>
+<h2 id="method-and-search-log">Method and search log</h2>
+<p>Method: WebSearch only (32 calls; page fetches are blocked on non-GitHub hosts). Search results mostly paraphrase; verbatim text is reported only where a result put it in quotation marks. Anything not seen in quotation marks is paraphrased and marked so. I could not read any primary paper or book text, so most quotes are SECONDARY or WEAK and are flagged for verification.</p>
+<ol type="1">
+<li>Reuters DNR 2025 news avoidance (standard): ~40% avoid sometimes/often, 48 markets; 39% mood, 31% worn out among avoiders.</li>
+<li>Reuters DNR 2026 key findings (standard): trust 37% record low; platforms overtake TV/sites; no avoidance figure.</li>
+<li>Simon 1971 exact wording (extended): confirmed source (Greenberger ed., 1971); passage text unconfirmed from the scan.</li>
+<li>Taleb Antifragile noise/signal (extended): 95%/5% daily, 99.5%/0.5% hourly; illustrative figures.</li>
+<li>Kushlev and Dunn 2015 (standard): n=124, 3x/day vs unlimited, lower stress; no productivity difference.</li>
+<li>Leroy 2009 abstract (standard): bibliographic details and abstract gist.</li>
+<li>Simon “information consumes the attention” (standard): blog-level confirmations only.</li>
+<li>Taleb Farnam Street passage (extended): numbers corroborated; verbatim not returned.</li>
+<li>Gloria Mark email stress/batching (standard): 2012 email-vacation study; 2016 batching study only via blog summary.</li>
+<li>Gloria Mark attention span 47 s / 23 min (standard): figures found; provenance of 23 min is mid-2000s Mark interview; many blog distortions.</li>
+<li>Wieth and Zacks 2011 (standard): insight better at non-optimal time; no consistent effect on analytic problems.</li>
+<li>Newport on news (standard): news argument is in Digital Minimalism; no verified verbatim.</li>
+<li>Knuth email quote (standard): confirmed on Knuth’s Stanford page “Email (let’s drop the hyphen)”.</li>
+<li>Taleb Bed of Procrustes / Fooled by Randomness on news (extended): newspaper aphorism exists; wording unverified.</li>
+<li>Dobelli “Avoid News” (standard): sugar line; essay hosted on gwern.net; plagiarism dispute noted.</li>
+<li>Sleep inertia review (standard): Hilditch and McHill 2019; EASA review of 30-minute convention.</li>
+<li>May and Hasher synchrony (standard): inhibition best at peak time; younger neutral types show no effect.</li>
+<li>Reuters DNR 2024 avoidance (standard): 39%, up from 29% in 2017.</li>
+<li>Knuth exact wording (extended): corroborated both lines; Wikiquote/azquotes only.</li>
+<li>Taleb verbatim hunt (extended): numbers and “one step below sucker” fragment via Jolly Contrarian, sive.rs.</li>
+<li>Leroy abstract wording (standard): “fully transition their attention”.</li>
+<li>Schmidt et al. 2007 (standard): abstract of the chronotype/synchrony review.</li>
+<li>Dobelli verbatim (standard): “News misleads us systematically”, “News is irrelevant” via secondary posts.</li>
+<li>Newport extended (extended): no usable news/email quotes found.</li>
+<li>Simon surrounding sentence (standard): “What information consumes is rather obvious…” plus “Hence a wealth of information creates a poverty of attention.”</li>
+<li>Taleb Farnam Street / Collins (standard): fs.blog page exists; yearly 1:1 ratio line.</li>
+<li>Morning phone checking evidence (standard): no strong direct evidence; PNAS Nexus 2025 morning mobile-internet block reported secondhand.</li>
+<li>Newport attention residue (standard): Newport borrows Leroy; definition of deep work quoted secondhand.</li>
+<li>Pre-op briefing evidence (standard): observational support; no RCT.</li>
+<li>Reuters 2025 selective avoiders (extended): 40% (some sources 42%); two avoider types.</li>
+<li>DNR 2026 avoidance (standard): 42%, flat year on year; UK 50%, US 45%.</li>
+<li>Sleep inertia durations (standard): abstract only; no duration numbers confirmed.</li>
+</ol>
+<h2 id="findings">Findings</h2>
+<h3 id="1-news-avoidance-and-fatigue-evidence-survey-based">1. News avoidance and fatigue (evidence, survey-based)</h3>
+<ul>
+<li>DNR 2024: 39% say they sometimes or often actively avoid news, up from 29% in 2017; coverage describes news as “relentless” and points to smartphones, push notifications and algorithmic feeds as possible drivers. <a href="https://pressgazette.co.uk/media-audience-and-business-data/news-avoidance-at-record-levels-as-four-in-ten-worn-out-by-news/">Press Gazette</a>. Interest in news in 12 tracked markets fell from 66% (2018) to 49% (2024) (same source).</li>
+<li>DNR 2025: about 40% across 48 markets (some write-ups say 42%); among avoiders, 39% cite mood and 31% feel worn out by the amount of news. The report distinguishes consistent avoiders (low interest, low education) from selective avoiders (overloaded, protecting wellbeing by topic or time). <a href="https://www.statista.com/chart/amp/34635/why-people-actively-try-to-avoid-the-news">Statista summary</a>, <a href="https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2025/dnr-executive-summary">Reuters Institute exec summary</a>. The 31%/39% figures were seen only in secondary pages, not the PDF.</li>
+<li>DNR 2026: avoidance reported at 42%, roughly flat on 2025; UK 50% (+4), US 45% (+3). Global trust in news 37%, a record low. <a href="https://pressgazette.co.uk/?p=253776">Press Gazette</a>, <a href="https://www.advanced-television.com/2026/06/16/report-trust-in-news-hits-record-low/">Advanced Television</a>, <a href="https://www.dcu.ie/commsteam/news/2026/jun/news-avoidance-highest-it-has-ever-been-ireland-reuters-digital-news-report">DCU</a>. No 2026 selective-avoider share found.</li>
+<li>Caveat: these are population-wide self-reports about general news, not about a curated, technical, once-a-day digest. Selective avoidance (a protective strategy) is arguably consistent with using a curated brief.</li>
+</ul>
+<h3 id="2-checking-frequency-interruption-stress">2. Checking frequency, interruption, stress</h3>
+<ul>
+<li>Kushlev and Dunn (2015, Computers in Human Behavior 43:220-228): 124 adults, two weeks, alternating a week limited to checking email 3x/day with a week of unlimited checking. Daily stress was significantly lower in the limited week; lower stress predicted higher well-being; unlimited checkers did not feel more productive. Compliance with the limit was imperfect and participants found it hard. <a href="https://psych.ubc.ca/news/checking-your-email-less-can-help-reduce-stress-new-study-by-phd-candidate-kostadin-kushlev/">UBC</a>, <a href="https://www.interruptions.net/literature/Kushlev-ComputHumBehav15.pdf">paper PDF</a>. Relevance: email, not news; effect sizes described as modest. A once-daily brief is far below the 3x/day arm.</li>
+<li>Mark, Voida and Cardello (CHI 2012): 13 information workers, five days without email; lower stress by heart rate variability, about half the window switching (18 vs 37 per hour); some felt isolated. <a href="https://news.uci.edu/2012/05/07/email-vacations-decrease-stress-increase-concentration">UCI</a>. Small n.</li>
+<li>Mark et al. 2016 (Microsoft, about 40 employees with HRV monitors): per one blog summary, batching email was only partly supported; not better stress than checking throughout. Single secondhand source, unverified. <a href="https://chrisbailey.com/how-to-check-your-email-productively/">Chris Bailey summary</a>. This is disconfirming evidence for the simple “batch it” prescription.</li>
+<li>Mark’s attention figures: screen-dwell about 2.5 minutes (2004), 75 s (2012), 47 s (2016, median 40 s); 23 min 15 s to resume an interrupted task from a mid-2000s study. Many blogs distort these; Mark herself cautions that 47 s is not a biological attention span. Self-interruption share quoted at 44% or 80% by different pages; do not use either. <a href="https://texasstandard.org/stories/attention-span-book-gloria-mark/">Texas Standard</a>, <a href="https://www.toolsforhumans.ai/blog/the-47-second-attention-crisis-what-the-research-actually-says-and-doesnt">Tools for Humans critique</a></li>
+<li>Leroy (2009, OBHDP 109(2):168-181): two experiments; people must stop thinking about an unfinished task to transition attention fully; leaving a task unfinished produces residue and worse next-task performance. A secondary report says time pressure and closure reduced residue. The popular “40% error” figure is not in the abstract; do not use. <a href="https://econpapers.repec.org/RePEc:eee:jobhdp:v:109:y:2009:i:2:p:168-181">EconPapers abstract</a>, <a href="https://www.uwb.edu/business/faculty/sophie-leroy/attention-residue">UW Bothell</a>. Implication for briefs: items that open loops (unresolved news, an unanswered question) are the residue risk; a brief that closes loops (nothing actionable today) differs from one that opens them. This inference is mine.</li>
+<li>Task-switching costs generally: not searched separately beyond Mark and Leroy.</li>
+</ul>
+<h3 id="3-simon-and-taleb-arguments">3. Simon and Taleb (arguments)</h3>
+<ul>
+<li>Simon, “Designing Organizations for an Information-Rich World,” in Greenberger (ed.), Computers, Communications, and the Public Interest, Johns Hopkins Press, 1971, citation pp. 40-41. Search results quote “What information consumes is rather obvious: it consumes the attention of its recipients.” and “Hence a wealth of information creates a poverty of attention.” The sentence continues with a need to allocate attention efficiently (paraphrased in one result as “a need to allocate that attention efficiently among the overabundance of information sources that might consume it”). Wording seen only on blog and quote pages; the scanned PDF at <a href="https://atelierdesfuturs.org/wp-content/uploads/2025/07/1971-simon.pdf">atelierdesfuturs.org</a> was not readable. Simon’s point is about filtering, which supports a curated brief as much as it opposes one.</li>
+<li>Taleb, Antifragile (2012), “Noise and Signal” section: yearly observation about 1:1 signal:noise; daily about 95% noise / 5% signal; hourly about 99.5% noise / 0.5% signal. The numbers are illustrative, not empirical; one commentator notes the model assumes signal constant divided by number of intervals. Result pages also attribute to the text that anyone who listens to news (except when very, very significant events take place) is “one step below sucker”. <a href="https://fs.blog/noise-and-signal-nassim-taleb/">Farnam Street</a>, <a href="https://jollycontrarian.com/index.php/Antifragile">Jolly Contrarian</a>, <a href="https://sive.rs/book/Antifragile">sive.rs</a>. Taleb tweeted on 2019-12-27 (status ID date inferred): “Recall that the more information you get, the more disproportionately higher the ratio of noise to signal…” <a href="https://x.com/nntaleb/status/1210960607563984897">X</a>. Relevance: Taleb’s claim concerns high-frequency data on slow-moving processes; a daily digest of mostly slow-moving research news is the sampling frequency he is arguing against only if the underlying signal changes yearly. The model is a stylised statistical argument (noise variance scales with sqrt of interval) from a quantitatively trained writer; it is argument, not evidence about brief-reading.</li>
+<li>Knuth: stopped having an email address on 1 January 1990; his page says he is happy and explains that email suits people whose role is to be on top of things while his is to be on the bottom of things. <a href="https://cs.stanford.edu/~knuth/email.html">Knuth Stanford page</a>, <a href="https://en.wikiquote.org/wiki/Donald_Knuth">Wikiquote</a>. Anecdote, but from the most credentialed practitioner in the field; he relies on a secretary to triage mail, i.e., he outsourced the brief.</li>
+<li>Newport: attention residue concept borrowed from Leroy in Deep Work (2016); news argument in Digital Minimalism (2019). No verified verbatim news quote found; a widely circulated “manic information addicts” line is only on a quote site (WEAK; do not use). <a href="https://ideas.ted.com/love-the-news-but-hate-clickbait-and-fluff-how-to-be-a-slower-and-more-thoughtful-news-consumer/">TED Ideas excerpt</a></li>
+<li>Dobelli, “Avoid News: Towards a Healthy News Diet” (essay dated 2010 on the PDF; Guardian extract April 2013; book Stop Reading the News). Contains “news is to the mind what sugar is to the body” (per PDF coverage). Secondary posts list “News misleads us systematically” and “News is irrelevant”. Taleb publicly accused Dobelli of plagiarism in 2019 per Wikipedia; treat Dobelli as secondary and not scientifically credentialed. <a href="https://www.Gwern.net/doc/culture/2010-dobelli.pdf">Dobelli PDF at Gwern</a>, <a href="https://en.wikipedia.org/wiki/Rolf_Dobelli">Wikipedia</a></li>
+</ul>
+<h3 id="4-chronobiology-and-the-first-hour">4. Chronobiology and the first hour</h3>
+<ul>
+<li>Sleep inertia: temporary sleepiness, disorientation and impaired cognition after waking; performance decrements dissipate with time awake and are exaggerated by prior sleep loss and the time of day of waking (Hilditch and McHill 2019). Cerebral blood flow velocity below pre-sleep levels for up to about 30 minutes in the review’s brain-activity section; an EASA-commissioned review examined whether the conventional 30 minutes is valid but I did not see its verdict; individual variability is high. <a href="https://www.dovepress.com/sleep-inertia-current-insights-peer-reviewed-fulltext-article-NSS">Dove Press</a>, <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6710480">PMC</a>, <a href="https://www.easa.europa.eu/en/downloads/139387/en">EASA</a>. Implication: the first 30 or so minutes are poor for judgment either way; skim-reading is more tolerant than analysis, but I found no study on reading specifically.</li>
+<li>Synchrony effect: performance, especially anything needing inhibition of distraction, is better at one’s circadian peak; the effect is strongest in older adults and morning types, and absent in younger neutral types in a 2017 study. <a href="https://hasherlab.psych.utoronto.ca/abstracts/may_98.htm">May and Hasher 1998</a>, <a href="https://www.apa.org/monitor/2018/06/good-timing.html">APA Monitor</a>, <a href="https://informahealthcare.com/doi/abs/10.1080/02643290701754158">Schmidt et al. 2007</a>.</li>
+<li>Wieth and Zacks (2011, Thinking and Reasoning 17(4):387-401): insight problem solving was better at non-optimal times of day; no consistent time-of-day effect on analytic problems. Mechanism (reduced inhibitory control broadens attention) is the authors’ hypothesis. Neutral-type participants showed no difference. Sample 428 students, subgroups small. <a href="https://bps.org.uk/research-digest/youre-most-creative-when-youre-your-groggiest">BPS Digest</a>, <a href="https://informahealthcare.com/doi/full/10.1080/13546783.2011.625663">abstract</a>. Caution: this does not support “do analytic work whenever”, and the analytic null conflicts with the common claim that analytic work peaks at the chronotype peak; the evidence is mixed.</li>
+<li>Morning phone checking: no direct experiment found on checking on waking. A PNAS Nexus (Feb 2025) experiment blocking mobile internet reportedly improved sustained attention and wellbeing, seen only via blog summary and not specific to mornings; cortisol and “80% check within 15 minutes” figures are unverified commentary. <a href="https://psychologytoday.com/ca/blog/positively-media/202410/how-morning-phone-habits-shape-productivity-and-well-being">Psychology Today</a></li>
+<li>Implication (inference, not a finding): put deep work in your personal peak window, read the brief afterward or at a natural break, in a bounded format with an end; avoid reading it in the sleep-inertia window if it needs judgment; schedule it before deep work only if it clears specific decisions (closes loops) for that day.</li>
+</ul>
+<h3 id="5-counter-evidence-pointer">5. Counter-evidence (pointer)</h3>
+<p>Pre-operative team briefings: observational and before-after support for fewer communication failures; no RCT of briefings found; checklist meta-analysis (2014 Anesthesiology, seven nonrandomized studies, 37,339 patients) found fewer complications. <a href="https://pubmed.ncbi.nlm.nih.gov/18209148/">PubMed 18209148</a>, <a href="https://asa2.silverchair.com/anesthesiology/article-pdf/120/6/1380/264542/20140600_0-00021.pdf">Anesthesiology PDF</a>. Another agent covers this and intelligence briefing. Note these briefings are team-coordination tools, not individual news digests.</p>
+<h2 id="quote-bank">Quote bank</h2>
+<blockquote>
+<p>What information consumes is rather obvious: it consumes the attention of its recipients.</p>
+</blockquote>
+<p>Herbert Simon, Nobel laureate in economics and cognitive scientist, 1971, SECONDARY (as reproduced on a search-result page; original not read), <a href="https://sites.google.com/site/signaturclippings/scientists/herbert-a-simon">source</a> – URL shown in the search that surfaced the line was a quote-clippings page; verify against the 1971 text.</p>
+<blockquote>
+<p>Hence a wealth of information creates a poverty of attention.</p>
+</blockquote>
+<p>Herbert Simon, 1971 (“Designing Organizations for an Information-Rich World”, Greenberger ed.), WEAK to SECONDARY (blog and quote pages; citation pp. 40-41), <a href="https://deeshaa.org/2015/06/30/herbert-simon-information-consumes-attention/">source</a></p>
+<blockquote>
+<p>If you look at the very same data on a daily basis, the composition would change to 95 percent noise, 5 percent signal.</p>
+</blockquote>
+<p>Nassim Nicholas Taleb, statistician and former options trader, Antifragile, 2012, SECONDARY (extract as quoted on the page; formatting of “percent” varies between pages), <a href="https://fs.blog/noise-and-signal-nassim-taleb/">source</a></p>
+<blockquote>
+<p>if you observe data on an hourly basis, as people immersed in the news and market price variations do, the split becomes 99.5 percent noise to 0.5 percent signal.</p>
+</blockquote>
+<p>Nassim Nicholas Taleb, Antifragile, 2012, SECONDARY, <a href="https://sahilbloom.substack.com/p/the-noise-bottleneck-the-subtle-trap">source</a></p>
+<blockquote>
+<p>as you consume more data and as the ratio of noise to signal increases, you know less about what’s going on and are more likely to cause trouble inadvertently.</p>
+</blockquote>
+<p>Nassim Nicholas Taleb (as summarised on Farnam Street’s page listing; may be a paraphrase of the text), 2012, WEAK, <a href="https://fs.blog/nassim-taleb/">source</a></p>
+<blockquote>
+<p>Recall that the more information you get, the more disproportionately higher the ratio of noise to signal.</p>
+</blockquote>
+<p>Nassim Nicholas Taleb, X post (title in search result reads “disproportionately higher”; text as shown: “the more information you get, the more disproportionally higher the ratio of noise to signal”), PRIMARY, <a href="https://x.com/nntaleb/status/1210960607563984897">source</a> (exact tweet wording should be re-checked; the search title read “disproportionately”)</p>
+<blockquote>
+<p>Email is a wonderful thing for people whose role in life is to be on top of things. But not for me; my role is to be on the bottom of things.</p>
+</blockquote>
+<p>Donald Knuth, Stanford emeritus professor, author of The Art of Computer Programming, “Email (let’s drop the hyphen)”, PRIMARY page exists but this wording was seen via a quote site (azquotes); treat as WEAK until checked, <a href="https://www.azquotes.com/quote/721030">source</a> (primary: <a href="https://cs.stanford.edu/~knuth/email.html">https://cs.stanford.edu/~knuth/email.html</a>)</p>
+<blockquote>
+<p>I have been a happy man ever since January 1, 1990, when I no longer had an email address.</p>
+</blockquote>
+<p>Donald Knuth, same page, SECONDARY (the phrase was the query term and the result says it is on his page; not shown as direct quote by the engine), <a href="https://cs.stanford.edu/~knuth/email.html">source</a></p>
+<blockquote>
+<p>We found that during the limited email use week, participants experienced significantly lower daily stress than during the unlimited email use week.</p>
+</blockquote>
+<p>Kushlev and Dunn, University of British Columbia psychologists, Computers in Human Behavior, 2015, SECONDARY (quoted on a results page; likely abstract text), <a href="https://psych.ubc.ca/news/checking-your-email-less-can-help-reduce-stress-new-study-by-phd-candidate-kostadin-kushlev/">source</a></p>
+<blockquote>
+<p>Most participants in our study found it quite difficult to check their email only a few times a day</p>
+</blockquote>
+<p>Kostadin Kushlev, 2014/2015 press coverage, SECONDARY, <a href="https://newrepublic.com/article/120491/youll-be-less-stressed-if-you-check-your-email-less-frequently">source</a></p>
+<blockquote>
+<p>Results showed consistently greater insight problem solving performance during non-optimal times of day compared to optimal times of day but no consistent time of day effects on analytic problem solving.</p>
+</blockquote>
+<p>Wieth and Zacks, Thinking and Reasoning, 2011, PRIMARY (abstract as quoted in result), <a href="https://informahealthcare.com/doi/full/10.1080/13546783.2011.625663">source</a></p>
+<blockquote>
+<p>People experiencing attention residue after switching tasks are likely to demonstrate poor performance on that next task</p>
+</blockquote>
+<p>Sophie Leroy, University of Washington Bothell business professor (as quoted in a secondary write-up), 2009 onward, SECONDARY, <a href="https://funkypenguin.co.nz/blog/what-is-attention-residue-and-how-do-i-defeat-it/">source</a></p>
+<blockquote>
+<p>Email vacations on the job may be a good idea.</p>
+</blockquote>
+<p>Gloria Mark, UC Irvine informatics professor, 2012, SECONDARY (UCI press coverage), <a href="https://news.uci.edu/2012/05/07/email-vacations-decrease-stress-increase-concentration">source</a></p>
+<blockquote>
+<p>most of us do not yet understand that news is to the mind what sugar is to the body</p>
+</blockquote>
+<p>Rolf Dobelli, author and businessman, “Avoid News” essay, 2010, WEAK to SECONDARY (as shown in search summary of the PDF; wording of the opening may differ), <a href="https://www.Gwern.net/doc/culture/2010-dobelli.pdf">source</a></p>
+<blockquote>
+<p>Simply put, humans are not wired to be constantly wired.</p>
+</blockquote>
+<p>Cal Newport, Georgetown computer science professor, undated (widely quoted), SECONDARY, <a href="https://richroll.com/podcast/cal-newport-447/">source</a></p>
+<h2 id="disagreements-failure-modes-and-caveats">Disagreements, failure modes and caveats</h2>
+<ul>
+<li>Strongest evidence for abstention concerns email, push notifications and general mass-market news; none tests a single curated daily technical digest.</li>
+<li>Batching is not clearly better: the 2016 Mark study (secondhand) found batchers no less stressed; Kushlev participants struggled to comply.</li>
+<li>Taleb’s noise numbers are illustrative; 1:1 yearly signal is assumed, and a brief on research news with weekly or monthly structural change has a different ratio. Taleb also exempts “very significant events”, which is the job of an alert, not a digest.</li>
+<li>Simon’s actual prescription is filtering; a brief is a filter. The quote is routinely used against its own author’s design implication.</li>
+<li>Wieth and Zacks and the synchrony literature disagree on analytic work; the chronotype effect is weak or absent in young neutral types, so “never read before deep work” is not established.</li>
+<li>Sleep inertia: durations uncertain; the 30-minute convention is under review.</li>
+<li>Survey avoidance figures differ by year/source (40 vs 42% for 2025); self-report; “avoidance” includes people who are simply uninterested.</li>
+<li>Quote hygiene: Newport “manic information addicts” and 23-minute and 40% figures circulate in low-quality sources.</li>
+<li>Dobelli’s credentials are not scientific; plagiarism dispute with Taleb.</li>
+</ul>
+<h2 id="net-positive-vs-net-negative-conditions-for-deep-technical-work">Net-positive vs net-negative conditions (for deep technical work)</h2>
+<p>Likely net-positive when:</p>
+<ol type="1">
+<li>The brief is bounded (fixed length, once a day, with a clear end) and replaces ad hoc checking of feeds rather than adding to it.</li>
+<li>It is read at a defined time, after the first deep block or at a transition, not in the sleep-inertia window.</li>
+<li>It closes loops: filtered to what changes decisions today, with explicit “nothing to act on” states, to limit attention residue.</li>
+<li>Its domain moves fast enough that a day’s delay costs something (security advisories, dependencies, releases).</li>
+<li>It is the filter Simon calls for, i.e., it reduces total information intake.</li>
+<li>The reader would otherwise check sources compulsively (the brief is a substitute). Likely net-negative when:</li>
+<li>It is additive to feeds, email and chat, raising checking frequency.</li>
+<li>It is read first thing, before one’s best focus window, on a reader who has a strong peak early.</li>
+<li>Content is mostly general news, outrage or slow-moving stories, giving Taleb’s low-signal sampling.</li>
+<li>It opens loops (unresolved issues, to-dos) just before deep work.</li>
+<li>Reading it becomes a ritual regardless of content, with no skip rule when nothing changed.</li>
+<li>The reader is already in a news-fatigue state (mood effects, worn out).</li>
+</ol>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Digital News Report 2024 coverage, Press Gazette, 2024-06, <a href="https://pressgazette.co.uk/media-audience-and-business-data/news-avoidance-at-record-levels-as-four-in-ten-worn-out-by-news/">https://pressgazette.co.uk/media-audience-and-business-data/news-avoidance-at-record-levels-as-four-in-ten-worn-out-by-news/</a> - trade press reporting the Reuters Institute; reliable on headline figures.</li>
+<li>Digital News Report 2025 executive summary, Reuters Institute, 2025-06, <a href="https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2025/dnr-executive-summary">https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2025/dnr-executive-summary</a> - primary, not read directly.</li>
+<li>Statista chart on avoidance reasons, 2025, <a href="https://www.statista.com/chart/amp/34635/why-people-actively-try-to-avoid-the-news">https://www.statista.com/chart/amp/34635/why-people-actively-try-to-avoid-the-news</a> - secondary of DNR.</li>
+<li>Digital News Report 2026 coverage, Press Gazette / Advanced Television / DCU, 2026-06, <a href="https://pressgazette.co.uk/?p=253776">https://pressgazette.co.uk/?p=253776</a> - secondary.</li>
+<li>Kushlev and Dunn, Computers in Human Behavior 43, 2015, <a href="https://www.interruptions.net/literature/Kushlev-ComputHumBehav15.pdf">https://www.interruptions.net/literature/Kushlev-ComputHumBehav15.pdf</a> - peer-reviewed; PDF located, not read.</li>
+<li>Mark, Voida, Cardello, CHI 2012 via UCI news, <a href="https://news.uci.edu/2012/05/07/email-vacations-decrease-stress-increase-concentration">https://news.uci.edu/2012/05/07/email-vacations-decrease-stress-increase-concentration</a> - press release; small n.</li>
+<li>Chris Bailey summary of Mark et al. 2016, <a href="https://chrisbailey.com/how-to-check-your-email-productively/">https://chrisbailey.com/how-to-check-your-email-productively/</a> - blog; verify against paper.</li>
+<li>Leroy, OBHDP 109(2), 2009, <a href="https://econpapers.repec.org/RePEc:eee:jobhdp:v:109:y:2009:i:2:p:168-181">https://econpapers.repec.org/RePEc:eee:jobhdp:v:109:y:2009:i:2:p:168-181</a> - abstract record.</li>
+<li>Simon 1971 scan, <a href="https://atelierdesfuturs.org/wp-content/uploads/2025/07/1971-simon.pdf">https://atelierdesfuturs.org/wp-content/uploads/2025/07/1971-simon.pdf</a> - primary but unreadable in this environment.</li>
+<li>Deeshaa / Conversable Economist / S Anand blog pages on Simon, <a href="https://deeshaa.org/2015/06/30/herbert-simon-information-consumes-attention/">https://deeshaa.org/2015/06/30/herbert-simon-information-consumes-attention/</a> - blogs; low-medium.</li>
+<li>Taleb Antifragile excerpts, Farnam Street <a href="https://fs.blog/noise-and-signal-nassim-taleb/">https://fs.blog/noise-and-signal-nassim-taleb/</a> - reputable blog quoting the book.</li>
+<li>Taleb tweet, <a href="https://x.com/nntaleb/status/1210960607563984897">https://x.com/nntaleb/status/1210960607563984897</a> - primary social post.</li>
+<li>Knuth, “Email (let’s drop the hyphen)”, <a href="https://cs.stanford.edu/~knuth/email.html">https://cs.stanford.edu/~knuth/email.html</a> - primary page.</li>
+<li>Dobelli “Avoid News”, <a href="https://www.Gwern.net/doc/culture/2010-dobelli.pdf">https://www.Gwern.net/doc/culture/2010-dobelli.pdf</a> - primary copy of essay.</li>
+<li>Wieth and Zacks 2011, <a href="https://informahealthcare.com/doi/full/10.1080/13546783.2011.625663">https://informahealthcare.com/doi/full/10.1080/13546783.2011.625663</a> - peer-reviewed abstract; BPS Digest <a href="https://bps.org.uk/research-digest/youre-most-creative-when-youre-your-groggiest">https://bps.org.uk/research-digest/youre-most-creative-when-youre-your-groggiest</a> - good summary.</li>
+<li>May and Hasher 1998, <a href="https://hasherlab.psych.utoronto.ca/abstracts/may_98.htm;">https://hasherlab.psych.utoronto.ca/abstracts/may_98.htm;</a> APA Monitor <a href="https://www.apa.org/monitor/2018/06/good-timing.html;">https://www.apa.org/monitor/2018/06/good-timing.html;</a> Schmidt et al. 2007 <a href="https://informahealthcare.com/doi/abs/10.1080/02643290701754158">https://informahealthcare.com/doi/abs/10.1080/02643290701754158</a> - peer-reviewed or reputable.</li>
+<li>Hilditch and McHill 2019, <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6710480;">https://pmc.ncbi.nlm.nih.gov/articles/PMC6710480;</a> EASA review <a href="https://www.easa.europa.eu/en/downloads/139387/en">https://www.easa.europa.eu/en/downloads/139387/en</a> - peer-reviewed and regulator-commissioned.</li>
+<li>Pre-op briefing studies, <a href="https://pubmed.ncbi.nlm.nih.gov/18209148/">https://pubmed.ncbi.nlm.nih.gov/18209148/</a> - peer-reviewed.</li>
+<li>Psychology Today on morning phone habits, <a href="https://psychologytoday.com/ca/blog/positively-media/202410/how-morning-phone-habits-shape-productivity-and-well-being">https://psychologytoday.com/ca/blog/positively-media/202410/how-morning-phone-habits-shape-productivity-and-well-being</a> - popular; low.</li>
+</ul>
+<h2 id="gaps">Gaps</h2>
+<ul>
+<li>No primary text read for Simon, Taleb, Knuth, Leroy, Dobelli or Newport; verbatim quotes need independent checking.</li>
+<li>No verified Newport or Taleb verbatim specifically on daily news (Taleb’s “Bed of Procrustes” newspaper aphorism and Fooled by Randomness news line were not confirmed).</li>
+<li>No study of a curated daily digest, or of reading news first thing versus later, on later deep-work performance.</li>
+<li>Mark 2016 batching result, 2025 DNR 31%/39% figures, 2026 selective-avoider share, sleep inertia duration numbers, and the PNAS Nexus 2025 phone-blocking study were not confirmed against primary sources.</li>
+<li>Task-switching cost meta-analyses (e.g., Monsell, Rubinstein) and Ariga-Lleras style brief-break research not searched.</li>
+<li>Effect sizes for chronotype performance not found.</li>
+</ul>
+<h2 id="verification-log-independent-fact-check">Verification log (independent fact-check)</h2>
+<p>Checked 15 load-bearing items with 18 WebSearch calls (no page fetches; non-GitHub hosts are blocked). “Verified” below means the wording or figure recurred in several independent search-result pages; I did not open any primary text, so treat VERIFIED as “corroborated by secondary and quote sites”, not “read in the primary source”.</p>
+<ul>
+<li>VERIFIED. Simon, “What information consumes is rather obvious: it consumes the attention of its recipients” (1971, Greenberger ed.). Note: the same wording recurs on several independent pages (deeshaa.org, conversableeconomist.com, williamlanday.com) with the 1971 Greenberger volume and “The Scarcity of Attention” heading. The scanned PDF was not read. URL: <a href="https://deeshaa.org/2015/06/30/herbert-simon-information-consumes-attention/">https://deeshaa.org/2015/06/30/herbert-simon-information-consumes-attention/</a></li>
+<li>VERIFIED (with caveat). Simon, “Hence a wealth of information creates a poverty of attention.” Note: the phrase appears in titles and summaries on several independent pages (TechRadar quote-of-the-day, deeshaa.org); the sentence’s body text was not read on each. URL: <a href="https://www.techradar.com/pro/quote-of-the-day-by-herbert-a-simon-a-wealth-of-information-creates-a-poverty-of-attention-a-thesis-for-the-modern-digital-economy">https://www.techradar.com/pro/quote-of-the-day-by-herbert-a-simon-a-wealth-of-information-creates-a-poverty-of-attention-a-thesis-for-the-modern-digital-economy</a></li>
+<li>PARTIAL. Taleb, daily view “95 percent noise, 5 percent signal.” Note: the 95/5 figure is repeated across secondary pages (fs.blog, jasoncollins.blog, Goodreads blog post), all describing the Antifragile “Noise and Signal” passage. The exact sentence in the file’s quote was not seen verbatim in any result. Figures are illustrative and assume a 1:1 yearly signal ratio. Use as “about 95/5, per Antifragile” rather than a verbatim quote. URL: <a href="https://fs.blog/noise-and-signal-nassim-taleb/">https://fs.blog/noise-and-signal-nassim-taleb/</a></li>
+<li>PARTIAL. Taleb, hourly view “99.5 percent noise to 0.5 percent signal.” Note: the figure is quoted on a blog as the book’s passage (hourly split 99.5/0.5, “about two hundred times” noise), but the clause “as people immersed in the news and market price variations do” was not seen. Figure confirmed, wording not. URL: <a href="https://fs.blog/noise-and-signal-nassim-taleb/">https://fs.blog/noise-and-signal-nassim-taleb/</a> (also quoted on sahilbloom.substack.com and jasoncollins.blog)</li>
+<li>VERIFIED. Knuth, “I have been a happy man ever since January 1, 1990, when I no longer had an email address.” Note: exact wording appears on a Neatorama repost, an ibiblio blog post (2011), and a 2006 schmoller.net post quoting it in full; secondary sources give the 1990 date. The Stanford page itself was not read in full. URL: <a href="https://cs.stanford.edu/~knuth/email.html">https://cs.stanford.edu/~knuth/email.html</a> (repost: <a href="https://www.neatorama.com/2014/03/02/I-have-been-a-happy-man-ever-since-January-1-1990-when-I-no-longer-had-an-email-address">https://www.neatorama.com/2014/03/02/I-have-been-a-happy-man-ever-since-January-1-1990-when-I-no-longer-had-an-email-address</a>)</li>
+<li>VERIFIED. Knuth, “Email is a wonderful thing for people whose role in life is to be on top of things. But not for me; my role is to be on the bottom of things.” Note: identical wording on Wikiquote (sourced to the Stanford page), BrainyQuote, QuoteFancy and AZQuotes; The Chronicle of Higher Education article quotes his website on the same point. The file’s azquotes link is a quote site, so cite Stanford or Wikiquote instead. URL: <a href="https://cs.stanford.edu/~knuth/email.html">https://cs.stanford.edu/~knuth/email.html</a> (Wikiquote: <a href="https://en.wikiquote.org/wiki/Donald_Knuth">https://en.wikiquote.org/wiki/Donald_Knuth</a>)</li>
+<li>PARTIAL. Kushlev and Dunn 2015, “significantly lower daily stress” in the limited-email week. Note: the design and substance are confirmed (124 adults, limited to checking email 3x/day vs unlimited, lower stress in the limited week, no productivity difference, imperfect compliance). The verbatim sentence in the file was only seen as paraphrase on UBC and New Republic pages. Volume 43, pp. 220-228 is correct (the search query’s “124” is the participant count, not the volume). An APS commentary criticises the causal claims. URL: <a href="https://psych.ubc.ca/news/checking-your-email-less-can-help-reduce-stress-new-study-by-phd-candidate-kostadin-kushlev/">https://psych.ubc.ca/news/checking-your-email-less-can-help-reduce-stress-new-study-by-phd-candidate-kostadin-kushlev/</a></li>
+<li>PARTIAL. Dobelli, “news is to the mind what sugar is to the body.” Note: the sugar comparison is in the 2010 “Avoid News” essay, per several summaries (unixsheikh.com PDF copy; Slow Escape; Dawn). The file’s exact opening (“most of us do not yet understand that…”) was not seen verbatim; the book and essay wording differ slightly. Dobelli is not a scientific source. URL: <a href="https://www.Gwern.net/doc/culture/2010-dobelli.pdf">https://www.Gwern.net/doc/culture/2010-dobelli.pdf</a></li>
+<li>PARTIAL (figure corrected). Gloria Mark attention “47 s (2016, median 40 s).” Note: the UC Newsroom interview describes 47 seconds as an average across studies from 2016 to 2020, not a median. The 2004 baseline of about 2.5 minutes is confirmed. The “median 40 s” figure appears only on one low-authority site (siliconcanals.com) and was not confirmed. URL: <a href="https://www.universityofcalifornia.edu/news/how-sharpen-your-attention-and-meet-your-goals-2024">https://www.universityofcalifornia.edu/news/how-sharpen-your-attention-and-meet-your-goals-2024</a></li>
+<li>VERIFIED. Leroy 2009, OBHDP 109(2):168-181, attention residue. Note: citation confirmed on the EconPapers record; the abstract text (unfinished tasks impair next-task performance; time pressure aids disengagement) is consistent with the file. The “40% error” figure is not sourced to Leroy. URL: <a href="https://econpapers.repec.org/RePEc:eee:jobhdp:v:109:y:2009:i:2:p:168-181">https://econpapers.repec.org/RePEc:eee:jobhdp:v:109:y:2009:i:2:p:168-181</a></li>
+<li>PARTIAL. Wieth and Zacks 2011, insight better at non-optimal times of day. Note: citation confirmed (Thinking and Reasoning 17(4), 387-401, DOI 10.1080/13546783.2011.625663; title “Time of day effects on problem solving: When the non-optimal is optimal”) and the finding (insight better at non-optimal time, no time-of-day effect on analytic problems) is consistent across BPS Digest and other coverage. The file’s verbatim abstract sentence was not seen in any result. Sample of 428 students is reported in coverage. URL: <a href="https://bps.org.uk/research-digest/youre-most-creative-when-youre-your-groggiest">https://bps.org.uk/research-digest/youre-most-creative-when-youre-your-groggiest</a></li>
+<li>VERIFIED. Digital News Report 2024, 39% sometimes or often avoid news, up from 29% in 2017. Note: consistent across Press Gazette and secondary coverage (YouGov summary; a 2024 Press Gazette piece). Coverage also says 36% in 2023 and a 2022 high of 38%. Boing Boing’s “29% increase” is wrong (it is 10 percentage points). URL: <a href="https://pressgazette.co.uk/media-audience-and-business-data/news-avoidance-at-record-levels-as-four-in-ten-worn-out-by-news/">https://pressgazette.co.uk/media-audience-and-business-data/news-avoidance-at-record-levels-as-four-in-ten-worn-out-by-news/</a></li>
+<li>PARTIAL. Digital News Report 2026: trust 37% record low; avoidance 42% flat year on year. Note: the 37% global trust figure and record-low framing are supported by two secondary sources. The 42% global avoidance figure appears in one secondary summary only, while another summary says nearly 50% avoid regularly. The 42% in the search results for 2026 is also Ireland’s trust figure, so the researcher may have conflated numbers. UK 50% and US 45% were not checked. Use the Reuters Institute report directly before citing the avoidance figure. URL: <a href="https://pressgazette.co.uk/?p=253776">https://pressgazette.co.uk/?p=253776</a></li>
+<li>VERIFIED. Mark, Voida and Cardello, CHI 2012, “A Pace Not Dictated by Electrons”: 13 information workers, five workdays without email, switching 37 vs 18 times per hour, lower HRV-based stress, some felt isolated. Note: the wording matches the paper title and UC Irvine press coverage. The study was run at the U.S. Army Natick Soldier Systems Center, with Cardello at Natick; Voida and Mark are at UC Irvine. Small sample. URL: <a href="https://news.uci.edu/2012/05/07/email-vacations-decrease-stress-increase-concentration">https://news.uci.edu/2012/05/07/email-vacations-decrease-stress-increase-concentration</a></li>
+<li>PARTIAL. Hilditch and McHill 2019, sleep inertia, about 30 minutes of reduced cerebral blood flow. Note: the review exists (Nature and Science of Sleep, 2019, PMC6710480) and describes sleep inertia and performance decrements that dissipate over time awake. The “up to half an hour” blood-flow point is attributed to imaging work the review cites, and a popular summary gives 15-30 minutes. Check the full text before citing the duration as the review’s own finding. URL: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6710480">https://pmc.ncbi.nlm.nih.gov/articles/PMC6710480</a></li>
+</ul>
+
+    </article>
+  </div>
+</main>
+</body>
+</html>

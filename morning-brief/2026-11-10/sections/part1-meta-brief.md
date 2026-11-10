@@ -1,4 +1,4 @@
-## Part 1 - Does a morning brief actually work?
+## Part 1: Does a morning brief actually work?
 
 **Verdict.** Probably yes, within narrow limits. No study tests the thing itself, a single curated technical digest read once a day, so the case rests on neighbouring evidence. Structured briefings and handoffs help when the people using them have bought in and fail when they become ritual, and both frequent checking and AI summaries of the open web have measurable costs. This brief is worth keeping if it replaces other checking rather than adding to it, stays short enough to finish, says how sure it is of each claim, and gets cut the week it stops changing what you do. Because an AI writes it, the last two conditions carry most of the weight.
 

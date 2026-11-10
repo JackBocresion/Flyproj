@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>B1 raw research &middot; Morning Brief No. 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&display=swap">
+<style>
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+:root {
+  /* Layout: one ~68ch reading column; a mono metadata rail (contents, provenance) in the left gutter on wide screens */
+  --paper: #F1F2EF;
+  --paper-2: #E7E9E4;
+  --ink: #1C1D1A;
+  --muted: #5A5D56;
+  --rule: #D2D5CD;
+  --crema: #94531C;
+  --crema-soft: #EADBCB;
+  --ok: #2C6847;
+  --warn: #84640E;
+  --bad: #9A372B;
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", system-ui, sans-serif;
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+    --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+  --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 19px;
+  line-height: 1.58;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration-color: var(--crema); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+a:hover { color: var(--crema); }
+a:focus-visible { outline: 2px solid var(--crema); outline-offset: 2px; border-radius: 2px; }
+
+.band { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.band-top { background: var(--paper-2); border-bottom: 1px solid var(--rule); padding-block: 40px 36px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+
+/* masthead */
+.slug { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.slug b { color: var(--ink); font-weight: 500; }
+.title { font-family: var(--display); font-stretch: 72%; font-weight: 800; font-size: clamp(54px, 10vw, 112px); line-height: 0.9; letter-spacing: -0.01em; margin: 18px 0 10px; text-wrap: balance; }
+.title .no { color: var(--crema); font-stretch: 100%; font-weight: 500; font-size: 0.42em; letter-spacing: 0.02em; vertical-align: 0.95em; margin-left: 0.18em; }
+.deck { font-style: italic; font-size: clamp(19px, 2.2vw, 23px); color: var(--muted); max-width: 46em; margin: 0 0 30px; text-wrap: pretty; }
+
+.bluf { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 2px solid var(--ink); }
+.bluf > div { padding: 16px 22px 4px 0; min-width: 0; }
+.bluf > div + div { padding-left: 22px; border-left: 1px solid var(--rule); }
+.bluf h2 { font-family: var(--display); font-stretch: 85%; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 8px; color: var(--crema); }
+.bluf p { margin: 0 0 12px; font-size: 18px; line-height: 1.5; }
+
+.stats { margin-top: 22px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 22px; font-variant-numeric: tabular-nums; }
+.stats span b { color: var(--ink); font-weight: 500; }
+
+/* body grid */
+.band-body { padding-block: 44px 72px; }
+.grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 56px; }
+.rail { min-width: 0; }
+.rail nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); font-family: var(--mono); font-size: 12.5px; line-height: 1.45; }
+.rail .label { text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 0 0 10px; }
+.rail ol, .rail ul { list-style: none; margin: 0 0 26px; padding: 0; display: grid; gap: 7px; }
+.rail a { text-decoration: none; color: var(--muted); }
+.rail a:hover { color: var(--crema); }
+.rail li.sub a { padding-left: 12px; display: inline-block; }
+
+.prose { min-width: 0; max-width: 68ch; }
+.prose h2 { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: clamp(34px, 5vw, 50px); line-height: 1; letter-spacing: -0.005em; margin: 64px 0 22px; padding-top: 18px; border-top: 2px solid var(--ink); text-wrap: balance; }
+.prose > h2:first-child, .prose > .part:first-child h2:first-child { margin-top: 0; }
+.prose h3 { font-family: var(--display); font-stretch: 88%; font-weight: 700; font-size: 25px; line-height: 1.2; margin: 42px 0 12px; text-wrap: balance; }
+.prose h4 { font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; margin: 30px 0 8px; color: var(--muted); }
+.prose p { margin: 0 0 1.05em; text-wrap: pretty; }
+.prose ul, .prose ol { padding-left: 1.3em; margin: 0 0 1.1em; }
+.prose li { margin: 0 0 0.45em; }
+.prose li::marker { color: var(--crema); }
+.prose strong { font-weight: 650; }
+.prose hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
+.prose blockquote { margin: 22px 0 24px; padding: 2px 0 2px 20px; border-left: 3px solid var(--crema); font-style: italic; font-size: 20px; line-height: 1.5; }
+.prose blockquote p:last-child { margin-bottom: 0; }
+.prose blockquote em { font-style: normal; }
+.prose code { font-family: var(--mono); font-size: 0.82em; background: var(--paper-2); padding: 1px 5px; border-radius: 3px; }
+.prose pre { font-family: var(--mono); font-size: 13.5px; line-height: 1.5; background: var(--paper-2); border: 1px solid var(--rule); padding: 16px 18px; overflow-x: auto; border-radius: 4px; }
+.prose pre code { background: none; padding: 0; font-size: inherit; }
+
+.tablewrap { overflow-x: auto; margin: 22px 0 28px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); }
+.prose table { border-collapse: collapse; width: 100%; font-family: var(--display); font-stretch: 92%; font-size: 15px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.prose th { text-align: left; font-weight: 700; font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 10px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: bottom; }
+.prose td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top; min-width: 7em; }
+.prose tr:last-child td { border-bottom: 0; }
+
+figure.profile { margin: 8px 0 34px; }
+figure.profile svg { width: 100%; height: auto; display: block; }
+figure.profile figcaption { font-family: var(--mono); font-size: 12.5px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+.ax { stroke: var(--rule); stroke-width: 1; fill: none; }
+.axl { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+.c-lever { stroke: var(--crema); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.c-pump { stroke: var(--ink); stroke-width: 1.6; fill: none; stroke-dasharray: 5 5; }
+.c-lbl { font-family: var(--mono); font-size: 11.5px; }
+.c-lbl.l { fill: var(--crema); }
+.c-lbl.p { fill: var(--ink); }
+
+/* provenance + ledger */
+.ledger { width: 100%; }
+.chip { display: inline-block; font-family: var(--mono); font-size: 11.5px; line-height: 1; padding: 4px 6px; border-radius: 3px; border: 1px solid currentColor; margin: 0 4px 4px 0; white-space: nowrap; }
+.chip.ok { color: var(--ok); }
+.chip.warn { color: var(--warn); }
+.chip.bad { color: var(--bad); }
+.stack-list { list-style: none; padding: 0 !important; margin: 18px 0 26px !important; border-top: 2px solid var(--ink); }
+.stack-list li { margin: 0 !important; padding: 14px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 3.2em minmax(0, 1fr); gap: 0 12px; }
+.stack-list .id { font-family: var(--mono); font-size: 14px; color: var(--crema); padding-top: 3px; }
+.stack-list .t { font-family: var(--display); font-stretch: 90%; font-weight: 700; font-size: 18px; line-height: 1.3; }
+.stack-list .m { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.6; }
+.stack-list li::marker { content: none; }
+
+.backlink { font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--muted); }
+.backlink:hover { color: var(--crema); }
+.raw-head .title { font-size: clamp(36px, 6vw, 64px); font-stretch: 78%; }
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .rail nav { position: static; }
+  .rail ol, .rail ul { margin-bottom: 18px; }
+}
+@media (max-width: 640px) {
+  body { font-size: 18px; }
+  .bluf { grid-template-columns: minmax(0, 1fr); }
+  .bluf > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--rule); }
+  .band-top { padding-block: 28px 26px; }
+  .prose blockquote { font-size: 19px; padding-left: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+
+</style>
+</head>
+<body>
+<header class="band band-top raw-head">
+  <div class="wrap">
+    <div class="slug"><a class="backlink" href="../index.html">&larr; Morning Brief No. 1</a><span>Raw research &middot; slice B1</span></div>
+    <h1 class="title">Building an espresso machine from scratch</h1>
+    <div class="stats"><span><b>23 + 19</b> searches</span><span><b>18</b> items fact-checked</span><span><b>7</b> verified</span><span><b>7</b> partial</span><span><b>4</b> dropped or flagged</span></div>
+  </div>
+</header>
+<main class="band band-body">
+  <div class="wrap grid">
+    <aside class="rail"><nav aria-label="Sections"><p class="label">Sections</p><ol><li><a href="#scope">Scope</a></li><li><a href="#method-and-search-log">Method and search log</a></li><li><a href="#findings">Findings</a></li><li><a href="#quote-bank">Quote bank</a></li><li><a href="#disagreements-failure-modes-and-caveats">Disagreements, failure modes and caveats</a></li><li><a href="#sources">Sources</a></li><li><a href="#gaps">Gaps</a></li><li><a href="#second-pass-research-gap-fill">Second-pass research (gap fill)</a></li><li><a href="#verification-log-independent-fact-check">Verification log (independent fact-check)</a></li></ol>
+    <p class="label">Other slices</p><ul><li><a href="A1.html">A1 &middot; Briefing for a living</a></li><li><a href="A2.html">A2 &middot; Scientists and the daily stream</a></li><li><a href="A3.html">A3 &middot; AI-written briefs</a></li><li><a href="A4.html">A4 &middot; The case against</a></li><li><a href="B2.html">B2 &middot; Levers and hybrids</a></li><li><a href="B3.html">B3 &middot; Grinders and motors</a></li><li><a href="B4.html">B4 &middot; Bedside automation</a></li><li><a href="B5.html">B5 &middot; What to buy</a></li></ul></nav></aside>
+    <article class="prose">
+<h2 id="scope">Scope</h2>
+<p>How people build espresso machines from scratch or heavily modified from parts, and the open-source hardware/firmware ecosystem (Gaggiuino, GaggiMate, CleverCoffee, Decent, Meticulous, diyPresso). Engineering fundamentals (pumps, boilers, safety, lead) and a modify-first vs scratch-build view. Observation date: 2026-11-10.</p>
+<h2 id="method-and-search-log">Method and search log</h2>
+<p>Method: WebSearch only (23 searches completed), plus WebFetch of GitHub pages (5 succeeded, 2 api.github.com calls returned 403). The shared web-search budget ran out after search 23, so 4 planned queries did not run (GaggiMate kit price/reviews, Gaggiuino Gen 3 cost, thermoblock-vs-boiler, transducer/flow-meter/OPV). The brief asked for 25-40 searches; this is below that. Search results are summaries, not page text, so most forum details are second-hand and no quote could be double-checked by a second exact-phrase search.</p>
+<ol type="1">
+<li>Gaggiuino README hardware/licence (extended): docs site says Gaggia Classic with 3-way valve only, Gen 1/2/3 controllers; licence not confirmed.</li>
+<li>GaggiMate open source ESP32 (extended): ESP32 controller, OTA channels, CC BY-NC-SA noted, 2026 build write-up on firmware v1.9.0.</li>
+<li>Home-Barista scratch lever builds (extended): found “Building a lever machine…. from scratch” (t41716) and others; machining details.</li>
+<li>Decent open API/firmware (standard): pyDE1 (GPL-3.0) found; no official firmware source.</li>
+<li>Hackaday DIY lever (standard): Hackaday 2024 diyPresso; 2020 lever press; 2018 motorbike-parts machine; list of HB threads.</li>
+<li>diyPresso kit price/specs (extended): One EUR 1,250, Two EUR 1,695; firmware 1.8.0 Jan 2026.</li>
+<li>Meticulous open source/API (standard): third-party tools only; Decent firmware closed.</li>
+<li>Gaggiuino licence/community (standard): CC BY-NC, Gen 3 source closed, DMCA notice, Hackaday comments.</li>
+<li>HB lever scratch cost/time (extended): cost-per-unit comment, ~month converting lathe to CNC, other builder costs.</li>
+<li>DIY brass/lead/safety (extended): lead in brass, boiler welding advice, pressurestat anecdotes.</li>
+<li>Gaggiuino Gen 3 source closed (extended): Aftermath quotation on scalping; repo state.</li>
+<li>GaggiMate GitHub stars/licence (extended): mostly forks; org has HA integration; shop and docs links.</li>
+<li>Decent firmware closed/signed (extended): HB forum recollection, UL claim, HN comments, OpenScale GPLv3.</li>
+<li>Four Bar Design DIY lever (extended): CO2-cartridge design, $102 stainless parts, iteration lessons.</li>
+<li>Rotary vs vibratory pumps (extended): vendor comparisons; no gear/brushless data.</li>
+<li>HB “Modern DIY Double Boiler Lever Build” (extended): design details; 280 EUR / 70-80 h on a different open-boiler build.</li>
+<li>Boiler pressure vessel codes (extended): UK PSSR 2000, Virginia act; no PED-specific source.</li>
+<li>Electrical safety (standard): forum/vendor material only; no standard.</li>
+<li>Lead NSF 372/51 (extended): 0.25% limit; EDF post; Dalla Corte certification.</li>
+<li>Rancilio PID / CleverCoffee (standard): CleverCoffee, Perfect Coffee PID, silvia-pi, etc.</li>
+<li>Meticulous openness (extended): Kickstarter updates say API open; community integrations.</li>
+<li>Motorised/servo lever hybrids (extended): HB hybrid-lever explainer and servo musings; no documented servo build.</li>
+<li>Open Source Lever Project (extended): Victoria Arduino-type spring group ~$495, dual thermoblocks. GitHub fetches: jniebuhr/gaggimate, Zer0-bit/gaggiuino, rancilio-pid/clevercoffee, jeffsf/pyDE1, diyPresso/diyPresso-One (all OK).</li>
+</ol>
+<h2 id="findings">Findings</h2>
+<h3 id="open-source-control-projects-maturity-snapshot">Open-source control projects (maturity snapshot)</h3>
+<ul>
+<li><strong>Gaggiuino</strong> (Zer0-bit): “A Gaggia Classic control project using microcontrollers”; 2.7k stars, 387 forks, 2,380 commits; legacy STM32 BlackPill code on branch release/stm32-blackpill; the README page does not mention Gen 3 (<a href="https://github.com/Zer0-bit/gaggiuino">GitHub</a>, fetched 2026-11-10). Docs: targets Gaggia Classic family with 3-way valves, excluding Classic V2; Gen 1 Nano+Nextion, Gen 2 STM32+Nextion, Gen 3 STM32+ESP32; flow profiling absent on Gen 1, present on Gen 2/3 (<a href="https://gaggiuino.github.io/">docs site</a>). Source status: the project site says Gen 3 is free with free updates but source is not available, under a non-commercial Creative Commons licence, per a Hackaday commenter quoting it (<a href="https://hackaday.com/2022/11/20/homebrew-espresso-maker-modding-with-gagguino/">Hackaday 2022 comments</a>). Aftermath reports Zer0-bit said the code stays private because of scalping and moved to an “open-core” model (<a href="https://aftermath.site/gaggiuino-gaggia-classic-pro-mod-open-source-hack/">Aftermath</a>). A third-party review reports the public repo has no firmware on its default branch and last commit April 2025 (<a href="https://synopolis.com/gaggiuino-profiling-and-temperature-control-for-gaggia-classic-machines/">Synopolis</a>). Verdict: source-available/closed for current generation, not open source in the OSI sense. I could not confirm the LICENSE text from the repo page itself.</li>
+<li><strong>GaggiMate</strong> (Jochen Niebuhr): ESP32, touch display, web UI, BLE/WebSocket integration surface, OTA with stable/beta/nightly channels (<a href="https://github.com/carloshrdezc/gaggimate">fork README via search</a>). Upstream repo: CC BY-NC-SA 4.0 (non-commercial), about 995 stars, 306 forks, 154 open issues, 1,122 commits; creator sells a kit at shop.gaggimate.eu; hardware design files moved to gaggimate/parts (<a href="https://github.com/jniebuhr/gaggimate">GitHub</a>, fetched 2026-11-10). A 2026 build write-up used a GaggiMate Pro with firmware v1.9.0 (<a href="https://www.ulrichlehner.com/blog/gaggia-classic-gaggimate-pid/">Ulrich Lehner</a>). The gaggimate org has a Home Assistant integration updated September 2026 (<a href="https://github.com/gaggimate">GitHub org</a>). Kit price not found.</li>
+<li><strong>CleverCoffee</strong> (rancilio-pid): GPL-2.0, ESP32 only going forward, 418 stars, 189 forks, 1,416 commits, “active development for over 5 years”, v4.0.0 with browser web-flasher, official PCB, supports Rancilio Silvia, Gaggia, Quickmill; temperature PID (not pressure profiling) (<a href="https://github.com/rancilio-pid/clevercoffee">GitHub</a>). Genuinely open, but a temperature-control project.</li>
+<li><strong>Other PID projects</strong>: Perfect Coffee PID (ESP32), silvia-pi (Raspberry Pi), a Gaggia ESP32-C6 controller with HA/Grafana (<a href="https://github.com/petoz/gaggia_pid_esp32-c6">search result</a>). One ESP32 Silvia author states the stock v1 swings up to 20 C (<a href="https://kolkman.github.io/ESP32ressoMachine">kolkman</a>).</li>
+<li><strong>Decent</strong>: DE1 machine firmware is closed and accepts only signed firmware (forum recollection of John Buckman, a UL-approval rationale claimed by a poster, unverified) (<a href="https://www.home-barista.com/espresso-machines/decent-espresso-machine-t43925-1020.html">Home-Barista</a>). Tablet app and API are described as open source by Decent (<a href="https://www.home-barista.com/espresso-machines/decent-espresso-machine-t43925-1020.html">same thread</a>). pyDE1: GPL-3.0, 81 stars, 377 commits, author uses it daily, needs Python 3.8+, bleak, MQTT 5 broker (<a href="https://github.com/jeffsf/pyDE1">GitHub</a>). Decent Open Scale firmware GPLv3 (<a href="https://github.com/decentespresso/openscale">GitHub</a>).</li>
+<li><strong>Meticulous</strong>: Kickstarter updates state APIs are open and documented, the server runs on the machine with no forced cloud, TypeScript and Python clients on GitHub (<a href="https://www.kickstarter.com/projects/meticulous/meticulous-espresso/posts/4119462">Kickstarter</a>). Community: Home Assistant integration via zeroconf/Socket.IO (<a href="https://github.com/cjborchert/ha-meticulous">ha-meticulous</a>), MeticAI, MCP server (<a href="https://github.com/hessius/MeticAI">MeticAI</a>). Not confirmed: full firmware/schematics openness (only third-party marketing says so).</li>
+<li><strong>diyPresso</strong>: kit with open-source Arduino MKR WiFi 1010 control. One: EUR 1,250, 0.6 L custom copper boiler, 390x210x365 mm, 18 kg, no steam; Two: EUR 1,695 incl. VAT, 1300 W copper boiler + 1200 W thermoblock for steam, 21 kg, about 8-week lead time (<a href="https://www.diypresso.com/product/diypresso-one/">diyPresso One</a>, <a href="https://www.diypresso.com/product/diypresso-two/">Two</a>, observed 2026-11-10, EU). Firmware 1.8.0 (Jan 2026) adds Dynamic Feed Forward, vendor claims 60-80% better temperature stability (vendor claim, unverified) (<a href="https://www.diypresso.com/downloads/">downloads</a>). Repo: GPL-3.0 code, 141 stars; no hardware design files visible; OTA on to-do (<a href="https://github.com/diyPresso/diyPresso-One">GitHub</a>). Review: about 5 hours assembly (via search summary). Hackaday: “might not be the cheapest road” but economical for a proven design (<a href="https://hackaday.com/2024/09/15/an-espresso-machine-for-the-diy-crowd">Hackaday 2024</a>).</li>
+</ul>
+<h3 id="from-scratch-and-heavily-custom-builds-all-anecdote-forum-level-evidence">From-scratch and heavily custom builds (all anecdote, forum-level evidence)</h3>
+<ul>
+<li><strong>“Building a lever machine…. from scratch”</strong> (HB t41716, 36+ pages): builder converted a lathe to CNC over about a month while waiting for a foundry casting; prototyped group in aluminium machined from solid stock (final part under a quarter of stock volume); floating piston head to absorb axial misalignment in the first cast group body; worried about uncertified bar stock and lead (<a href="https://www.home-barista.com/levers/building-lever-machine-from-scratch-t41716-20.html">page 3</a>, <a href="https://www.home-barista.com/levers/building-lever-machine-from-scratch-t41716-30.html">page 4</a>). Cost view: a single unit is far too expensive; around ten units costs slightly more than a comparable reseller machine; time not counted (<a href="https://www.home-barista.com/levers/building-lever-machine-from-scratch-t41716.html">first page</a>).</li>
+<li><strong>Open boiler lever</strong>: about EUR 280 parts, commenter says 70-80 hours (<a href="https://www.home-barista.com/levers/another-homemade-open-boiler-lever-t40964.html">HB t40964</a>). Another builder: about 120 hours and about EUR 1,300 materials, time untracked. A $350 all-aluminium build with cartridge heaters and PID, about 3 minute warm-up (via search summary of HB threads).</li>
+<li><strong>Open Source Lever Project</strong> (HB t39181): bought spring-lever group about $495, two Ascaso 1000 W thermoblocks about $25 each, 7075 aluminium plates, PID per block, thermoblock recovery about 60 s after a flush; goal was no machining and mostly off-the-shelf parts (<a href="https://www.home-barista.com/levers/open-source-lever-project-t39181.html">thread</a>). Dated (years old).</li>
+<li><strong>Modern DIY double boiler lever</strong> (HB t89560): 1500 W single 2 L boiler target with 1.5 bar steam, La San Marco group, 1200 W thermoblock preheating (<a href="https://www.home-barista.com/levers/modern-diy-double-boiler-lever-build-t89560-20.html">page 3</a>).</li>
+<li><strong>Four Bar Design</strong>: avoided a heavy high-ratio lever by using 12/16 g CO2 cartridges (about 2.6 g per pull, about $0.15 per shot), custom CNC stainless parts $102, author admits aversion to spending money “was almost certainly going to cost me more in time” (paraphrase) (<a href="https://www.fourbardesign.com/2020/10/diy-espresso.html">post, 2020</a>).</li>
+<li>Other: Instructables lever machine from bar stock (<a href="https://www.instructables.com/How-to-Make-a-Lever-Espresso-Machine/">link</a>); Hackaday 2018 motorbike-parts machine and 2020 lever press (<a href="https://hackaday.com/2020/04/08/impressive-lever-press-espresso-machine-has-finesse">Hackaday</a>).</li>
+<li>Common lessons: plan several iterations; group head and boiler are the hardest and costliest parts to source; copper sheet is costly; time is under-counted; savings only at volume.</li>
+</ul>
+<h3 id="mixed-manualautomatic-lever-designs-relevant-to-the-readers-goal">Mixed manual/automatic lever designs (relevant to the reader’s goal)</h3>
+<ul>
+<li>Modern hybrid levers: group heated separately, electronic flow control, pressure relief valve ends the shot, a lever movement or switch triggers flow, check valve holds water in the group (<a href="https://www.home-barista.com/levers/how-modern-hybrid-lever-espresso-machines-work-t89513.html">HB explainer</a>). Spring-lever builds are noted as semi-manual: the user can assist the spring to shape the profile (<a href="https://www.home-barista.com/levers/building-myself-nice-spring-lever-machine-t82218.html">HB</a>).</li>
+<li>Servo-assisted lever: only forum musings (raise, lower, stop hands-free) with debate on losing hands-on feel (<a href="https://www.home-barista.com/levers/first-lever-build-diy-or-start-with-manufactured-espresso-machine-t73683.html">HB first-lever thread</a>). No documented, parts-listed build found. This is a gap and an opportunity.</li>
+</ul>
+<h3 id="engineering-fundamentals">Engineering fundamentals</h3>
+<ul>
+<li><strong>Pumps</strong>: vibratory vs rotary: neither inherently makes better coffee; rotary quieter (about 55-60 dB claimed) and longer-lived, can be plumbed in; vibratory about 5-6 years home life; rotary usually uses a bypass, vibratory an OPV (<a href="https://clivecoffee.com/blogs/learn/vibratory-vs-rotary-pump-espresso-machines-compared">Clive Coffee</a>). A forum user found rotary pumps hard to flow-profile with a needle valve and favoured vibe or gear pump (single anecdote) (<a href="https://www.home-barista.com/advice/rotary-or-vibratory-pump-t74726.html">HB</a>). Gear pump/brushless data not found.</li>
+<li><strong>Lead and materials</strong>: NSF/ANSI 372 limit 0.25% lead (2,500 ppm); NSF 51 allows brass up to that for coffee equipment; EDF petitioned to remove it (<a href="https://blogs.edf.org/health/2021/01/12/lead-brass-and-bronze-food-equipment/">EDF</a>, <a href="https://www.comunicaffe.com/dalla-corte-machines-now-certified-as-lead-free/">Dalla Corte</a>). Daily Coffee News: NSF standard works on weighted share across parts, so a small leaded valve can pass (<a href="https://dailycoffeenews.com/2019/10/29/get-the-lead-out-the-longstanding-challenge-of-lead-in-espresso-machines/">article</a>). Forum: “lead-free” brass even in EU is “low lead” (<a href="https://www.home-barista.com/espresso-machines/stainless-steel-boiler-copper-piping-confusion-t82142.html">HB</a>). Electroless nickel opinions conflict.</li>
+<li><strong>Pressure vessel rules</strong>: UK Pressure Systems Safety Regulations 2000 apply to steam-making machines and treat fluid over 0.5 bar as a pressure system (<a href="https://www.stratford.gov.uk/doc/212173/name/Coffee%20Machines%20as%20Pressure%20Systems%20HS%20Leaflet.pdf/">Stratford DC leaflet</a>); Virginia’s act covers hobby boilers (NDT, R-stamp welder) (<a href="https://law.lis.virginia.gov/vacodepopularnames/boiler-and-pressure-vessel-safety-act/">VA code</a>). Forum says espresso boilers are a “grey area” (<a href="https://www.home-barista.com/repairs/diy-espresso-machine-build-boiler-pressure-rating-t64985.html">HB</a>). Retail safety valve 2.1 bar for home machines; most boilers run about 1-1.5 bar (<a href="https://www.espressoparts.com/products/espresso-machine-1-4-boiler-safety-valve">EspressoParts</a>). Advice: no brazed/oxy-acetylene boiler joints, use professional welding (forum). PED not found.</li>
+<li><strong>Electrical</strong>: earth as fault path, RCD/GFCI trips on element insulation failure, thermal fuse on elements; forum disagreement on GFCI value for all-metal machines (<a href="https://www.papelespresso.com/espresso-electrical-safety-basics/">Papel Espresso</a>, <a href="https://www.home-barista.com/repairs/voltage-on-frame-t94576.html">HB</a>). No authoritative standard found.</li>
+<li>Not found: group designs comparison (E61/saturated), PID tuning, transducers, flow meters, water chemistry. Rely on background knowledge, unsourced here.</li>
+</ul>
+<h3 id="recommendation-my-synthesis-not-sourced-evidence">Recommendation (my synthesis, not sourced evidence)</h3>
+<p>Modify-first. Take a machine with an accessible pump and valves, add an open controller, and put the unique work in a lever/servo-assist and motor-drive layer. Estimates from the anecdotes above: kit controller mods are weekend-scale (diyPresso kit about 5 h assembly); open-boiler lever from scratch 70-120 h and about EUR 280-1,300; a cast or machined spring group needs a workshop, a month of tooling, and multiple iterations. A spring-lever group bought as a part (about $495 in one thread) plus thermoblocks is the lowest-risk route to a “works by hand, can run automated” machine. Keep boiler pressure below the 0.5 bar regulatory threshold where possible (thermoblocks, or open/unpressurised boiler) to sidestep pressure-vessel issues. Licences: GaggiMate and Gaggiuino are non-commercial/closed; CleverCoffee (GPL-2.0), pyDE1 and diyPresso code (GPL-3.0) are open.</p>
+<h2 id="quote-bank">Quote bank</h2>
+<p>No quotes could be verified to the standard (primary source, second search). Search results quoted these items; all WEAK/SECONDARY and unverified by a second search.</p>
+<blockquote>
+<p>The decision to keep the code private stems from prolonged issues with scalping, which has been a significant challenge for the past year or so Zer0-bit (Gaggiuino developer), statement on the Gaggiuino Discord, date unknown, SECONDARY (quoted by Aftermath), <a href="https://aftermath.site/gaggiuino-gaggia-classic-pro-mod-open-source-hack/">source</a>. Second search did not return the original Discord post.</p>
+</blockquote>
+<blockquote>
+<p>Making ten or so will result in a slightly higher cost per unit than buying something comparable from a reseller. Making a hundred changes that substantially… And of course, none of this is counting my time. HB forum user building a lever from scratch (username not captured), date unknown, WEAK (forum anecdote), <a href="https://www.home-barista.com/levers/building-lever-machine-from-scratch-t41716.html">source</a>. Not re-checked.</p>
+</blockquote>
+<blockquote>
+<p>Gaggiuino Gen 3 is free to use and will offer free software updates, but the source code is no longer available. Attributed by a Hackaday commenter to the Gaggiuino team, 2022-23, WEAK, <a href="https://hackaday.com/2022/11/20/homebrew-espresso-maker-modding-with-gagguino/">source</a>. Not re-checked.</p>
+</blockquote>
+<h2 id="disagreements-failure-modes-and-caveats">Disagreements, failure modes and caveats</h2>
+<ul>
+<li>“Open source” is contested: Gaggiuino (non-commercial CC, Gen 3 closed) and GaggiMate (CC BY-NC-SA) are source-available, not OSI-open; CleverCoffee and pyDE1 are GPL.</li>
+<li>Gaggiuino repo state: GitHub page shows 2,380 commits on a public repo, while Synopolis says the default branch has no firmware. Not reconciled.</li>
+<li>Decent: UL rationale for closed firmware is an unverified forum claim.</li>
+<li>Vendor claims (diyPresso 60-80% stability, Meticulous openness) are unverified marketing.</li>
+<li>Forum cost/time data are sparse, self-reported, undated in places and old (the Open Source Lever Project dates from roughly 2015).</li>
+<li>Builders warn on boiler welding and lead; none of this replaces local regulations.</li>
+<li>Failure stories found: misaligned first cast group body, uncertified bar stock, thermoblock group-temperature sensing unresolved, time overruns. No catastrophic-failure reports were searched for.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Gaggiuino GitHub, Zer0-bit, fetched 2026-11-10, <a href="https://github.com/Zer0-bit/gaggiuino">https://github.com/Zer0-bit/gaggiuino</a>: primary; licence text not shown.</li>
+<li>Gaggiuino docs, <a href="https://gaggiuino.github.io/">https://gaggiuino.github.io/</a>: primary.</li>
+<li>GaggiMate GitHub, jniebuhr, fetched 2026-11-10, <a href="https://github.com/jniebuhr/gaggimate">https://github.com/jniebuhr/gaggimate</a>: primary.</li>
+<li>CleverCoffee GitHub, <a href="https://github.com/rancilio-pid/clevercoffee">https://github.com/rancilio-pid/clevercoffee</a>: primary.</li>
+<li>pyDE1, Jeff Kletsky, <a href="https://github.com/jeffsf/pyDE1">https://github.com/jeffsf/pyDE1</a>: primary.</li>
+<li>diyPresso One repo and site, <a href="https://github.com/diyPresso/diyPresso-One">https://github.com/diyPresso/diyPresso-One</a>, <a href="https://www.diypresso.com/downloads/">https://www.diypresso.com/downloads/</a>: primary; vendor claims.</li>
+<li>Aftermath article on Gaggiuino, <a href="https://aftermath.site/gaggiuino-gaggia-classic-pro-mod-open-source-hack/">https://aftermath.site/gaggiuino-gaggia-classic-pro-mod-open-source-hack/</a>: secondary press, undated in my result.</li>
+<li>Synopolis review, <a href="https://synopolis.com/gaggiuino-profiling-and-temperature-control-for-gaggia-classic-machines/">https://synopolis.com/gaggiuino-profiling-and-temperature-control-for-gaggia-classic-machines/</a>: single reviewer.</li>
+<li>Hackaday 2022, 2024, <a href="https://hackaday.com/2022/11/20/homebrew-espresso-maker-modding-with-gagguino/">https://hackaday.com/2022/11/20/homebrew-espresso-maker-modding-with-gagguino/</a> : comments are weak.</li>
+<li>Meticulous Kickstarter update, <a href="https://www.kickstarter.com/projects/meticulous/meticulous-espresso/posts/4119462">https://www.kickstarter.com/projects/meticulous/meticulous-espresso/posts/4119462</a>: primary company statement.</li>
+<li>Home-Barista threads (t41716, t39181, t89560, t40964, t43925, t89513): forum anecdote.</li>
+<li>Four Bar Design, <a href="https://www.fourbardesign.com/2020/10/diy-espresso.html">https://www.fourbardesign.com/2020/10/diy-espresso.html</a>: primary blog.</li>
+<li>EDF Health, <a href="https://blogs.edf.org/health/2021/01/12/lead-brass-and-bronze-food-equipment/">https://blogs.edf.org/health/2021/01/12/lead-brass-and-bronze-food-equipment/</a>: advocacy but factual on standards.</li>
+<li>Daily Coffee News, 2019-10-29, <a href="https://dailycoffeenews.com/2019/10/29/get-the-lead-out-the-longstanding-challenge-of-lead-in-espresso-machines/">https://dailycoffeenews.com/2019/10/29/get-the-lead-out-the-longstanding-challenge-of-lead-in-espresso-machines/</a>: trade press, only fragments seen.</li>
+<li>Clive Coffee pump guide, <a href="https://clivecoffee.com/blogs/learn/vibratory-vs-rotary-pump-espresso-machines-compared">https://clivecoffee.com/blogs/learn/vibratory-vs-rotary-pump-espresso-machines-compared</a>: retailer.</li>
+<li>Stratford DC pressure-systems leaflet (UK), Virginia boiler act: regulatory/primary.</li>
+</ul>
+<h2 id="gaps">Gaps</h2>
+<ul>
+<li>Search budget exhausted at 23 searches; GaggiMate kit price and real-world reviews, Gaggiuino total cost, boiler vs thermoblock vs thermocoil, E61/saturated group detail, pressure transducers, flow meters, OPV set values, gear/brushless pumps, water chemistry/scale were not searched.</li>
+<li>No YouTube or Reddit builds surfaced.</li>
+<li>No official statement on PED/CE or NSF route for a one-off machine.</li>
+<li>No documented servo- or motor-assisted lever build with parts list.</li>
+<li>Gaggiuino LICENSE text and Gen 3 source location unconfirmed; GaggiMate star/release data come from one fetch.</li>
+<li>Meticulous firmware/schematic openness unconfirmed.</li>
+<li>No verified direct quotations meeting the two-search standard.</li>
+</ul>
+<h2 id="second-pass-research-gap-fill">Second-pass research (gap fill)</h2>
+<p>Date: 2026-11-10. Method: WebSearch only (WebFetch not used; non-GitHub hosts are blocked). All results are search-engine summaries, so forum detail is second-hand. Evidence level is marked per item: retailer/buying guides are opinion with inconsistent numbers; forum posts are anecdote; manufacturer pages are primary.</p>
+<h3 id="search-log-19-of-24-used-stopped-early-because-the-remaining-gaps-needed-page-text-that-search-summaries-do-not-give">Search log (19 of 24 used; stopped early because the remaining gaps needed page text that search summaries do not give)</h3>
+<ol type="1">
+<li>Thermoblock vs thermocoil vs boiler (extended): buying guides, inconsistent figures.</li>
+<li>Gaggiuino transducer / flow meter / Fluid-o-Tech parts and prices (extended): Peak Coffee prices, HB sensor thread, a build log.</li>
+<li>OPV and pressurestat set points (standard): vendor and forum material.</li>
+<li>GaggiMate Pro kit price and reviews (extended): official shop page, one review site.</li>
+<li>Gaggiuino total cost (standard): Reddit and forum cost comments.</li>
+<li>E61 vs saturated vs lever groups (extended): retailer blogs; no lever data.</li>
+<li>Lead in brass, CW617N/CW511L (extended): vendor and Barista Hustle.</li>
+<li>Boiler safety valve and pressurestat, DIY boiler, PED (extended): retailer and HB threads.</li>
+<li>GaggiMate reviews, install experience (extended): nothing specific.</li>
+<li>Brushless gear pump / Fluid-o-Tech profiling (extended): manufacturer page and HB TMFR thread.</li>
+<li>GaggiMate vs Gaggiuino community (extended): nothing useful.</li>
+<li>Digmesa flow meter and Huba transducer prices (standard): distributor listings.</li>
+<li>PED scope for small espresso boilers (extended): UK/EU/US regulatory fragments.</li>
+<li>DIY thermoblock builds (standard): HB and Hackaday.io builds.</li>
+<li>GaggiMate hands-on review (standard): shop and docs only.</li>
+<li>Fluid-o-Tech / Scace TMFR profiling results and cost (standard): no prices.</li>
+<li>Relief valve set pressure, hydrotest (extended): retailers and an SCA article.</li>
+<li>Gaggiuino beginner overview and cost (standard): Papel Espresso guide.</li>
+<li>EN 14222 and stainless boiler standards (standard): standard is for sterilizer boilers, not coffee.</li>
+</ol>
+<h3 id="gap-1-boiler-vs-thermoblock-vs-thermocoil">Gap 1: boiler vs thermoblock vs thermocoil</h3>
+<ul>
+<li>Heat-up (buying guides, rough): thermoblock about 3-60 s, thermocoil about 1-3 min, boilers 5-30 min depending on size and dual-boiler design (<a href="https://craftcoffeespot.com/espresso/thermoblock-vs-thermocoil-vs-boiler/">Craft Coffee Spot</a>, <a href="https://espressogadgets.com/boiler-vs-thermoblock-espresso-machines/">Espresso Gadgets</a>, <a href="https://www.kairos-coffee.com/blogs/coffee-machine/thermoblock-vs-boiler-espresso">Kairos</a>). Figures disagree widely between sources.</li>
+<li>Stability and steam: boilers act as a heat battery with the best stability and strongest, driest steam; thermoblock/thermocoil steam is wetter and weaker; a single boiler needs a wait to switch from brew to steam temperature (same guides). Opinion from sellers, not measured tests.</li>
+<li>DIY thermoblock evidence (forum, anecdote): a back-of-envelope estimate that a 1000 W block with a roughly 6 ml path tops out near 3 ml/s while still reaching about 100 C; lever builders warn a thermoblock may not keep up with the burst of flow at shot start, so a fast PID or a restrictor may be needed; one build used a stepper-driven piston pump per thermoblock to set flow directly (<a href="https://www.home-barista.com/espresso-machines/diy-espresso-machine-dual-thermoblock-dual-piston-pump-single-group-t77501.html">HB dual thermoblock build</a>). Flow-based feed-forward kept the temperature dip small in one open project (<a href="https://hackaday.io/project/205153-oximite-rust-espresso-control/log/248518-temperature-pid-flow-based-feed-forward-and-first-shots">Hackaday.io OXIMITE</a>); a basic thermocouple-and-relay loop already improved a stock thermostat a lot in another build.</li>
+<li>Safety angle (inference): thermoblocks and thermocoils hold a few ml, so they are the easiest route to avoid a large stored-energy vessel; this is my reasoning, not a sourced rule. A steam boiler is where the hazard is.</li>
+</ul>
+<h3 id="gap-2-transducers-flow-meters-pumps-names-and-rough-prices">Gap 2: transducers, flow meters, pumps (names and rough prices)</h3>
+<ul>
+<li>Pressure transducer: Peak Coffee lists a G1/4, 0-12 bar (1.2 MPa), 0.5-4.5 V, 304 stainless sensor at $38 (US shop, cached) (<a href="https://www.peakcoffee.cc/product/gaggiuino-pressure-sensor/">Peak Coffee</a>); the same store showed a Gaggiuino GEN2 complete kit at $278 and a pressure tap block at $48 (<a href="https://www.peakcoffee.cc/product-category/gaggiuino/">category page</a>). An older HB thread reports a used Huba 501 bought for about $80 and a Digmesa flow sensor on the pump’s low-pressure side (<a href="https://www.home-barista.com/espresso-machines/adding-flow-and-pressure-sensors-to-gaggia-classic-pro-t79061.html">HB</a>, thread several years old).</li>
+<li>Flow meter: Digmesa turbine meters appear at roughly 8-78 GBP on TME depending on model (<a href="https://www.tme.eu/gb/katalog/p,digmesa_820/">TME Digmesa</a>); espresso-specific Digmesa units cost more (about 229 AUD, out of stock) (<a href="https://www.coffeeparts.com.au/619595-flowmeter-digmesa-1-4-with-cable">Coffee Parts AU</a>); Espressoparts lists an NSF-approved Digmesa 0.033-0.40 L/min meter (<a href="https://www.espressoparts.com/products/digmesa-fhksc-three-pin-flowmeter">Espressoparts</a>). Whether these match Gaggiuino or GaggiMate inputs is not confirmed.</li>
+<li>Gear/brushless pumps: Fluid-o-Tech FG200-300-400 series is a 316L pump-motor unit with PEEK/PTFE gears, 24 V brushless drive with speed control, 30-210 l/h, up to 12 bar differential (FG309: 40-190 l/h, 9 bar max) (<a href="https://www.fluidotech.it/en/products/technologies/external-gear-pumps/fg200-300-series/">Fluid-o-Tech</a>, primary). A dealer lists a 24 V external gear pump at $1,808 (<a href="https://www.espressoparts.com/products/fluid-o-tech-24v-external-gear-pump">Espressoparts</a>); used Fluid-o-Tech pumps on eBay run roughly $100-300 (search-summary, unverified).</li>
+<li>Profiling practice (HB, 4-6 years old): builders vary pump speed and read a transducer with an Arduino; speed-to-pressure is non-linear because of internal slip; with a bypass valve, speed mainly sets ramp rate; a Fluid-o-Tech contact warned the FG100 with 9 mm gears barely reaches 9 bar from atmospheric inlet, so inlet pressure helps; the FG204 gear set uses a flat Teflon seal that can leak, FG304 uses O-rings (<a href="https://www.home-barista.com/espresso-machines/pressure-profiling-with-fluid-o-tech-tmfr-pump-or-wholesale-copying-greg-scaces-ideas-t12179-40.html">TMFR thread</a>, <a href="https://www.home-barista.com/espresso-machines/testing-fluid-o-tech-mgfr-4mm-and-9mm-gear-sets-t31577.html">MGFR test thread</a>). Sensor noise: a La Marzocco GS/3 profiling project saw unstable pressure and jumpy flow readings, possibly missed Arduino interrupts (<a href="https://www.home-barista.com/repairs/flow-pressure-profiling-for-la-marzocco-gs3-t46565-40.html">HB</a>).</li>
+<li>Relevance: a motor-driven gear pump with speed control is the natural actuator for a hybrid machine, and a separate spring/lever stage is not required for it.</li>
+</ul>
+<h3 id="gap-3-opv-pressurestat-safety-valve-pressure-vessel-rules">Gap 3: OPV, pressurestat, safety valve, pressure-vessel rules</h3>
+<ul>
+<li>OPV: spring valve opening near 9 bar (9-9.5 bar common on Breville per a forum), returns water to the tank; a 9 bar Lelit OPV is a retail part (<a href="https://www.home-barista.com/espresso-machines/rocket-r58-v2-opv-t100705.html">HB</a>, <a href="https://www.jetblackespresso.com.au/shop/p/lelit-OPV-9BAR/">Jet Black</a>).</li>
+<li>Boiler safety valve: Espressoparts sells a 2.1 bar (about 30 psi) valve for home single boilers and says it replaces a 1.8 bar part; it warns against fitting a lower-rated valve or bypassing it (<a href="https://www.espressoparts.com/products/espresso-machine-1-4-boiler-safety-valve">Espressoparts</a>). Forum values range from about 1.6 to 3 bar and conflict. Pressurestat: steam boilers typically held near 1-1.5 bar; a stuck pressurestat is the usual cause of a valve lifting; adjustment is fine (about 0.1 bar per six half-turns of the screw, per <a href="https://www.home-barista.com/valentina-buyers-guide-getting-started.html">La Valentina guide</a>). A reported failure: <a href="https://www.home-barista.com/repairs/pasquini-livia-90-blew-up-pressure-keeps-rising-t100112.html">Pasquini Livia 90 blew up, pressure keeps rising</a> (thread title only, details not read).</li>
+<li>SCA: regulations generally require relief valves to be factory-set and marked with the activation pressure (<a href="https://sca.coffee/sca-news/community/the-wonderful-world-of-pressure-relief-valves-kjp7g">SCA article</a>). Use certified, marked valves; never lower or bypass.</li>
+<li>Rules: EU PED 2014/68/EU applies to stationary equipment above 0.5 bar; smaller items fall to “sound engineering practice” (<a href="https://www.ce-richtlinien.eu/richtlinien/Druckgeraete/Leitlinie/PED_2014-68-EU_Guidelines_EN_v6.0.pdf">PED guidelines</a>). UK Safed guidance treats cafe boilers as minor pressure systems (<a href="https://www.safed.co.uk/publications-home/tc-1/current-guidelines-for-download/20-psg08-guidelines-examination-of-electrically-heated-cafe-boilers/file">Safed PSG08</a>). Iowa exempts electric boilers of six gallons or less that are integral to an espresso machine (<a href="https://www.legis.iowa.gov/docs/code/89.4.pdf">Iowa code 89.4</a>). The PS x V category limits, and how a one-off home-built boiler is treated, were not found. EN 14222 is a stainless steam boiler standard for sterilizers, not espresso machines (<a href="https://www.nbn.be/shop/en/standard/nbn-en-14222-2003~123564/">NBN</a>). No hydrotest rule found.</li>
+<li>Practical read (inference): the lowest-risk design keeps pressure under 0.5 bar or uses thermoblocks; if a steam boiler is built, use certified valve and pressurestat, professional welding or a bought boiler, and check local rules.</li>
+</ul>
+<h3 id="gap-4-gaggimate-price-and-reviews-gaggiuino-cost">Gap 4: GaggiMate price and reviews; Gaggiuino cost</h3>
+<ul>
+<li>GaggiMate Pro Kit: EUR 213.49 on the official shop, about 2 weeks lead time, 378 shop reviews with 331 top-rated (shop-hosted, not independent) (<a href="https://shop.gaggimate.eu/products/gaggimate-pro-kit">shop</a>). Third-party listings show about $199-203; a launch-review site says about $211 and stable since launch (<a href="https://launchdealhub.com/gaggimate-review/">launchdealhub</a>). Docs: aimed at Gaggia Classic Pro/Evo/E24 (2019-2025); pressure and flow-controlled profiles are Pro-only; stable release v1.7.3 per the docs listing, which conflicts with the v1.9.0 in the first pass, so versions are unverified (<a href="https://docs.gaggimate.eu/">docs</a>). Complaints on the shop page: picture-based instructions hard for beginners. No independent hands-on review found.</li>
+<li>Gaggiuino cost (forum anecdote): $388 for a Full V4 Premium kit; a general guess of $200-400 for a Gaggiuino or GaggiMate kit; one commenter spent about $550 total (with machine upgrades) and calls the install “not easy”; a build log estimates about $400 including tools, shipping and prints, and hard to go below about $250 (<a href="https://kozikow.wordpress.com/2024/02/22/gaggiuino-build-log/">build log, 2024</a>, <a href="https://www.papelespresso.com/gaggiuino-project-beginner-overview/">Papel Espresso</a>). Sourcing from AliExpress took about 21 days to 3 months; counterfeit chips cause bad temperature readings. Machine cost (Classic Pro about $399-429 on sale per Slickdeals) is extra. No official Gen 3 price found.</li>
+</ul>
+<h3 id="gap-5-e61-vs-saturated-vs-lever">Gap 5: E61 vs saturated vs lever</h3>
+<ul>
+<li>Retailer comparisons: saturated group is bolted to the boiler, gives tight PID control and faster warm-up (about 5-10 min); E61 uses a thermosyphon loop and heavy brass mass, passive stability, 20-45 min warm-up, gasket upkeep, widely available spares (<a href="https://completehomebarista.com/guides/saturated-vs-e61-group-head/">Complete Home Barista</a>, <a href="https://www.coffeeionado.com/blogs/the-academy/e61-vs-saturated-group-head-whats-the-difference-3">Coffeeionado</a>, <a href="https://www.kairos-coffee.com/blogs/coffee-machine/e61-group-head-explained">Kairos</a>). Sources disagree on warm-up and on spares availability.</li>
+<li>For a DIY: E61 needs a bought group and a boiler with a thermosyphon loop; saturated needs a custom boiler flange (the harder fabrication). Neither supports a hand-lever stroke. No lever-group thermal-stability data found; the earlier ~$495 spring group plus thermoblocks remains the documented hybrid route.</li>
+</ul>
+<h3 id="gap-6-lead-and-food-safe-materials">Gap 6: lead and food-safe materials</h3>
+<ul>
+<li>CW617N is a leaded forging brass; “lead-free CW617N” does not exist, lead-free brass is a separate alloy family (silicon/bismuth) (<a href="https://www.ifanholding.com/news/cw617n-lead-free-brass">IFAN</a>, vendor).</li>
+<li>“Lead-free” often means under 0.25% lead; stagnant water can still pick up lead; La Marzocco reportedly moved to steel for groups and boilers (<a href="https://www.baristahustle.com/wheels-of-steel/">Barista Hustle</a>).</li>
+<li>Example: Lelit Elizabeth vendor page lists a CW510L boiler top (0.2% max lead) with a chrome-treated lower section, and CW617N nickel-plated fittings and valves (<a href="https://comisocoffee.com/blogs/blog/lelit-elizabeth-overview">Comiso</a>). HB threads include a user-measured lead report (<a href="https://www.home-barista.com/espresso-machines/my-experience-with-lead-t55755.html">HB</a>) and coating-damage worries.</li>
+<li>Practical guidance (partly my inference): choose 316 stainless or potable-rated (NSF/ANSI 61/372) parts for water contact, keep brass for non-wetted parts, and flush new brass. No authoritative espresso-specific rule found.</li>
+</ul>
+<h3 id="new-quotes">New quotes</h3>
+<p>No PRIMARY quotes. WEAK only: a Slickdeals commenter on Gaggiuino: “not an easy mod and requires quite a bit of brain juice or experience with electrical wiring, soldering, and water pressure system to install” (<a href="https://slickdeals.net/f/15813616-gaggia-classic-pro-espresso-machine-thunder-black-399-20-free-shipping">Slickdeals thread</a>, date unknown, WEAK).</p>
+<h3 id="gaps-still-open">Gaps still open</h3>
+<ul>
+<li>Independent GaggiMate hands-on reviews and current firmware version (v1.7.3 vs v1.9.0).</li>
+<li>Current Gaggiuino Gen 3 official kit price and licence text.</li>
+<li>Measured heat-up and stability data (independent tests) for thermoblock vs thermocoil vs boiler.</li>
+<li>EU PED category limits and how a one-off home-built boiler is treated; any hydrotest guidance.</li>
+<li>Brushless gear pump prices for new units and any complete DIY gear-pump profiling build with a parts list; flow-meter compatibility with open controllers.</li>
+<li>Lever-group thermal behaviour; documented motor-assisted lever builds (still none).</li>
+</ul>
+<h2 id="verification-log-independent-fact-check">Verification log (independent fact-check)</h2>
+<ul>
+<li>CONTRADICTED: GaggiMate “stable release v1.7.3” per docs listing. GitHub releases page marks v1.9.0 (29 Sep) as Latest, with v1.8.1 and v1.8.0 after it and v1.7.3 dated 26 Jan. The docs listing is stale; the first pass’s v1.9.0 is the current stable. Note: docs.gaggimate.eu itself was not fetchable. URL: <a href="https://github.com/jniebuhr/gaggimate/releases">https://github.com/jniebuhr/gaggimate/releases</a></li>
+<li>PARTIAL: Peak Coffee $38 G1/4 0-12 bar transducer and $278 GEN2 kit. The product page shows $38 (0-12 bar, 0.5-4.5 V), and the GEN2 Complete Kit shows $278. However, cached snapshots show <span class="math inline">18<em>f</em><em>o</em><em>r</em><em>t</em><em>h</em><em>e</em><em>s</em><em>e</em><em>n</em><em>s</em><em>o</em><em>r</em>, <em>a</em><em>n</em><em>d</em><em>t</em><em>h</em><em>e</em><em>K</em><em>i</em><em>t</em><em>S</em><em>e</em><em>t</em>/<em>C</em><em>l</em><em>a</em><em>s</em><em>s</em><em>i</em><em>c</em><em>P</em><em>r</em><em>o</em><em>l</em><em>a</em><em>b</em><em>e</em><em>l</em><em>s</em><em>c</em><em>o</em><em>n</em><em>f</em><em>l</em><em>i</em><em>c</em><em>t</em>(</span>99/$128). A GEN3 4.3-inch kit is listed at $248 or $208, so Gen 3 is available. Confirmed from the vendor’s own pages only (no independent source). URL: <a href="https://www.peakcoffee.cc/product/gaggiuino-pressure-sensor/">https://www.peakcoffee.cc/product/gaggiuino-pressure-sensor/</a> and <a href="https://www.peakcoffee.cc/product-category/gaggiuino/">https://www.peakcoffee.cc/product-category/gaggiuino/</a></li>
+<li>PARTIAL: EU PED “PS x V category limits” and treatment of a one-off boiler. Confirmed: the directive applies only above 0.5 bar, and equipment below the Article 4(1) thresholds falls under sound engineering practice (Article 4(3)), with no CE marking. Not confirmed: the PS x V category limits. One source’s “50 bar L” figure conflicts and should not be used. URL: <a href="https://www.ce-richtlinien.eu/richtlinien/Druckgeraete/Leitlinie/PED_2014-68-EU_Guidelines_EN_v6.0.pdf">https://www.ce-richtlinien.eu/richtlinien/Druckgeraete/Leitlinie/PED_2014-68-EU_Guidelines_EN_v6.0.pdf</a> (the EUR-Lex text was not retrieved: <a href="https://eur-lex.europa.eu/eli/dir/2014/68/oj/eng">https://eur-lex.europa.eu/eli/dir/2014/68/oj/eng</a>)</li>
+<li>PARTIAL: Safety valve “2.1 bar retail valve”. The Espressoparts listing (SKU C_183) says 2.1 bar (30.45 psi) and names a 1.8 bar predecessor. No manufacturer spec was found, so the supersession rests on this one retailer. Another seller lists a 1/4-inch 1.8 bar valve, so the 1.8 bar value is not obsolete across brands. Verify against the chosen boiler’s manual. URL: <a href="https://www.espressoparts.com/products/espresso-machine-1-4-boiler-safety-valve">https://www.espressoparts.com/products/espresso-machine-1-4-boiler-safety-valve</a></li>
+<li>PARTIAL: Fluid-o-Tech FG pump “$1,808 new”. The Espressoparts listing shows $1,330.86 (special order) on the current-looking page and $879.63 on a cached mirror. $1,808 was not reproduced. A forum post gives about $600 for a new FG309 and $95 used from eBay. Price is unverified and should be shown as a range with dates. URL: <a href="https://www.espressoparts.com/products/fluid-o-tech-24v-external-gear-pump">https://www.espressoparts.com/products/fluid-o-tech-24v-external-gear-pump</a></li>
+<li>PARTIAL: Quote “The decision to keep the code private stems from prolonged issues with scalping…” (Zer0-bit, Gaggiuino). The Aftermath article is returned and paraphrases the same substance (scalping, about a year, moved to open-core, announced on Discord). The exact wording was not seen in any result, so the quote stays unverified as a verbatim quote. URL: <a href="https://aftermath.site/gaggiuino-gaggia-classic-pro-mod-open-source-hack/">https://aftermath.site/gaggiuino-gaggia-classic-pro-mod-open-source-hack/</a></li>
+<li>NOT_FOUND: Quote “Gaggiuino Gen 3 is free to use and will offer free software updates, but the source code is no longer available.” A Hackaday commenter (phschoen, Sept 2024) is reported to paraphrase the same substance, but the exact wording was not found and the Gaggiuino site could not be loaded. The file’s attribution to the 2022-23 team is also unconfirmed. URL: <a href="https://hackaday.com/2022/11/20/homebrew-espresso-maker-modding-with-gaggiuino/">https://hackaday.com/2022/11/20/homebrew-espresso-maker-modding-with-gaggiuino/</a></li>
+<li>NOT_FOUND: Quote “Making ten or so will result in a slightly higher cost per unit than buying something comparable from a reseller.” No result contained the wording or the “ten or so” figure. Only generic wholesale-pricing sources came back. Keep as WEAK (unattributed forum anecdote). URL: <a href="https://www.home-barista.com/levers/building-lever-machine-from-scratch-t41716.html">https://www.home-barista.com/levers/building-lever-machine-from-scratch-t41716.html</a></li>
+<li>VERIFIED: Quote “It might not be the cheapest road to obtaining an espresso machine, but it’s probably the most economical way…” (Hackaday, Donald Papp, 15 Sep 2024). The sentence appears in a search snippet of the Hackaday article, and the file’s shortened “might not be the cheapest road” is accurate. URL: <a href="https://hackaday.com/2024/09/15/an-espresso-machine-for-the-diy-crowd/">https://hackaday.com/2024/09/15/an-espresso-machine-for-the-diy-crowd/</a></li>
+<li>VERIFIED: diyPresso One EUR 1,250 and Two EUR 1,695. Arduino blog and Hackster give EUR 1,250 for the One (Hackster about $1,390-1,400); the diyPresso shop listings are shown in search results with EUR 1,250 (One) and EUR 1,695 (Two). Note the Hackster figure is in dollars and is secondary. URL: <a href="https://www.diypresso.com/product/diypresso-one/">https://www.diypresso.com/product/diypresso-one/</a> and <a href="https://www.diypresso.com/product/diypresso-two/">https://www.diypresso.com/product/diypresso-two/</a></li>
+<li>VERIFIED: GaggiMate Pro Kit EUR 213.49. The official shop product page shows the price (From EUR 213.49, about 2 weeks restock). A kits page shows $208 (different currency) and a snippet lists the Standard at EUR 152.49. Re-check before publishing as prices move. URL: <a href="https://shop.gaggimate.eu/products/gaggimate-pro-kit">https://shop.gaggimate.eu/products/gaggimate-pro-kit</a></li>
+<li>PARTIAL: Meticulous “all APIs will be open and documented… server operates directly on the machine”. Confirmed by the February Kickstarter update (post 4044487), which says APIs will be open at release (future tense). The July update (post 4143589) says the API is open and TypeScript and Python clients are on GitHub. The file cites post 4119462, which did not appear in results. URL: <a href="https://www.kickstarter.com/projects/meticulous/meticulous-espresso/posts/4044487">https://www.kickstarter.com/projects/meticulous/meticulous-espresso/posts/4044487</a></li>
+<li>PARTIAL: NSF/ANSI 372 0.25% lead limit. Confirmed from the NSF normative reference: weighted average lead at or below 0.25% of wetted surface, with solders at 0.2%. Not confirmed: that NSF 372 or NSF 51 applies to coffee equipment (the sources concern drinking-water system components). The file’s “NSF 51 allows brass up to that for coffee equipment” is unverified. URL: <a href="https://standards.nsf.org/higherlogic/ws/public/download/55131/372i5r1%20-%20Normative%20Reference%20-%20JC%20Memo%20%26%20ballot.pdf">https://standards.nsf.org/higherlogic/ws/public/download/55131/372i5r1%20-%20Normative%20Reference%20-%20JC%20Memo%20%26%20ballot.pdf</a></li>
+<li>NOT_FOUND: Four Bar Design DIY lever, $102 custom CNC stainless parts, 12/16 g CO2 cartridges, about $0.15 per shot. No result mentioned the company, the lever, or the price. Keep as a single-source blog claim. URL: <a href="https://www.fourbardesign.com/2020/10/diy-espresso.html">https://www.fourbardesign.com/2020/10/diy-espresso.html</a></li>
+<li>VERIFIED: Gaggiuino (Zer0-bit/gaggiuino) 2.7k stars, 387 forks, 2,380 commits, main branch, description “A Gaggia Classic control project using microcontrollers.” Read from the GitHub repository page. License link exists but the license name was not shown on the page. URL: <a href="https://github.com/Zer0-bit/gaggiuino">https://github.com/Zer0-bit/gaggiuino</a></li>
+<li>VERIFIED: GaggiMate (jniebuhr/gaggimate) 995 stars, 306 forks, 1,122 commits, CC BY-NC-SA 4.0. Read from the GitHub repository page. URL: <a href="https://github.com/jniebuhr/gaggimate">https://github.com/jniebuhr/gaggimate</a></li>
+<li>VERIFIED: CleverCoffee (rancilio-pid/clevercoffee) 418 stars, 189 forks, 1,416 commits, GPL-2.0. Read from the GitHub repository page. URL: <a href="https://github.com/rancilio-pid/clevercoffee">https://github.com/rancilio-pid/clevercoffee</a></li>
+<li>VERIFIED: pyDE1 (jeffsf/pyDE1) 81 stars, 377 commits, GPL-3.0. Read from the GitHub repository page. URL: <a href="https://github.com/jeffsf/pyDE1">https://github.com/jeffsf/pyDE1</a></li>
+</ul>
+<p>Search budget used: 14 of 17 WebSearch calls. GitHub pages were read with WebFetch (permitted; non-GitHub hosts were not fetched).</p>
+
+    </article>
+  </div>
+</main>
+</body>
+</html>

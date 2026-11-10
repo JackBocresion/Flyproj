@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>A3 raw research &middot; Morning Brief No. 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&display=swap">
+<style>
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+:root {
+  /* Layout: one ~68ch reading column; a mono metadata rail (contents, provenance) in the left gutter on wide screens */
+  --paper: #F1F2EF;
+  --paper-2: #E7E9E4;
+  --ink: #1C1D1A;
+  --muted: #5A5D56;
+  --rule: #D2D5CD;
+  --crema: #94531C;
+  --crema-soft: #EADBCB;
+  --ok: #2C6847;
+  --warn: #84640E;
+  --bad: #9A372B;
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", system-ui, sans-serif;
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+    --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+  --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 19px;
+  line-height: 1.58;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration-color: var(--crema); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+a:hover { color: var(--crema); }
+a:focus-visible { outline: 2px solid var(--crema); outline-offset: 2px; border-radius: 2px; }
+
+.band { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.band-top { background: var(--paper-2); border-bottom: 1px solid var(--rule); padding-block: 40px 36px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+
+/* masthead */
+.slug { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.slug b { color: var(--ink); font-weight: 500; }
+.title { font-family: var(--display); font-stretch: 72%; font-weight: 800; font-size: clamp(54px, 10vw, 112px); line-height: 0.9; letter-spacing: -0.01em; margin: 18px 0 10px; text-wrap: balance; }
+.title .no { color: var(--crema); font-stretch: 100%; font-weight: 500; font-size: 0.42em; letter-spacing: 0.02em; vertical-align: 0.95em; margin-left: 0.18em; }
+.deck { font-style: italic; font-size: clamp(19px, 2.2vw, 23px); color: var(--muted); max-width: 46em; margin: 0 0 30px; text-wrap: pretty; }
+
+.bluf { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 2px solid var(--ink); }
+.bluf > div { padding: 16px 22px 4px 0; min-width: 0; }
+.bluf > div + div { padding-left: 22px; border-left: 1px solid var(--rule); }
+.bluf h2 { font-family: var(--display); font-stretch: 85%; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 8px; color: var(--crema); }
+.bluf p { margin: 0 0 12px; font-size: 18px; line-height: 1.5; }
+
+.stats { margin-top: 22px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 22px; font-variant-numeric: tabular-nums; }
+.stats span b { color: var(--ink); font-weight: 500; }
+
+/* body grid */
+.band-body { padding-block: 44px 72px; }
+.grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 56px; }
+.rail { min-width: 0; }
+.rail nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); font-family: var(--mono); font-size: 12.5px; line-height: 1.45; }
+.rail .label { text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 0 0 10px; }
+.rail ol, .rail ul { list-style: none; margin: 0 0 26px; padding: 0; display: grid; gap: 7px; }
+.rail a { text-decoration: none; color: var(--muted); }
+.rail a:hover { color: var(--crema); }
+.rail li.sub a { padding-left: 12px; display: inline-block; }
+
+.prose { min-width: 0; max-width: 68ch; }
+.prose h2 { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: clamp(34px, 5vw, 50px); line-height: 1; letter-spacing: -0.005em; margin: 64px 0 22px; padding-top: 18px; border-top: 2px solid var(--ink); text-wrap: balance; }
+.prose > h2:first-child, .prose > .part:first-child h2:first-child { margin-top: 0; }
+.prose h3 { font-family: var(--display); font-stretch: 88%; font-weight: 700; font-size: 25px; line-height: 1.2; margin: 42px 0 12px; text-wrap: balance; }
+.prose h4 { font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; margin: 30px 0 8px; color: var(--muted); }
+.prose p { margin: 0 0 1.05em; text-wrap: pretty; }
+.prose ul, .prose ol { padding-left: 1.3em; margin: 0 0 1.1em; }
+.prose li { margin: 0 0 0.45em; }
+.prose li::marker { color: var(--crema); }
+.prose strong { font-weight: 650; }
+.prose hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
+.prose blockquote { margin: 22px 0 24px; padding: 2px 0 2px 20px; border-left: 3px solid var(--crema); font-style: italic; font-size: 20px; line-height: 1.5; }
+.prose blockquote p:last-child { margin-bottom: 0; }
+.prose blockquote em { font-style: normal; }
+.prose code { font-family: var(--mono); font-size: 0.82em; background: var(--paper-2); padding: 1px 5px; border-radius: 3px; }
+.prose pre { font-family: var(--mono); font-size: 13.5px; line-height: 1.5; background: var(--paper-2); border: 1px solid var(--rule); padding: 16px 18px; overflow-x: auto; border-radius: 4px; }
+.prose pre code { background: none; padding: 0; font-size: inherit; }
+
+.tablewrap { overflow-x: auto; margin: 22px 0 28px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); }
+.prose table { border-collapse: collapse; width: 100%; font-family: var(--display); font-stretch: 92%; font-size: 15px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.prose th { text-align: left; font-weight: 700; font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 10px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: bottom; }
+.prose td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top; min-width: 7em; }
+.prose tr:last-child td { border-bottom: 0; }
+
+figure.profile { margin: 8px 0 34px; }
+figure.profile svg { width: 100%; height: auto; display: block; }
+figure.profile figcaption { font-family: var(--mono); font-size: 12.5px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+.ax { stroke: var(--rule); stroke-width: 1; fill: none; }
+.axl { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+.c-lever { stroke: var(--crema); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.c-pump { stroke: var(--ink); stroke-width: 1.6; fill: none; stroke-dasharray: 5 5; }
+.c-lbl { font-family: var(--mono); font-size: 11.5px; }
+.c-lbl.l { fill: var(--crema); }
+.c-lbl.p { fill: var(--ink); }
+
+/* provenance + ledger */
+.ledger { width: 100%; }
+.chip { display: inline-block; font-family: var(--mono); font-size: 11.5px; line-height: 1; padding: 4px 6px; border-radius: 3px; border: 1px solid currentColor; margin: 0 4px 4px 0; white-space: nowrap; }
+.chip.ok { color: var(--ok); }
+.chip.warn { color: var(--warn); }
+.chip.bad { color: var(--bad); }
+.stack-list { list-style: none; padding: 0 !important; margin: 18px 0 26px !important; border-top: 2px solid var(--ink); }
+.stack-list li { margin: 0 !important; padding: 14px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 3.2em minmax(0, 1fr); gap: 0 12px; }
+.stack-list .id { font-family: var(--mono); font-size: 14px; color: var(--crema); padding-top: 3px; }
+.stack-list .t { font-family: var(--display); font-stretch: 90%; font-weight: 700; font-size: 18px; line-height: 1.3; }
+.stack-list .m { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.6; }
+.stack-list li::marker { content: none; }
+
+.backlink { font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--muted); }
+.backlink:hover { color: var(--crema); }
+.raw-head .title { font-size: clamp(36px, 6vw, 64px); font-stretch: 78%; }
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .rail nav { position: static; }
+  .rail ol, .rail ul { margin-bottom: 18px; }
+}
+@media (max-width: 640px) {
+  body { font-size: 18px; }
+  .bluf { grid-template-columns: minmax(0, 1fr); }
+  .bluf > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--rule); }
+  .band-top { padding-block: 28px 26px; }
+  .prose blockquote { font-size: 19px; padding-left: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+
+</style>
+</head>
+<body>
+<header class="band band-top raw-head">
+  <div class="wrap">
+    <div class="slug"><a class="backlink" href="../index.html">&larr; Morning Brief No. 1</a><span>Raw research &middot; slice A3</span></div>
+    <h1 class="title">AI-written personal briefs: what shipped and how they fail</h1>
+    <div class="stats"><span><b>32</b> searches</span><span><b>15</b> items fact-checked</span><span><b>10</b> verified</span><span><b>2</b> partial</span><span><b>3</b> dropped or flagged</span></div>
+  </div>
+</header>
+<main class="band band-body">
+  <div class="wrap grid">
+    <aside class="rail"><nav aria-label="Sections"><p class="label">Sections</p><ol><li><a href="#scope">Scope</a></li><li><a href="#method-and-search-log">Method and search log</a></li><li><a href="#findings">Findings</a></li><li><a href="#quote-bank">Quote bank</a></li><li><a href="#disagreements-failure-modes-and-caveats">Disagreements, failure modes and caveats</a></li><li><a href="#sources">Sources</a></li><li><a href="#gaps">Gaps</a></li><li><a href="#verification-log-independent-fact-check">Verification log (independent fact-check)</a></li></ol>
+    <p class="label">Other slices</p><ul><li><a href="A1.html">A1 &middot; Briefing for a living</a></li><li><a href="A2.html">A2 &middot; Scientists and the daily stream</a></li><li><a href="A4.html">A4 &middot; The case against</a></li><li><a href="B1.html">B1 &middot; Building from scratch</a></li><li><a href="B2.html">B2 &middot; Levers and hybrids</a></li><li><a href="B3.html">B3 &middot; Grinders and motors</a></li><li><a href="B4.html">B4 &middot; Bedside automation</a></li><li><a href="B5.html">B5 &middot; What to buy</a></li></ul></nav></aside>
+    <article class="prose">
+<h2 id="scope">Scope</h2>
+<p>The 2024-2026 wave of AI-generated daily briefs and overnight research agents (ChatGPT Pulse, Google Labs CC, Apple notification summaries, Copilot Daily, Huxe, deep research), practitioner experience, and the measured reliability of AI summaries and AI search. Status checked as of 2026-11-10 where sources allowed.</p>
+<h2 id="method-and-search-log">Method and search log</h2>
+<p>Method: WebSearch only (32 calls; WebFetch not used on non-GitHub hosts). All figures come from search-result text, mostly secondary coverage. Primary pages (CJR, Pew, EBU, Tao’s blog, Vectara) were NOT opened; they surfaced only as snippets.</p>
+<ol type="1">
+<li>ChatGPT Pulse launch Sept 2025 review (standard) - launch facts: Pro-only, mobile, $200/month, 5-10 cards.</li>
+<li>ChatGPT Pulse 2026 rollout Plus/free uptake (standard) - no uptake numbers; Plus “later”.</li>
+<li>Google Labs CC (standard) - Dec 2025 launch, “Your Day Ahead” email.</li>
+<li>BBC complaint / Apple Mangione (standard) - complaint details, RSF reaction.</li>
+<li>EBU/BBC 45% study (standard) - headline numbers.</li>
+<li>Tow Center/CJR citation study (standard) - 60%+, per-tool, confidence.</li>
+<li>Apple pause Jan 2025 (standard) - confirmed pause in iOS 18.3 beta, italics.</li>
+<li>Pew AI Overviews clicks (standard) - 8% vs 15%, 1%.</li>
+<li>Lee et al. Microsoft/CMU critical thinking (standard) - 319 workers, confidence finding.</li>
+<li>Vectara leaderboard 2026 (standard) - conflicting secondary numbers.</li>
+<li>Simon Willison digest (standard) - only monthly sponsor newsletter; nothing on daily agent.</li>
+<li>Terence Tao literature search (standard) - mostly general studies; Tao pointers.</li>
+<li>Tao Mastodon/AI tools (extended) - Tao’s stated uses and verification caveat.</li>
+<li>Mollick deep research (standard) - nothing direct; “On Working with Wizards”.</li>
+<li>Built-my-own daily briefing agent blogs (standard) - Stephan Miller, Hermes tutorial.</li>
+<li>Karpathy hallucination/arXiv bots (standard) - nothing on a bot; Decoder paraphrase; Factored Verification paper.</li>
+<li>Hamel Husain evals (standard) - secondary quotes on error analysis.</li>
+<li>Copilot Daily (standard) - launch description only; no accuracy review.</li>
+<li>Pulse hands-on reviews (extended) - mixed reviews, Tom’s Guide negative.</li>
+<li>Huxe (standard) - launch, $4.6M, shutdown May 2026 reports, Apple deal report.</li>
+<li>Apple summaries return iOS 26 (standard) - back in beta 4, July 2025, red disclaimer.</li>
+<li>Tao “Mathematical methods…” (extended) - Klowden-Tao paper, literature search condition.</li>
+<li>Stephan Miller post (standard) - silent cron failures detail.</li>
+<li>Deep research audit DeepTRACE (standard) - Salesforce/Microsoft audit.</li>
+<li>EBU De Tender quote (standard) - quote via Creatives Unite.</li>
+<li>Pulse availability 2026 (extended) - Pulse retired June 2026 (secondary).</li>
+<li>Tao blog literature search wording (standard) - exact blog wording not confirmed; Tao quotes via secondary.</li>
+<li>Willison deep research (standard) - Feb 2025 system-card post points.</li>
+<li>Tow Center quote (standard) - exact wording not found; summaries only.</li>
+<li>Google CC 2026 (standard) - Sept 17, 2026 family expansion.</li>
+<li>Pulse retirement corroboration (extended) - June 17, 2026 release notes per several blogs; Scheduled Tasks successor.</li>
+<li>Tom’s Guide Pulse piece (standard) - author Amanda Caswell; argument summary.</li>
+</ol>
+<h2 id="findings">Findings</h2>
+<h3 id="1-what-shipped-and-what-is-real-as-of-late-2026">1. What shipped, and what is real as of late 2026</h3>
+<p><strong>ChatGPT Pulse (OpenAI).</strong></p>
+<ul>
+<li>Announced 2025-09-25 as a preview for Pro subscribers ($200/month, US) on iOS/Android; it researched overnight from chat history, memory and optional connectors and produced roughly five to ten visual cards a day (<a href="https://yourstory.com/ai-story/openai-chatgpt-pulse-pro-daily-briefings">YourStory</a>, <a href="https://www.tomsguide.com/ai/chatgpt-pulse-is-here-now-ai-starts-the-chat-and-curates-your-feed">Tom’s Guide</a>, <a href="https://www.axios.com/2025/09/25/chatgpt-prompts-you-pulse-openai">Axios</a>). One aggregator listing $20/month is wrong.</li>
+<li>OpenAI said Plus and then free users would follow once it got more efficient (<a href="https://www.thurrott.com/a-i/openai-a-i/327299/openai-launches-chatgpt-pulse-in-preview">Thurrott</a>, <a href="https://www.bleepingcomputer.com/news/artificial-intelligence/chatgpt-pulse-is-coming-to-the-web-but-no-word-on-free-or-plus-roll-out/">BleepingComputer</a>). Per secondary sources it came to web but stayed Pro-only.</li>
+<li><strong>Retired.</strong> Several blogs report OpenAI’s 2026-06-17 release notes said Pulse would be sunset, with Pro users keeping access 14 more days, replaced by Scheduled Tasks (daily-briefing prompts, monitoring tasks that alert only on change) (<a href="https://www.lilachbullock.com/chatgpt-pulse/">Lilach Bullock</a>, <a href="https://prowlo.com/blog/chatgpt-pulse-shut-down">Prowlo</a>, <a href="https://justinmckelvey.com/blog/chatgpt-pulse">Justin McKelvey</a>, <a href="https://the-decoder.com/chatgpt-keeps-creeping-toward-becoming-your-ai-personal-assistant-with-new-scheduled-task-controls/">The Decoder on scheduled tasks</a>). All are secondary/low-tier; the OpenAI release note itself was not seen. One source dated the retirement October 2026, so the date conflicts. Verify.</li>
+<li>Uptake: no usage figures found anywhere.</li>
+<li>Reviews (opinion/anecdote): Tom’s Guide (Amanda Caswell) called it “hands down the worst new AI tool of 2025”, arguing it is a premium-priced data grab that solves no problem (<a href="https://www.tomsguide.com/ai/i-test-ai-for-a-living-and-this-is-hands-down-the-worst-new-ai-tool-of-2025">Tom’s Guide</a>). Matthew Becher found early digests a buffet of ideas that then repeated, needing active prompting (<a href="https://matthewbecher.substack.com/p/mini-review-chatgpt-pulse">Substack</a>). An OpenAI forum user said it surfaced useful items but took weeks of tuning (<a href="https://community.openai.com/t/what-has-chatgpt-pulse-done-to-help-you/1371024">OpenAI community</a>). No reviewer reported a clear verdict after months of daily use.</li>
+</ul>
+<p><strong>Google Labs CC.</strong></p>
+<ul>
+<li>Announced about 2025-12-16: an email agent that sends a morning “Your Day Ahead” from Gmail, Calendar and Drive; you reply to the email to teach or correct it; early access for paid AI Ultra/Pro users in US/Canada plus waitlist (<a href="https://9to5google.com/2025/12/16/google-labs-cc/">9to5Google</a>, <a href="https://siliconangle.com/2025/12/16/google-tests-cc-ai-agent-summarize-email-calendars-documents/">SiliconANGLE</a>, <a href="https://tomsguide.com/ai/google-just-launched-a-new-ai-agent-that-runs-your-inbox-heres-what-cc-actually-does">Tom’s Guide</a>). Access tiers vary between sources.</li>
+<li>Still alive: on 2026-09-17 Google Labs expanded it to a shared family/household agent for up to six people, US, personal accounts, waitlist (<a href="https://blog.google/innovation-and-ai/models-and-research/google-labs/the-new-cc-an-ai-agent-built-for-families/">Google blog</a>, <a href="https://androidauthority.com/google-ai-cc-family-household-assistant-3712623">Android Authority</a>). Still an experiment.</li>
+</ul>
+<p><strong>Apple Intelligence notification summaries.</strong></p>
+<ul>
+<li>Dec 2024: a summary of a BBC News alert read “Luigi Mangione shoots himself” (false); BBC filed a formal complaint; RSF called for removal; NYT/Netanyahu summary also wrong (<a href="https://silicon.co.uk/ai/bbc-apple-ai-592890">Silicon UK</a>, <a href="https://incidentdatabase.ai/reports/4375">Incident Database</a>).</li>
+<li>2025-01-16: Apple paused summaries for news and entertainment apps in iOS 18.3 beta (“temporarily unavailable”); summaries made italic; per-app off switch; error warning (<a href="https://techcrunch.com/2025/01/16/apple-pauses-ai-notification-summaries-for-news-after-generating-false-alerts">TechCrunch</a>, <a href="https://www.engadget.com/ai/apple-pauses-ai-notification-summaries-of-news-alerts-in-latest-ios-beta-195900023.html">Engadget</a>).</li>
+<li>Returned in iOS 26 beta 4 (July 2025) behind a red disclaimer that “summarization may change the meaning” (<a href="https://9to5mac.com/2025/07/22/ios-26-beta-4-re-enables-apple-intelligence-notification-summaries-for-news-apps/">9to5Mac</a>, <a href="https://appleinsider.com/articles/25/07/22/apple-brings-back-notification-summaries-for-news-in-ios-26">AppleInsider</a>). Final-release status not confirmed.</li>
+</ul>
+<p><strong>Microsoft Copilot Daily.</strong> Spoken personalised news/weather briefing launched Oct 2024 with partners such as Reuters, Axel Springer, Hearst, FT (<a href="https://www.geekwire.com/2024/new-microsoft-copilot-features-include-natural-ai-voice-interactions-and-daily-news-summary/">GeekWire</a>, <a href="https://windowslatest.com/2024/10/01/hands-on-microsoft-copilot-is-getting-perplexity-ai-like-news-podcast-feature">Windows Latest</a>). No independent accuracy evaluation found.</p>
+<p><strong>Huxe.</strong> Ex-NotebookLM founders (Raiza Martin et al.), audio briefing from email/calendar, $4.6M seed, public Sept 2025 (<a href="https://techcrunch.com/2025/09/23/former-notebooklm-devs-new-app-huxe-taps-audio-to-help-you-with-news-and-research">TechCrunch</a>, <a href="https://techbuzz.ai/articles/ex-google-notebooklm-devs-launch-huxe-with-4-6m-funding">TechBuzz</a>). Secondary sources report it shut down 2026-05-22 (<a href="https://ecosistemastartup.com/?p=82587">Ecosistema Startup</a>, <a href="https://goodfest.westfield.com/2026/05/audio-generation-app-huxe-founded-by-former-notebooklm-developers-shuts-down/">Westfield/Pulse mirror</a>), and an Oct 2026 item reports Apple hiring staff and licensing IP (<a href="https://www.iclarified.com/102723/apple-strikes-ai-audio-deal-with-huxe-founded-by-former-notebooklm-developers">iClarified</a>). Low-tier sources; timeline unconfirmed.</p>
+<p><strong>Pattern.</strong> Of the flagship “proactive brief” products, Pulse was retired within about nine months, Huxe reportedly closed, Apple’s feature was pulled and returned with warnings, CC survives as a Labs experiment. Inference from the above, not a source’s claim.</p>
+<h3 id="2-reliability-evidence-studies-and-data">2. Reliability evidence (studies and data)</h3>
+<ul>
+<li><strong>EBU/BBC, Oct 2025.</strong> 22 public-service media organisations, 18 countries, 14 languages, four assistants, 3,000+ answers: 45% had at least one significant issue; about 31% sourcing problems; about 20% major accuracy problems; Gemini worst at 76% significant issues; 81% had some issue; BBC’s earlier study found 51% significant issues, so some improvement (<a href="https://www.advanced-television.com/2025/10/22/study-ai-misrepresents-news-content-45-of-the-time">Advanced Television</a>, <a href="https://www.infodocket.com/2025/10/22/bbc-largest-study-of-its-kind-shows-ai-assistants-misrepresent-news-content-45-of-the-time-regardless-of-language-or-territory/">InfoDocket</a>, <a href="https://www.ebu.ch/news/2025/10/ai-s-systemic-distortion-of-news-is-consistent-across-languages-and-territories-international-study-by-public-service-broadcaste">EBU release</a>, <a href="https://gizmodo.com/ai-assistants-get-news-wrong-45-of-the-time-study-finds-2000676069">Gizmodo</a>). “Significant issue” is not “wrong”; one outlet overstated it.</li>
+<li><strong>Tow Center/CJR, Mar 2025.</strong> Eight AI search tools, 200 articles from 20 publishers, given a quoted excerpt: collectively wrong on 60%+ of citation queries; Perplexity 37% wrong, Grok 3 94%; tools rarely declined; premium tiers more often confidently wrong; syndicated copies and fabricated URLs cited; licensing deals did not guarantee accuracy (<a href="https://www.cjr.org/tow_center/we-compared-eight-ai-search-engines-theyre-all-bad-at-citing-news.php">CJR</a>, <a href="https://eweek.com/?p=232924">eWeek</a>, <a href="https://www.techspot.com/news/107101-new-study-finds-ai-search-tools-60-percent.html">TechSpot</a>). Note the task is narrow (identify the source of a quote), not summarisation.</li>
+<li><strong>Vectara HHEM leaderboard.</strong> Best current summarisation hallucination rate about 1.8% on the newer dataset (finix_s1_32b), runners-up about 3.1-3.3%; older dataset leaders 0.6-0.7% (<a href="https://www.longtermwiki.com/resources/b44f883dc65dd0e9">LongTermWiki mirror</a>, <a href="https://suprmind.ai/hub/ai-hallucination-rates-benchmarks-in-2026/">Suprmind</a>). Secondary and conflicting; it measures faithfulness to a supplied short document, which is far easier than open-web news. The gap between ~2% (grounded summary) and 45% (live news answers) is the key contrast; the tasks differ, so do not compare directly.</li>
+<li><strong>Deep research audits.</strong> DeepTRACE (Salesforce/Microsoft, Sept 2025, <a href="https://arxiv.org/abs/2509.04499">arXiv 2509.04499</a>): deep research agents and AI search include many statements unsupported by their own sources; one configuration reached 97.5% unsupported per a secondary write-up (<a href="https://www.earth.com/news/ai-generated-search-tool-answers-are-frequently-filled-with-errors">Earth.com</a>); citation accuracy 40-80% depending on system. Another study: deep research gets links valid (above 94%) but factual accuracy of cited content only 39-77% (<a href="https://intuitionlabs.ai/articles/citation-reliability-ai-literature-reviews">IntuitionLabs</a>). A literature-review comparison: about 3% fabricated references, 64% real papers with at least one metadata error, overlap with human-selected references under 6% (<a href="https://neurips.cc/virtual/2026/166240">NeurIPS 2026 listing</a>). All secondary; verify numbers.</li>
+<li><strong>Summaries of papers.</strong> Factored Verification found about 0.62 (ChatGPT), 0.84 (GPT-4), 1.55 (Claude 2) hallucinations per summary of academic papers, often subtle (<a href="https://arxiv.org/pdf/2310.10627">arXiv 2310.10627</a>). Old models (2023).</li>
+<li><strong>Automation bias / over-reliance.</strong> Lee et al., CHI 2025, 319 knowledge workers, self-reported: confidence in AI associated with less critical-thinking effort; self-confidence with more; effort shifts from gathering to verifying (<a href="https://www.theregister.com/2025/02/11/microsoft_study_ai_critical_thinking/">The Register</a>, <a href="https://advait.org/files/lee_2025_ai_critical_thinking_survey.pdf">paper PDF</a>). It is a self-report survey, not behaviour. A claim that 83 of 319 reported trust discouraging reflection came from one secondary report and is unconfirmed.</li>
+<li><strong>Click-through.</strong> Pew (Jul 2025), 900 US adults, 68,879 searches: users clicked a regular result in 8% of visits with an AI summary vs 15% without; about 1% clicked a link inside the summary; sessions ended 26% vs 16% (<a href="https://9to5google.com/2025/07/23/google-ai-overview-link-click-study/">9to5Google</a>, <a href="https://www.searchengineland.com/google-ai-overviews-hurting-clicks-study-459434/">Search Engine Land</a>, <a href="https://www.emarketer.com/content/google-ai-summaries-ending-search-sessions-reducing-click-through-behavior">eMarketer</a>). Google disputed it. This is Google Search, not briefs, but it is the best data that people do not check sources.</li>
+</ul>
+<h3 id="3-practitioners">3. Practitioners</h3>
+<ul>
+<li><strong>Terence Tao</strong> (mathematician, UCLA). Uses AI for “secondary tasks” such as literature search and proof-checking; says literature search is already well established; his March 2026 piece with Tanya Klowden endorses AI literature search only if you can follow and check that references establish what the AI claims (<a href="https://terrytao.wordpress.com/2026/03/29/mathematical-methods-and-human-thought-in-the-age-of-ai/">Tao blog</a>, <a href="https://arxiv.org/pdf/2603.26524">arXiv 2603.26524</a>, <a href="https://teorth.github.io/tao-web/ai-views.html">Tao AI views page</a>). The exact blog sentence was paraphrased by the search tool, so it is not quoted. On Erdos problem #728 he noted AI literature search found no significant prior work, though earlier cases were later found in the literature (<a href="https://mathstodon.xyz/@tao/115855840223258103">Mathstodon</a> listing; not confirmed which post).</li>
+<li><strong>Simon Willison.</strong> On OpenAI deep research (Feb 2025): checking references catches most hallucinations, but omissions are hard to spot, and a polished multi-page document risks giving a false impression of a PhD-level assistant (paraphrase) (<a href="https://simonwillison.net/2025/Feb/25/deep-research-system-card/">Willison post</a>). His own digest is a monthly sponsor newsletter, hand-curated, billed as less mail (<a href="https://simonwillison.net/newsletters/2026/">newsletters</a>). Nothing found on Pulse.</li>
+<li><strong>Hamel Husain.</strong> Core practice: read the traces yourself (error analysis), build your own viewer; LLM judge comes later (<a href="https://ai.engineer/talks/how-to-construct-domain-specific-llm-evaluation-systems">AI Engineer talk page</a>, <a href="https://www.antoinebuteau.com/lessons-from-hamel-husain.md">Antoine Buteau notes</a>). Secondary.</li>
+<li><strong>Ethan Mollick.</strong> Not found directly; secondary pieces say AI needs a person in the loop and compare hallucination to tolerated human error (<a href="https://penntoday.upenn.edu/penn-in-the-news/wharton-professor-says-ai-intern-who-lies-little-bit-make-their-bosses-happy">Penn Today</a>). “On Working with Wizards” (verifying magic) exists but text not seen.</li>
+<li><strong>Karpathy.</strong> Hallucination as inherent (“dreaming”), grounding via retrieval; no briefing bot found (<a href="https://the-decoder.com/?p=10028">The Decoder</a> per search). Weak.</li>
+<li><strong>Builders’ failure stories (anecdote).</strong> Stephan Miller: agent-internal cron silently failed while still producing plausible output; fix was host cron plus script data, concluding autonomous agents are mostly an infrastructure problem (<a href="https://www.stephanmiller.com/my-home-ai-agent-kept-making-shit-up/">Miller</a>, <a href="https://dev.to/eristoddle/my-ai-agent-kept-making-shit-up-and-other-lessons-from-running-openclaw-566p">DEV mirror</a>). Hermes tutorial: scheduled jobs start with no memory, so prompts must be self-contained (<a href="https://hermes-agent.nousresearch.com/docs/guides/daily-briefing-bot">Hermes docs</a>). Other posts report feedback loops and “five things that matter beat twenty” (<a href="https://herhighreturn.substack.com/p/i-built-a-morning-briefing-agent">Substack</a>).</li>
+<li><strong>What stuck after novelty.</strong> I found no well-sourced first-hand “I still use it after N months” account. Evidence of what survived is indirect: OpenAI folded Pulse into user-defined scheduled tasks with change-triggered alerts (users specify, rather than the model guessing interests). Inference, not stated by any practitioner.</li>
+</ul>
+<h3 id="4-guardrails-recommended">4. Guardrails recommended</h3>
+<ul>
+<li>Check every cited reference against the primary source; treat output as leads (Tao; Willison; intuitionlabs/practical guides).</li>
+<li>Verification is the residual human job (Lee et al. “information verification, response integration and task stewardship”).</li>
+<li>Visible marking and warnings: Apple’s italics, “beta” tag and meaning-change disclaimer; nudge to open the original.</li>
+<li>Claim-level checking against the source (Factored Verification).</li>
+<li>Read raw logs/traces (Husain); keep deterministic data fetch outside the LLM and fail loudly (Miller).</li>
+<li>Self-contained prompts, feedback buttons/reply-to-correct (CC, Hermes).</li>
+<li>Diffing against yesterday, confidence labels, fact/inference separation: no source found stating these as evidence-backed practice; they are plausible design choices, not sourced here.</li>
+</ul>
+<h2 id="quote-bank">Quote bank</h2>
+<blockquote>
+<p>It is essential to us that our audiences can trust any information or journalism published in our name and that includes notifications. BBC statement, Dec 2024, SECONDARY, <a href="https://silicon.co.uk/ai/bbc-apple-ai-592890">Silicon UK</a></p>
+</blockquote>
+<blockquote>
+<p>generative AI services are still too immature to produce reliable information for the public. Reporters Without Borders (RSF), Dec 2024, SECONDARY (fragment), <a href="https://silicon.co.uk/ai/bbc-apple-ai-592890">Silicon UK</a></p>
+</blockquote>
+<blockquote>
+<p>This research conclusively shows that these failings are not isolated incidents Jean Philip De Tender, EBU Media Director and Deputy Director General, 22 Oct 2025, SECONDARY (sentence truncated in source; article text garbled), <a href="https://creativesunite.eu/article/ai-assistants-threaten-news-integrity-and-public-trust-major-study-finds">Creatives Unite</a></p>
+</blockquote>
+<blockquote>
+<p>Confidence in AI is associated with reduced critical thinking effort, while self-confidence is associated with increased critical thinking Lee et al. (Microsoft Research / Carnegie Mellon), CHI 2025, Feb 2025 coverage, SECONDARY as presented in results (paper at <a href="https://advait.org/files/lee_2025_ai_critical_thinking_survey.pdf">advait.org</a>); see also <a href="https://www.theregister.com/2025/02/11/microsoft_study_ai_critical_thinking/">The Register</a></p>
+</blockquote>
+<blockquote>
+<p>secondary tasks like doing literature searches or checking a proof or writing some code, proof reading something that I wrote to see if there’s any opportunity to make things a little bit tighter. Terence Tao, mathematician (UCLA, Fields Medallist), date unclear, WEAK (relayed via search result attributing Big Think; original URL not seen), <a href="https://dailymaverick.co.za/article/2026-05-03-crossed-wires-what-does-the-worlds-greatest-living-mathematician-think-of-ai">Daily Maverick context</a></p>
+</blockquote>
+<blockquote>
+<p>I can search literature much more accurately and effectively than I could before, so I’m doing way more Terence Tao, date unclear, SECONDARY (OfficeChai, truncated), <a href="https://officechai.com/ai/ai-is-allowing-me-to-experiment-and-try-crazier-things-mathematician-terrance-tao/">OfficeChai</a></p>
+</blockquote>
+<blockquote>
+<p>The difference is whether the task is “run a script and report the output” (host cron) or “think about my vault and synthesize something useful” (agent cron). Only one of those should involve an LLM. Stephan Miller, blogger running self-hosted agent, 2026, PRIMARY (his blog, as shown by search), <a href="https://www.stephanmiller.com/my-home-ai-agent-kept-making-shit-up/">stephanmiller.com</a></p>
+</blockquote>
+<blockquote>
+<p>This is hands down the worst new AI tool of 2025 — and I regret ever turning it on Amanda Caswell, Tom’s Guide writer (headline), 2025, PRIMARY (headline), <a href="https://www.tomsguide.com/ai/i-test-ai-for-a-living-and-this-is-hands-down-the-worst-new-ai-tool-of-2025">Tom’s Guide</a></p>
+</blockquote>
+<blockquote>
+<p>temporarily unavailable Apple spokesperson, to the BBC, Jan 2025, SECONDARY (two-word fragment), <a href="https://techcrunch.com/2025/01/16/apple-pauses-ai-notification-summaries-for-news-after-generating-false-alerts">TechCrunch</a></p>
+</blockquote>
+<h2 id="disagreements-failure-modes-and-caveats">Disagreements, failure modes and caveats</h2>
+<ul>
+<li>Failure modes documented: fabricated or misleading summary of a headline (Apple); wrong or syndicated source attribution and invented URLs (Tow); unsupported statements within own citations (DeepTRACE); metadata-corrupted real references (lit-review study); omissions that checking references will not reveal (Willison); silent pipeline failure producing plausible output (Miller); repetition over time (Becher); over-trust (Lee et al.); few clicks on sources (Pew).</li>
+<li>Grounded summarisation (Vectara ~2-3%) versus open-web news answers (EBU 45%, Tow 60%+) measure different tasks; a brief that summarises supplied documents is closer to the first, a brief that researches the web is closer to the second.</li>
+<li>Studies concern general assistants, not brief products; no independent accuracy audit of Pulse, CC or Copilot Daily was found.</li>
+<li>Pew is Google Search behaviour; Lee et al. is self-report; EBU “significant issue” is broader than “error”.</li>
+<li>Google disputes the Pew conclusions; sample was 900 people.</li>
+<li>Product-status claims for Pulse retirement and Huxe shutdown rest on blogs/aggregators.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>OpenAI Pulse launch coverage: <a href="https://www.tomsguide.com/ai/chatgpt-pulse-is-here-now-ai-starts-the-chat-and-curates-your-feed">Tom’s Guide</a>, <a href="https://www.axios.com/2025/09/25/chatgpt-prompts-you-pulse-openai">Axios</a>, 2025-09-25; reputable outlets.</li>
+<li>Pulse retirement: <a href="https://www.lilachbullock.com/chatgpt-pulse/">Lilach Bullock</a>, <a href="https://prowlo.com/blog/chatgpt-pulse-shut-down">Prowlo</a>, <a href="https://the-decoder.com/chatgpt-keeps-creeping-toward-becoming-your-ai-personal-assistant-with-new-scheduled-task-controls/">Decoder</a>, mid-2026; blogs plus one reputable outlet on scheduled tasks; OpenAI note unseen.</li>
+<li>Google CC: <a href="https://blog.google/innovation-and-ai/models-and-research/google-labs/the-new-cc-an-ai-agent-built-for-families/">Google blog</a> (2026-09-17, first-party), <a href="https://9to5google.com/2025/12/16/google-labs-cc/">9to5Google</a> (2025-12-16).</li>
+<li>Apple: <a href="https://techcrunch.com/2025/01/16/apple-pauses-ai-notification-summaries-for-news-after-generating-false-alerts">TechCrunch</a> (2025-01-16, reliable), <a href="https://silicon.co.uk/ai/bbc-apple-ai-592890">Silicon UK</a> (Dec 2024), <a href="https://9to5mac.com/2025/07/22/ios-26-beta-4-re-enables-apple-intelligence-notification-summaries-for-news-apps/">9to5Mac</a> (2025-07-22).</li>
+<li>EBU/BBC: <a href="https://www.ebu.ch/news/2025/10/ai-s-systemic-distortion-of-news-is-consistent-across-languages-and-territories-international-study-by-public-service-broadcaste">EBU release</a> (2025-10-22, primary, snippet only), <a href="https://www.advanced-television.com/2025/10/22/study-ai-misrepresents-news-content-45-of-the-time">Advanced Television</a>.</li>
+<li>Tow Center: <a href="https://www.cjr.org/tow_center/we-compared-eight-ai-search-engines-theyre-all-bad-at-citing-news.php">CJR</a> (March 2025, primary, snippet only), <a href="https://eweek.com/?p=232924">eWeek</a>.</li>
+<li>Pew: <a href="https://9to5google.com/2025/07/23/google-ai-overview-link-click-study/">9to5Google</a> (2025-07-23), secondary of Pew.</li>
+<li>Lee et al.: <a href="https://advait.org/files/lee_2025_ai_critical_thinking_survey.pdf">paper PDF</a>, <a href="https://www.theregister.com/2025/02/11/microsoft_study_ai_critical_thinking/">The Register</a> (2025-02-11).</li>
+<li>Vectara: <a href="https://www.longtermwiki.com/resources/b44f883dc65dd0e9">LongTermWiki mirror</a>, <a href="https://suprmind.ai/hub/ai-hallucination-rates-benchmarks-in-2026/">Suprmind</a>; aggregator quality, secondary.</li>
+<li>DeepTRACE: <a href="https://arxiv.org/abs/2509.04499">arXiv 2509.04499</a> (Sept 2025); <a href="https://www.earth.com/news/ai-generated-search-tool-answers-are-frequently-filled-with-errors">Earth.com</a> secondary.</li>
+<li>Tao: <a href="https://terrytao.wordpress.com/2026/03/29/mathematical-methods-and-human-thought-in-the-age-of-ai/">blog</a> (2026-03-29, primary, snippet only), <a href="https://teorth.github.io/tao-web/ai-views.html">Tao AI views</a>.</li>
+<li>Willison: <a href="https://simonwillison.net/2025/Feb/25/deep-research-system-card/">deep research system card post</a> (2025-02-25, primary).</li>
+<li>Husain: <a href="https://ai.engineer/talks/how-to-construct-domain-specific-llm-evaluation-systems">AI Engineer talk</a>; <a href="https://www.antoinebuteau.com/lessons-from-hamel-husain.md">Buteau notes</a> (secondary).</li>
+<li>Miller: <a href="https://www.stephanmiller.com/my-home-ai-agent-kept-making-shit-up/">stephanmiller.com</a> (2026, primary, anecdote).</li>
+<li>Huxe: <a href="https://techcrunch.com/2025/09/23/former-notebooklm-devs-new-app-huxe-taps-audio-to-help-you-with-news-and-research">TechCrunch</a> (2025-09-23), <a href="https://ecosistemastartup.com/?p=82587">Ecosistema Startup</a> (2026, low tier).</li>
+<li>Copilot Daily: <a href="https://www.geekwire.com/2024/new-microsoft-copilot-features-include-natural-ai-voice-interactions-and-daily-news-summary/">GeekWire</a> (Oct 2024).</li>
+</ul>
+<h2 id="gaps">Gaps</h2>
+<ul>
+<li>No usage/uptake numbers for Pulse, CC, Copilot Daily, Huxe.</li>
+<li>OpenAI release note on Pulse retirement not seen; exact date uncertain.</li>
+<li>No exact Tao sentence on literature-search verification; no direct Mollick, Karpathy or Willison comment on briefs/Pulse; no arXiv-summary-bot practitioner accounts.</li>
+<li>Primary pages for Pew, CJR, EBU, Vectara not opened; numbers via secondary text.</li>
+<li>No independent accuracy audit of any commercial daily-brief product; no evidence on diffing/confidence-label guardrails.</li>
+<li>Apple summaries status after iOS 26 release unconfirmed; Huxe shutdown/Apple deal timeline unconfirmed.</li>
+</ul>
+<h2 id="verification-log-independent-fact-check">Verification log (independent fact-check)</h2>
+<p>Method: 15 WebSearch calls (of 20 allowed); no WebFetch on non-GitHub hosts. Confirmation is from search-result text only, so “primary” below means a primary page appeared in results with matching text, not that it was opened. Verdicts are strict: a wording seen only in one model-written summary is NOT_FOUND.</p>
+<ul>
+<li>VERIFIED: Quote, Amanda Caswell: “This is hands down the worst new AI tool of 2025 and I regret ever turning it on.” Exact headline, confirmed on the Tom’s Guide page title and an inkl mirror (primary). <a href="https://www.tomsguide.com/ai/i-test-ai-for-a-living-and-this-is-hands-down-the-worst-new-ai-tool-of-2025">https://www.tomsguide.com/ai/i-test-ai-for-a-living-and-this-is-hands-down-the-worst-new-ai-tool-of-2025</a></li>
+<li>NOT_FOUND: Quote, Terence Tao: “secondary tasks like doing literature searches or checking a proof…”. Wording appears in one search summary attributing it to a Big Think interview as quoted by FlowingData (Sept 2026). Other reports paraphrase it; no transcript seen. Keep only as paraphrase or drop. <a href="https://flowingdata.com/2026/09/09/terence-tao-on-the-paradox-of-solving-mathematical-problems/">https://flowingdata.com/2026/09/09/terence-tao-on-the-paradox-of-solving-mathematical-problems/</a></li>
+<li>NOT_FOUND: Quote, Stephan Miller: “The difference is whether the task is ‘run a script and report the output’…”. Exact wording not seen. The substance (plain script jobs moved to host cron, synthesis jobs kept in the agent) is supported by his post. <a href="https://www.stephanmiller.com/my-home-ai-agent-kept-making-shit-up/">https://www.stephanmiller.com/my-home-ai-agent-kept-making-shit-up/</a></li>
+<li>PARTIAL: Quote, Lee et al.: “Confidence in AI is associated with reduced critical thinking effort, while self-confidence is associated with increased critical thinking”. A search summary of the paper gives “Higher confidence in GenAI is associated with less critical thinking, while higher self-confidence is associated with more critical thinking.” Same finding; 319 workers and CHI 2025 confirmed; the Microsoft Research publication page exists (primary). Check the PDF wording before quoting. <a href="https://www.microsoft.com/en-us/research/publication/the-impact-of-generative-ai-on-critical-thinking-self-reported-reductions-in-cognitive-effort-and-confidence-effects-from-a-survey-of-knowledge-workers/">https://www.microsoft.com/en-us/research/publication/the-impact-of-generative-ai-on-critical-thinking-self-reported-reductions-in-cognitive-effort-and-confidence-effects-from-a-survey-of-knowledge-workers/</a></li>
+<li>VERIFIED: Quote, RSF: “too immature to produce reliable information for the public”. Found in RSF’s own statement title and coverage, Dec 2024 (primary). Full sentence continues “and should not be allowed on the market for such uses”. <a href="https://rsf.org/en/rsf-urges-apple-remove-its-new-generative-ai-feature-after-it-wrongly-attributes-false-information">https://rsf.org/en/rsf-urges-apple-remove-its-new-generative-ai-feature-after-it-wrongly-attributes-false-information</a></li>
+<li>VERIFIED (weak): Quote, BBC: “It is essential to us that our audiences can trust any information or journalism published in our name, and that includes notifications.” Same wording recurred in two separate search summaries of coverage, but the BBC original and the Silicon UK page were not opened. <a href="https://uk.finance.yahoo.com/news/apple-ai-tools-bbc-complaint-090531355.html">https://uk.finance.yahoo.com/news/apple-ai-tools-bbc-complaint-090531355.html</a></li>
+<li>VERIFIED: Quote, Jean Philip De Tender: “This research conclusively shows that these failings are not isolated incidents.” Matches the EBU release wording (primary, snippet). Other outlets render it differently (“This research shows conclusively that these shortcomings are not isolated incidents”), so use the EBU version. <a href="https://www.ebu.ch/news/2025/10/ai-s-systemic-distortion-of-news-is-consistent-across-languages-and-territories-international-study-by-public-service-broadcaste">https://www.ebu.ch/news/2025/10/ai-s-systemic-distortion-of-news-is-consistent-across-languages-and-territories-international-study-by-public-service-broadcaste</a></li>
+<li>VERIFIED: Number, EBU/BBC Oct 2025: 22 PSM organisations, 18 countries, 14 languages, 3,000+ answers, 45% at least one significant issue, 31% sourcing problems, Gemini 76%, 81% some issue. Matches EBU release and several outlets (primary plus secondary). <a href="https://www.ebu.ch/news/2025/10/ai-s-systemic-distortion-of-news-is-consistent-across-languages-and-territories-international-study-by-public-service-broadcaste">https://www.ebu.ch/news/2025/10/ai-s-systemic-distortion-of-news-is-consistent-across-languages-and-territories-international-study-by-public-service-broadcaste</a></li>
+<li>VERIFIED: Number, Tow Center/CJR Mar 2025: 200 tests, eight AI search tools, 60%+ wrong, Perplexity 37%, Grok 3 94%. Matches Fortune and Nieman Lab (independent secondary); CJR not opened. <a href="https://fortune.com/2025/03/18/ai-search-engines-confidently-wrong-citing-sources-columbia-study/">https://fortune.com/2025/03/18/ai-search-engines-confidently-wrong-citing-sources-columbia-study/</a></li>
+<li>VERIFIED: Number, Pew Jul 2025: 900 US adults, 68,879 searches, clicks 8% vs 15%, about 1% clicks inside the summary, sessions ended 26% vs 16%. Pew short read dated 2025-07-22 (primary); the file’s 9to5Google citation is dated 07-23 and is secondary. <a href="https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/">https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/</a></li>
+<li>NOT_FOUND: Quote, Apple spokesperson: “temporarily unavailable”. The pause itself is confirmed (iOS 18.3 beta, news and entertainment apps; CNBC and NBC headlines), but the quoted wording appears in one search summary only. TechCrunch, the cited source, was not in results. <a href="https://www.cnbc.com/2025/01/16/apple-disables-ai-notifications-for-news-in-its-beta-iphone-software.html">https://www.cnbc.com/2025/01/16/apple-disables-ai-notifications-for-news-in-its-beta-iphone-software.html</a></li>
+<li>VERIFIED: Launch facts, ChatGPT Pulse: Pro-only preview at $200/month on mobile; overnight research from chat history and memory; scannable visual cards. Several launch-coverage summaries agree (secondary). Card count “five to ten” comes from one source; launch date 2025-09-25 not re-checked. <a href="https://www.ciol.com/generative-ai/openai-launches-chatgpt-pulse-daily-personalised-updates-for-pro-user-10502878">https://www.ciol.com/generative-ai/openai-launches-chatgpt-pulse-daily-personalised-updates-for-pro-user-10502878</a></li>
+<li>VERIFIED: Launch facts, Google Labs CC: announced 16 Dec 2025; morning “Your Day Ahead” email; Gmail, Calendar and Drive; replies teach it; early access in US/Canada for paid tiers (tiers vary by source). 9to5Google and SiliconANGLE (secondary, dated 2025-12-16). <a href="https://9to5google.com/2025/12/16/google-labs-cc/">https://9to5google.com/2025/12/16/google-labs-cc/</a></li>
+<li>VERIFIED: Huxe: $4.6M round, public Sept 2025 (TechCrunch 2025-09-23, secondary of primary coverage); shutdown reported by TechCrunch 2026-05-22; Apple deal described as an acqui-hire with a non-exclusive IP licence. Some outlets say $5M, and the file’s Oct 2026 iClarified item was not checked. <a href="https://techcrunch.com/2026/05/22/audio-generation-app-huxe-founded-by-former-notebooklm-developers-shuts-down/">https://techcrunch.com/2026/05/22/audio-generation-app-huxe-founded-by-former-notebooklm-developers-shuts-down/</a></li>
+<li>PARTIAL: Numbers, Factored Verification (Charlie George and Andreas Stuhlmüller): file gives 0.62 (ChatGPT), 0.84 (GPT-4), 1.55 (Claude 2) hallucinations per summary. Those match the Hugging Face listing (secondary); the ar5iv version gives a range of 0.62 to 1.57. The arXiv abstract reports 0.49 (ChatGPT), 0.46 (GPT-4), 0.95 (Claude 2) after self-correction via factored critiques. State which version is meant, or use the PDF. <a href="https://arxiv.org/pdf/2310.10627">https://arxiv.org/pdf/2310.10627</a></li>
+</ul>
+
+    </article>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,741 @@
+<title>Morning Brief No. 1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Overnight research on whether a morning brief is worth having, and on building a lever espresso machine that brews at the bedside.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&display=swap">
+<style>
+:root {
+  /* Layout: one ~68ch reading column; a mono metadata rail (contents, provenance) in the left gutter on wide screens */
+  --paper: #F1F2EF;
+  --paper-2: #E7E9E4;
+  --ink: #1C1D1A;
+  --muted: #5A5D56;
+  --rule: #D2D5CD;
+  --crema: #94531C;
+  --crema-soft: #EADBCB;
+  --ok: #2C6847;
+  --warn: #84640E;
+  --bad: #9A372B;
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", system-ui, sans-serif;
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+    --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+  --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 19px;
+  line-height: 1.58;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration-color: var(--crema); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+a:hover { color: var(--crema); }
+a:focus-visible { outline: 2px solid var(--crema); outline-offset: 2px; border-radius: 2px; }
+
+.band { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.band-top { background: var(--paper-2); border-bottom: 1px solid var(--rule); padding-block: 40px 36px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+
+/* masthead */
+.slug { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.slug b { color: var(--ink); font-weight: 500; }
+.title { font-family: var(--display); font-stretch: 72%; font-weight: 800; font-size: clamp(54px, 10vw, 112px); line-height: 0.9; letter-spacing: -0.01em; margin: 18px 0 10px; text-wrap: balance; }
+.title .no { color: var(--crema); font-stretch: 100%; font-weight: 500; font-size: 0.42em; letter-spacing: 0.02em; vertical-align: 0.95em; margin-left: 0.18em; }
+.deck { font-style: italic; font-size: clamp(19px, 2.2vw, 23px); color: var(--muted); max-width: 46em; margin: 0 0 30px; text-wrap: pretty; }
+
+.bluf { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 2px solid var(--ink); }
+.bluf > div { padding: 16px 22px 4px 0; min-width: 0; }
+.bluf > div + div { padding-left: 22px; border-left: 1px solid var(--rule); }
+.bluf h2 { font-family: var(--display); font-stretch: 85%; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 8px; color: var(--crema); }
+.bluf p { margin: 0 0 12px; font-size: 18px; line-height: 1.5; }
+
+.stats { margin-top: 22px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 22px; font-variant-numeric: tabular-nums; }
+.stats span b { color: var(--ink); font-weight: 500; }
+
+/* body grid */
+.band-body { padding-block: 44px 72px; }
+.grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 56px; }
+.rail { min-width: 0; }
+.rail nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); font-family: var(--mono); font-size: 12.5px; line-height: 1.45; }
+.rail .label { text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 0 0 10px; }
+.rail ol, .rail ul { list-style: none; margin: 0 0 26px; padding: 0; display: grid; gap: 7px; }
+.rail a { text-decoration: none; color: var(--muted); }
+.rail a:hover { color: var(--crema); }
+.rail li.sub a { padding-left: 12px; display: inline-block; }
+
+.prose { min-width: 0; max-width: 68ch; }
+.prose h2 { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: clamp(34px, 5vw, 50px); line-height: 1; letter-spacing: -0.005em; margin: 64px 0 22px; padding-top: 18px; border-top: 2px solid var(--ink); text-wrap: balance; }
+.prose > h2:first-child, .prose > .part:first-child h2:first-child { margin-top: 0; }
+.prose h3 { font-family: var(--display); font-stretch: 88%; font-weight: 700; font-size: 25px; line-height: 1.2; margin: 42px 0 12px; text-wrap: balance; }
+.prose h4 { font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; margin: 30px 0 8px; color: var(--muted); }
+.prose p { margin: 0 0 1.05em; text-wrap: pretty; }
+.prose ul, .prose ol { padding-left: 1.3em; margin: 0 0 1.1em; }
+.prose li { margin: 0 0 0.45em; }
+.prose li::marker { color: var(--crema); }
+.prose strong { font-weight: 650; }
+.prose hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
+.prose blockquote { margin: 22px 0 24px; padding: 2px 0 2px 20px; border-left: 3px solid var(--crema); font-style: italic; font-size: 20px; line-height: 1.5; }
+.prose blockquote p:last-child { margin-bottom: 0; }
+.prose blockquote em { font-style: normal; }
+.prose code { font-family: var(--mono); font-size: 0.82em; background: var(--paper-2); padding: 1px 5px; border-radius: 3px; }
+.prose pre { font-family: var(--mono); font-size: 13.5px; line-height: 1.5; background: var(--paper-2); border: 1px solid var(--rule); padding: 16px 18px; overflow-x: auto; border-radius: 4px; }
+.prose pre code { background: none; padding: 0; font-size: inherit; }
+
+.tablewrap { overflow-x: auto; margin: 22px 0 28px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); }
+.prose table { border-collapse: collapse; width: 100%; font-family: var(--display); font-stretch: 92%; font-size: 15px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.prose th { text-align: left; font-weight: 700; font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 10px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: bottom; }
+.prose td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top; min-width: 7em; }
+.prose tr:last-child td { border-bottom: 0; }
+
+figure.profile { margin: 8px 0 34px; }
+figure.profile svg { width: 100%; height: auto; display: block; }
+figure.profile figcaption { font-family: var(--mono); font-size: 12.5px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+.ax { stroke: var(--rule); stroke-width: 1; fill: none; }
+.axl { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+.c-lever { stroke: var(--crema); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.c-pump { stroke: var(--ink); stroke-width: 1.6; fill: none; stroke-dasharray: 5 5; }
+.c-lbl { font-family: var(--mono); font-size: 11.5px; }
+.c-lbl.l { fill: var(--crema); }
+.c-lbl.p { fill: var(--ink); }
+
+/* provenance + ledger */
+.ledger { width: 100%; }
+.chip { display: inline-block; font-family: var(--mono); font-size: 11.5px; line-height: 1; padding: 4px 6px; border-radius: 3px; border: 1px solid currentColor; margin: 0 4px 4px 0; white-space: nowrap; }
+.chip.ok { color: var(--ok); }
+.chip.warn { color: var(--warn); }
+.chip.bad { color: var(--bad); }
+.stack-list { list-style: none; padding: 0 !important; margin: 18px 0 26px !important; border-top: 2px solid var(--ink); }
+.stack-list li { margin: 0 !important; padding: 14px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 3.2em minmax(0, 1fr); gap: 0 12px; }
+.stack-list .id { font-family: var(--mono); font-size: 14px; color: var(--crema); padding-top: 3px; }
+.stack-list .t { font-family: var(--display); font-stretch: 90%; font-weight: 700; font-size: 18px; line-height: 1.3; }
+.stack-list .m { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.6; }
+.stack-list li::marker { content: none; }
+
+.backlink { font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--muted); }
+.backlink:hover { color: var(--crema); }
+.raw-head .title { font-size: clamp(36px, 6vw, 64px); font-stretch: 78%; }
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .rail nav { position: static; }
+  .rail ol, .rail ul { margin-bottom: 18px; }
+}
+@media (max-width: 640px) {
+  body { font-size: 18px; }
+  .bluf { grid-template-columns: minmax(0, 1fr); }
+  .bluf > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--rule); }
+  .band-top { padding-block: 28px 26px; }
+  .prose blockquote { font-size: 19px; padding-left: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+
+</style>
+<header class="band band-top">
+  <div class="wrap">
+    <div class="slug"><span><b>Tuesday · 10 November 2026</b></span><span>Edition 001</span><span>Compiled overnight by 23 agents</span><span>About 30 minutes; raw notes optional</span></div>
+    <h1 class="title">Morning Brief<span class="no">No.&nbsp;1</span></h1>
+    <p class="deck">Two questions went into the overnight queue: is a morning brief worth having at all, and how do you get a lever-pulled espresso to the bedside without a robot arm? Short answers: yes, on conditions; and in modules, starting with your brother&rsquo;s grinder.</p>
+    <section class="bluf" aria-label="Bottom line up front">
+      <div><h2>Part 1 &middot; Do briefs work?</h2><p>Probably yes, within narrow limits. Structured briefs and handoffs help when the reader has bought in and turn into ritual when they don&rsquo;t. AI summaries of the open web still get a large share of news answers materially wrong: 45% had a significant issue in the EBU&rsquo;s 2025 study.</p><p>Keep this brief if it replaces other checking, stays under ten minutes, says how each claim was verified, and passes a kill test: after 20 editions, count what you acted on.</p></div>
+      <div><h2>Part 2 &middot; Espresso</h2><p>Build it as modules that each work by hand first, with motors that only push and never hold. Start with the grinder on a one-way clutch. Next, a push-only actuator on a Cafelat Robot (about $399). Then one enclosure with a thermoblock and an ESP32 that you arm at night and that brews an Americano at the alarm.</p><p>That is roughly $1,250&ndash;2,200 in parts and a winter of weekends, by our estimate. If you want a daily machine meanwhile, a Gaggia Classic Pro with GaggiMate is the cheapest scriptable setup.</p></div>
+    </section>
+    <div class="stats"><span><b>9</b> research slices</span><span><b>461</b> searches</span><span><b>142</b> claims fact-checked</span><span><b>64 + 51</b> verified + partial</span><span><b>~36k</b> words of raw notes</span></div>
+  </div>
+</header>
+<main class="band band-body">
+  <div class="wrap grid">
+    <aside class="rail">
+      <nav aria-label="Contents">
+        <p class="label">Contents</p>
+        <ol><li><a href="#part-1-does-a-morning-brief-actually-work">Part 1: Does a morning brief actually work?</a></li><li><a href="#part-2-espresso-to-the-bedside">Part 2: Espresso to the bedside</a></li><li><a href="#how-this-edition-was-made">How this edition was made</a></li></ol>
+        <p class="label">The stacks</p>
+        <ul><li><a href="raw/A1.html">A1 &middot; Briefing for a living</a></li><li><a href="raw/A2.html">A2 &middot; Scientists and the daily stream</a></li><li><a href="raw/A3.html">A3 &middot; AI-written briefs</a></li><li><a href="raw/A4.html">A4 &middot; The case against</a></li><li><a href="raw/B1.html">B1 &middot; Building from scratch</a></li><li><a href="raw/B2.html">B2 &middot; Levers and hybrids</a></li><li><a href="raw/B3.html">B3 &middot; Grinders and motors</a></li><li><a href="raw/B4.html">B4 &middot; Bedside automation</a></li><li><a href="raw/B5.html">B5 &middot; What to buy</a></li></ul>
+      </nav>
+    </aside>
+    <article class="prose">
+<h2 id="part-1-does-a-morning-brief-actually-work">Part 1: Does a morning brief actually work?</h2>
+<p><strong>Verdict.</strong> Probably yes, within narrow limits. No study tests the thing itself, a single curated technical digest read once a day, so the case rests on neighbouring evidence. Structured briefings and handoffs help when the people using them have bought in and fail when they become ritual, and both frequent checking and AI summaries of the open web have measurable costs. This brief is worth keeping if it replaces other checking rather than adding to it, stays short enough to finish, says how sure it is of each claim, and gets cut the week it stops changing what you do. Because an AI writes it, the last two conditions carry most of the weight.</p>
+<h3 id="what-the-evidence-can-and-cannot-show">What the evidence can and cannot show</h3>
+<p>Start with the gap. The research found no experiment on reading a personal digest, no study of reading news first thing versus later, and no independent accuracy audit of any commercial daily-brief product. What exists is adjacent: surgical checklists, clinical handoffs, intelligence forecasting, email-checking trials and audits of AI assistants. A team briefing before an operation coordinates a team with a shared task; your brief is one reader and a pile of links. Read what follows as argument from analogy, with small, self-reported or before/after studies labelled as such.</p>
+<h3 id="the-case-for">The case for</h3>
+<p><strong>Structure helps when people mean it.</strong> The cleanest clinical result is I-PASS, a structured handoff protocol (<a href="https://www.nejm.org/doi/full/10.1056/NEJMsa1405556">Starmer et al., NEJM 2014</a>). Across nine hospitals and 10,740 admissions, medical errors fell from 24.5 to 18.8 per 100 admissions (23%) and preventable adverse events from 4.7 to 3.3 (30%). Nonpreventable events, which a handoff should not touch, barely moved (3.0 vs 2.8, P=0.79): a decent negative control. The caveats: pre-post design with no concurrent control, and three of the nine sites showed no significant change.</p>
+<p>Surgical checklists sharpen the lesson. Haynes and colleagues ran the WHO checklist in eight hospitals with 7,688 patients; deaths fell from 1.5% to 0.8% and complications from 11% to 7% (<a href="https://news.harvard.edu/gazette/story/2009/01/surgical-safety-checklist-drops-deaths-and-complications-by-more-than-one-third/">Harvard Gazette summary</a>). Then Ontario mandated it across 101 hospitals, and adjusted mortality went from 0.71% to 0.65% across 109,341 and 106,370 procedures, not a significant change (<a href="https://www.nejm.org/doi/full/10.1056/NEJMsa1308261">Urbach et al., NEJM 2014</a>). A Michigan Medicare analysis against 950 comparison hospitals found a 30-day mortality RR of 1.03 (0.97-1.10) and $516 more per admission (<a href="https://www.ovid.com/jnls/lww-medicalcare/abstract/10.1097/mlr.0000000000000277~evaluation-of-the-effectiveness-of-a-surgical-checklist-in?redirectionsource=fulltextview">Reames et al., Medical Care 2015</a>). The defenders’ reply, Gawande’s among them, was that Ontario mandated the form without training anyone or measuring whether it was used. That is an inference, not a finding. The WHO form anticipates the problem in its own text: “<a href="https://www.who.int/docs/default-source/patient-safety/9789241598590-eng-checklist.pdf">This checklist is not intended to be comprehensive.</a>"</p>
+<p><strong>Calibrated analysts exist.</strong> Mandel and Barnes scored 1,514 strategic forecasts made by a Canadian intelligence unit between 2005 and 2011 and found discrimination and calibration that they called very good (<a href="https://pmc.ncbi.nlm.nih.gov/articles/4121776/">PNAS 2014</a>). So a daily product that attaches probabilities to its judgements can be held to account and can pass.</p>
+<p><strong>People who do your kind of work already run something like this.</strong> Terence Tao wrote in October that he can mostly keep track of whether someone has solved a problem he is working on by watching the arXiv each night, a system he calls imperfect but very useful (<a href="https://terrytao.wordpress.com/2026/10/01/arxiv-updates-its-rate-limiting-policy/">Tao, 2026-10-01</a>; paraphrased, as the exact sentence was not confirmed). Andrej Karpathy, in February: “<a href="https://x.com/karpathy/status/2018043254986703167">Finding myself going back to RSS/Atom feeds a lot more recently. There’s a lot more higher quality longform and a lot less slop intended to provoke.</a>" His reading method is the one this brief’s raw files are meant to support: “<a href="https://x.com/karpathy/status/1990577951671509438">pass 1 is manual, then pass 2 ‘explain/summarize’, pass 3 Q&amp;A</a>". The manual pass comes first.</p>
+<p>Even the patron saint of disconnection had a filter. Knuth gave up email in 1990, but his secretary prints the messages that matter and he answers on paper (<a href="https://cs.stanford.edu/~knuth/help.html">Knuth’s help page</a>). That is an overnight agent with a human in the job.</p>
+<h3 id="the-case-against">The case against</h3>
+<p><strong>Attention is the budget.</strong> Herbert Simon, 1971: “<a href="https://deeshaa.org/2015/06/30/herbert-simon-information-consumes-attention/">What information consumes is rather obvious: it consumes the attention of its recipients.</a>" And: “Hence a wealth of information creates a poverty of attention.” Simon’s own conclusion was that you need a filter, which is an argument for a brief that cuts intake and against one that adds to it.</p>
+<p>Knuth puts the personal version best: “<a href="https://cs.stanford.edu/~knuth/email.html">Email is a wonderful thing for people whose role in life is to be on top of things. But not for me; my role is to be on the bottom of things.</a>" Also: “<a href="https://cs.stanford.edu/~knuth/email.html">I have been a happy man ever since January 1, 1990, when I no longer had an email address.</a>" Bottom-of-things work is the kind a daily brief can quietly eat.</p>
+<p>Taleb’s argument in <em>Antifragile</em> is statistical: sample a slow process too often and noise swamps signal. Assuming 1:1 on a yearly view, his stylised split is roughly 95% noise at daily resolution and 99.5% at hourly (<a href="https://fs.blog/noise-and-signal-nassim-taleb/">Farnam Street</a>; figures confirmed, exact wording not). A daily brief about things that change monthly is mostly noise by construction.</p>
+<p><strong>Checking has a cost, though smaller than the folklore says.</strong> Kushlev and Dunn had 124 adults alternate a week of checking email three times a day with a week of unlimited checking; stress was lower in the limited week, and the unlimited checkers did not feel more productive (<a href="https://psych.ubc.ca/news/checking-your-email-less-can-help-reduce-stress-new-study-by-phd-candidate-kostadin-kushlev/">UBC summary</a>). Participants found the limit hard to keep. Gloria Mark’s group took 13 workers off email for five days and window switching fell from 37 to 18 per hour (<a href="https://news.uci.edu/2012/05/07/email-vacations-decrease-stress-increase-concentration">UCI, CHI 2012</a>); tiny sample. Sophie Leroy’s “attention residue” work adds a mechanism: an unfinished task left open in your head degrades performance on the next one (<a href="https://econpapers.repec.org/RePEc:eee:jobhdp:v:109:y:2009:i:2:p:168-181">Leroy 2009</a>). A brief that opens loops just before deep work is the bad case.</p>
+<p><strong>Order steers attention, whatever the quality.</strong> The arXiv listing is a daily brief, and Haque and Ginsparg measured what its order does (<a href="https://arxiv.org/abs/0907.4740">arXiv:0907.4740</a>). Papers in position 1 got 82%, 61% and 58% more early downloads in astro-ph, hep-th and hep-ph, and median citations 83%, 50% and 100% higher. Most of that gap is authors timing submissions to land first, but papers that landed on top by accident still got a long-term citation boost of 44%, 38% and 71%. An informal reanalysis by Motloch suggests the pure position effect is smaller still (<a href="https://motloch.net/blog_entries/arxiv_submission_analysis.html">blog</a>). Even taking the low reading, whatever sits at the top of this brief will get more of you than it has earned.</p>
+<p><strong>The warning can be in the brief and still not land.</strong> The 9/11 Commission titled its eighth chapter with Tenet’s phrase “<a href="https://9-11commission.gov/report/911Report_Ch8.pdf">the system was blinking red</a>". The daily product carried warnings. On one reading, arriving every day turned out to be different from being acted on; the lesson is contested.</p>
+<p><strong>Novelty fades, and the products show it.</strong> OpenAI launched ChatGPT Pulse in September 2025 as a $200-a-month Pro preview that researched overnight and served morning cards (<a href="https://www.axios.com/2025/09/25/chatgpt-prompts-you-pulse-openai">Axios</a>). One Tom’s Guide reviewer, who tests AI for a living, headlined hers “<a href="https://www.tomsguide.com/ai/i-test-ai-for-a-living-and-this-is-hands-down-the-worst-new-ai-tool-of-2025">This is hands down the worst new AI tool of 2025 — and I regret ever turning it on</a>". Blog reports say OpenAI retired Pulse in mid-2026 in favour of user-defined scheduled tasks; the release note itself was not seen and the reported dates conflict, so treat that as unverified. Huxe, an audio briefing app from former NotebookLM developers, shut down in May 2026 (<a href="https://techcrunch.com/2026/05/22/audio-generation-app-huxe-founded-by-former-notebooklm-developers-shuts-down/">TechCrunch</a>). I found no usage numbers for either, so “nobody wanted it” is my inference, not a finding.</p>
+<h3 id="what-people-who-brief-for-a-living-have-learned">What people who brief for a living have learned</h3>
+<p>Four lessons recur, and they separate a working brief from theatre.</p>
+<p><em>The conversation matters more than the freshness.</em> David Priess, a former CIA daily briefer: “<a href="https://roguewomenwriters.com/david-priess-goes-rogue-the-presidents-book-of-secrets-a-review-and-interview-with-author-david-priess/">The advantage of having a briefer in the room comes much less from his or her ability to deliver late-breaking updates than from his or her ability to answer questions, discuss analytic nuances, or provide information that would not have come out without conversation.</a>" Your briefer in the room is the raw research plus a follow-up question; the summary is the lesser part.</p>
+<p><em>Words need numbers.</em> Sherman Kent’s 1964 essay pinned estimative words to odds (<a href="https://www.globalsecurity.org/intell/ops/probability.htm">GlobalSecurity</a>):</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Phrase</th>
+<th>Kent’s midpoint</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>almost certain</td>
+<td>93%</td>
+</tr>
+<tr class="even">
+<td>probable</td>
+<td>75%</td>
+</tr>
+<tr class="odd">
+<td>chances about even</td>
+<td>50%</td>
+</tr>
+<tr class="even">
+<td>probably not</td>
+<td>30%</td>
+</tr>
+<tr class="odd">
+<td>almost certainly not</td>
+<td>7%</td>
+</tr>
+</tbody>
+</table></div>
+<p>The usual origin story is a 1951 estimate calling a Soviet move on Yugoslavia a “serious possibility”, which Kent meant as roughly 65:35 and colleagues read very differently (<a href="https://en.wikipedia.org/wiki/Words_of_estimative_probability">Wikipedia</a>; this anecdote was not independently checked). The lesson does not depend on the details. If “likely” means different things to writer and reader, the word carries no information.</p>
+<p><em>Ritual is the failure mode.</em> “<a href="https://www.nextgov.com/modernization/2010/05/powerpoint-combatants-go-at-it-again/251255/">PowerPoint makes us stupid</a>," General Mattis told a 2010 conference. A complaint, not data, but it fits Ontario: form without buy-in may do little. A brief read because it is 8am, whether or not anything changed, is the slide deck nobody needed.</p>
+<p><em>Short beats complete.</em> The WHO’s form says it is not comprehensive; my reading is that its job is to catch the few failures that matter. A brief that tries to cover everything has forgotten what it is for.</p>
+<h3 id="how-an-ai-written-brief-fails-and-what-to-do-about-it">How an AI-written brief fails, and what to do about it</h3>
+<p>Open-web error rates are high enough to design around. A study by 22 public-service broadcasters across 18 countries and 14 languages, covering 3,000+ answers, found 45% had at least one significant issue, 31% had sourcing problems, and Gemini reached 76% (<a href="https://www.ebu.ch/news/2025/10/ai-s-systemic-distortion-of-news-is-consistent-across-languages-and-territories-international-study-by-public-service-broadcaste">EBU, Oct 2025</a>). “Significant issue” is broader than “wrong”. The EBU’s Jean Philip De Tender: “This research conclusively shows that these failings are not isolated incidents.” The Tow Center asked eight AI search tools to identify the source of quoted excerpts; collectively they were wrong more than 60% of the time, from 37% (Perplexity) to 94% (Grok 3) (<a href="https://www.cjr.org/tow_center/we-compared-eight-ai-search-engines-theyre-all-bad-at-citing-news.php">CJR, Mar 2025</a>). That task is narrow, but citation is exactly the job of a sourced brief.</p>
+<p>The specific failures, each with its guardrail:</p>
+<ol type="1">
+<li><strong>Confident fabrication in a trusted wrapper.</strong> In December 2024 Apple’s notification summary of a BBC alert falsely told users Luigi Mangione had shot himself. The BBC: “<a href="https://uk.finance.yahoo.com/news/apple-ai-tools-bbc-complaint-090531355.html">It is essential to us that our audiences can trust any information or journalism published in our name, and that includes notifications.</a>" RSF called generative AI “<a href="https://rsf.org/en/rsf-urges-apple-remove-its-new-generative-ai-feature-after-it-wrongly-attributes-false-information">too immature to produce reliable information for the public</a>". Apple paused news summaries in January 2025 (<a href="https://www.cnbc.com/2025/01/16/apple-disables-ai-notifications-for-news-in-its-beta-iphone-software.html">CNBC</a>). Guardrail: every factual claim links to its original, and quotes appear only when the wording was matched.</li>
+<li><strong>Overstated conclusions.</strong> A 2025 Royal Society Open Science study of about 4,900 summaries from 10 LLMs found overgeneralised conclusions in 26-73% of cases depending on model (<a href="https://doi.org/10.1098/rsos.241776">DOI 10.1098/rsos.241776</a>). Guardrail: keep the paper’s own hedges, and say what a result does not show.</li>
+<li><strong>Nobody clicks through.</strong> Pew tracked 68,879 searches by 900 US adults: people clicked a result in 8% of visits with an AI summary against 15% without, and clicked a link inside the summary about 1% of the time (<a href="https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/">Pew, Jul 2025</a>). Guardrail: flag the one item per edition most worth checking yourself.</li>
+<li><strong>Trust displaces checking.</strong> Lee et al. surveyed 319 knowledge workers and found that more confidence in the AI went with less critical thinking, and more self-confidence with more (<a href="https://www.microsoft.com/en-us/research/publication/the-impact-of-generative-ai-on-critical-thinking-self-reported-reductions-in-cognitive-effort-and-confidence-effects-from-a-survey-of-knowledge-workers/">Microsoft Research, CHI 2025</a>). It is self-report. Guardrail: a visible verification status on every claim, so trust attaches to the check rather than the prose.</li>
+<li><strong>Omissions you cannot see.</strong> Simon Willison’s point about deep research: checking references catches most invented claims, but missing material leaves no trace, and a polished document looks more complete than it is (<a href="https://simonwillison.net/2025/Feb/25/deep-research-system-card/">Willison, Feb 2025</a>). Guardrail: list what was searched, what could not be opened, and what was not covered.</li>
+<li><strong>Silent pipeline failure.</strong> Stephan Miller found his home agent’s scheduled job had quietly failed while still producing plausible output; his fix was to move the plain fetch-and-report jobs to ordinary cron and keep the model for synthesis (<a href="https://www.stephanmiller.com/my-home-ai-agent-kept-making-shit-up/">Miller</a>). Guardrail: deterministic fetching outside the model, and a status line that fails loudly.</li>
+</ol>
+<p>Tao’s position is the right default for a mathematician. His AI-views page treats AI as safer as a fast search engine than as a summariser of papers you could not read unaided, and literature search as useful only if you can check that the references say what is claimed (<a href="https://teorth.github.io/tao-web/ai-views.html">Tao, AI views</a>; the page notes it was drafted by Claude and reviewed by Tao, which is either reassuring or recursive).</p>
+<h3 id="house-rules-for-this-brief">House rules for this brief</h3>
+<ol type="1">
+<li><strong>Bottom line first, hard cap after.</strong> A three-sentence BLUF, then at most five items, readable in ten minutes. The raw research is optional, never homework. If an edition runs long, cut items rather than shrinking them.</li>
+<li><strong>Read it at a break, not on waking.</strong> It arrives overnight but is designed to be read after your first deep-work block or at a natural transition. Sleep inertia impairs judgement for a while after waking (<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6710480">Hilditch and McHill 2019</a>; the often-quoted 30 minutes is not firmly established), and anything that opens a loop is better read after the hard thinking than before it.</li>
+<li><strong>Numbers behind the words.</strong> Likelihood words follow Kent’s table, with a number in brackets where it matters. Every claim carries a status (verified, partial, unverified) and says how it was checked. “Matched across three search results” is not the same as “read the paper”, and the brief will say which.</li>
+<li><strong>Link originals, quote only what was matched.</strong> Inline links go to primary sources where they exist. A quote appears verbatim only if the wording was confirmed; otherwise it is paraphrased and marked. Numbers follow the same rule.</li>
+<li><strong>Rank by consequence, and say why.</strong> Given what position 1 does on the arXiv, item 1 gets a one-line reason for being item 1. Novelty alone is not a reason.</li>
+<li><strong>Leave things out on purpose.</strong> No general news, nothing that cannot change a decision or a reading list, no slow story repeated daily. “Nothing material changed” is a valid edition and beats padding.</li>
+<li><strong>Show the plumbing.</strong> A closing status line: what ran, what failed, what could not be opened, what was out of scope. Omissions are listed, not implied.</li>
+<li><strong>A kill test.</strong> After 20 editions, count the items you acted on or followed into the raw research. If the answer is near zero, shrink the brief to weekly or stop it. Pulse is the precedent.</li>
+</ol>
+<h2 id="part-2-espresso-to-the-bedside">Part 2: Espresso to the bedside</h2>
+<p><strong>Bottom line.</strong> Build the bedside machine as modules, and get each one working by hand before it gets a motor. Any motor you add should only push, never hold, so that cutting the power leaves an ordinary manual tool. That means three steps. First, motorise a hand grinder through a one-way clutch so the crank still works, and dose by weight. Second, fit a push-only actuator to a cheap direct lever (a Cafelat Robot, about $399) and learn the force and profile problem there. Third, combine the two in one enclosure with a thermoblock, a heated group, and a controller you arm by hand at night that brews at the alarm. Make the Americano the default drink. If you want a daily machine while you build, a Gaggia Classic Pro with a GaggiMate Pro kit (about $499 plus EUR 213) is a cheap, scriptable pressure-profiling setup. It is not a lever. My estimate for the full build is $1,250-2,200 in parts and a winter of weekends. Nobody has documented this exact machine, so treat that estimate as having fat tails.</p>
+<p>Prices are approximate, US retail unless marked, as seen in listings around 10 November 2026. Check them before buying.</p>
+<h3 id="what-to-look-for-in-a-machine">What to look for in a machine</h3>
+<p>Start with the heat source. Boilers act as a heat battery: slow to warm (roughly 5-30 minutes) but stable. Thermoblocks heat in seconds to a minute and hold only a few millilitres, so they store almost no energy, which is what you want on a nightstand. The buying guides disagree widely on these numbers (<a href="https://craftcoffeespot.com/espresso/thermoblock-vs-thermocoil-vs-boiler/">Craft Coffee Spot</a>), so read them as orders of magnitude.</p>
+<p>A PID controller reads boiler temperature, not group temperature. Blogs put the offset on a Gaggia at anywhere from 5 to 12 C, which is unverified and contested.</p>
+<p>Next, you need a pressure source you can command. The options are a vibration pump with phase-angle control (the Gaggiuino and GaggiMate approach), a speed-controlled gear pump, a spring, or your arm. Automation also needs a transducer. A 0-12 bar stainless one costs about $38 (<a href="https://www.peakcoffee.cc/product/gaggiuino-pressure-sensor/">Peak Coffee</a>), though that is the vendor’s price and a cached copy of the page showed $18.</p>
+<p>Watch what touches the water. CW617N is a leaded brass, and the “lead-free CW617N” you will see advertised does not exist (<a href="https://www.ifanholding.com/news/cw617n-lead-free-brass">IFAN</a>). NSF/ANSI 372 caps lead at a 0.25% weighted average over wetted surfaces (<a href="https://standards.nsf.org/higherlogic/ws/public/download/55131/372i5r1%20-%20Normative%20Reference%20-%20JC%20Memo%20%26%20ballot.pdf">NSF</a>). It is a drinking-water standard, and I could not confirm how it applies to coffee gear. In anything you build, use 316 stainless wherever water touches.</p>
+<p>Finally, make sure there is a way in. Breville shows the problem, whichever model your girlfriend has: the Dual Boiler BES920 is a lot of machine for $1,599.95 (<a href="https://www.breville.com/en-us/product/BES920">Breville US</a>). But its automation hooks are the app on Wi-Fi models or a relay hack, plus one explicitly unofficial Home Assistant integration that lists only the Oracle Dual Boiler (<a href="https://github.com/simonjgreen/sageha">sageha</a>).</p>
+<h3 id="how-a-lever-makes-pressure">How a lever makes pressure</h3>
+<p>On a direct lever (Robot, La Pavoni, Cremina) your arm is the pump. Brew pressure is handle force times mechanical advantage, divided by piston area, and the advantage changes with lever angle. On a spring lever (Strega, Profitec Pro 800, Elektra, Londinium), lifting the handle compresses a spring and lets water into the cylinder. When you let go, the spring does the work.</p>
+<p>Take spring rate <em>k</em>, preload <em>x</em>₀ at the bottom of the stroke, and piston area <em>A</em>. With the piston a height <em>s</em> above the bottom, pressure is roughly <em>P(s) ≈ k(x₀ + s)/A</em>, less seal friction. At constant flow <em>Q</em>, the piston falls at <em>ds/dt = −Q/A</em>, so pressure falls linearly in time. In a real shot the puck erodes and flow rises, so the decline steepens toward the end. The preload sets the end pressure and the stroke adds the peak, which is why swapping the spring changes both.</p>
+<p>A lever retailer’s blog describes one illustrative shot that peaks at 8.6 bar and falls to 3.7 bar (<a href="https://thelevermag.com/blogs/articles/decent-espresso">The Lever Blog</a>); that is one shot, not a benchmark. Other sources claim peaks from 7.5 to 12 bar, but none shows a transducer trace (unverified). On force, one Home-Barista user’s bathroom-scale reading came to about 24 lb at the handle for 6 bar and about 40 lb for 9 bar (<a href="https://www.home-barista.com/levers/pressure-profiling-la-pavoni-t34126.html">Home-Barista</a>; the post may sit in a related Cremina profiling thread). Other estimates for 9 bar run from 25 to 48 lb. Use these for rough actuator sizing only.</p>
+<figure class="profile">
+<svg viewBox="0 0 680 270" role="img" aria-label="Pressure over time: a spring-lever shot preinfuses near 1 bar for about 10 seconds, jumps to about 8.6 bar when the lever is released, then eases to about 4 bar by 34 seconds. A pump machine ramps to a flat 9 bar.">
+  <line class="ax" x1="56" y1="226" x2="656" y2="226"/>
+  <line class="ax" x1="56" y1="169" x2="656" y2="169" stroke-dasharray="2 4"/>
+  <line class="ax" x1="56" y1="112" x2="656" y2="112" stroke-dasharray="2 4"/>
+  <line class="ax" x1="56" y1="55" x2="656" y2="55" stroke-dasharray="2 4"/>
+  <line class="ax" x1="56" y1="36" x2="56" y2="226"/>
+  <text class="axl" x="46" y="230" text-anchor="end">0</text>
+  <text class="axl" x="46" y="173" text-anchor="end">3</text>
+  <text class="axl" x="46" y="116" text-anchor="end">6</text>
+  <text class="axl" x="46" y="59" text-anchor="end">9</text>
+  <text class="axl" x="46" y="30" text-anchor="end">bar</text>
+  <text class="axl" x="56" y="246" text-anchor="middle">0</text>
+  <text class="axl" x="206" y="246" text-anchor="middle">10</text>
+  <text class="axl" x="356" y="246" text-anchor="middle">20</text>
+  <text class="axl" x="506" y="246" text-anchor="middle">30</text>
+  <text class="axl" x="656" y="246" text-anchor="end">40 s</text>
+  <path class="c-pump" d="M56 226 L108.5 55 L506 55"/>
+  <path class="c-lever" d="M56 203.2 L191 203.2 C206 203.2 210 64 228.5 62.6 L566 150"/>
+  <circle cx="228.5" cy="62.6" r="4.5" fill="var(--crema)"/>
+  <text class="c-lbl p" x="300" y="44">pump machine: ramps to a flat 9 bar</text>
+  <text class="c-lbl l" x="300" y="200">spring lever: ~8.6 bar at release, easing to ~4</text>
+  <text class="c-lbl l" x="62" y="191">preinfusion ~1 bar</text>
+  <text class="axl" x="198" y="140" text-anchor="end">lever released</text>
+</svg>
+<figcaption>Schematic, not a measurement. The lever line follows one published shot description (about 8.6 bar falling to about 3.7 bar over roughly 30 s) and owner reports of 7.5–8.5 bar peaks. Preinfusion near 1 bar is boiler pressure on a boiler-fed spring lever. No transducer trace could be opened overnight, so read this as the typical shape rather than data.</figcaption>
+</figure>
+
+<p>The case that a declining profile tastes better comes mostly from people who sell machines. Decent, which sells pump machines that imitate lever curves, argues that 9 bar is a leftover from 1940s spring sizes (<a href="https://decentespresso.com/blog/the_nine_bar_question">Decent</a>). I found no controlled taste trial.</p>
+<h3 id="machines-that-work-by-hand-and-can-be-automated">Machines that work by hand and can be automated</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Machine</th>
+<th>Mechanism</th>
+<th>Automation route</th>
+<th>Price (approx.)</th>
+<th>Honest drawback</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Cafelat Robot</td>
+<td>Direct lever, no electronics</td>
+<td>None built in; good actuator testbed</td>
+<td>$399 (<a href="https://prima-coffee.com/brew/espresso/home/cafelat/">Prima</a>)</td>
+<td>No heater; you supply hot water</td>
+</tr>
+<tr class="even">
+<td>La Pavoni Europiccola EPC-8</td>
+<td>Direct lever on small boiler</td>
+<td>PID and pressurestat mods</td>
+<td>$1,108 (<a href="https://www.wholelattelove.com/products/la-pavoni-europiccola-epc-8-espresso-machine">WLL</a>); $989 on sale at another retailer</td>
+<td>Owners report the group overheats after 2-3 shots</td>
+</tr>
+<tr class="odd">
+<td>Olympia Cremina</td>
+<td>Direct lever, Swiss</td>
+<td>Bluetooth portafilter sensors for logging</td>
+<td>$4,305 (<a href="https://www.cerinicoffee.com/products/olympia-express-cremina-espresso-machine-made-in-switzerland">Cerini</a>)</td>
+<td>Price; same thermal juggling</td>
+</tr>
+<tr class="even">
+<td>Elektra Micro Casa a Leva</td>
+<td>Spring lever on boiler</td>
+<td>Little</td>
+<td>$1,599 when tested (<a href="https://coffeegeek.com/reviews/firstlooks/elektra-micro-casa-a-leva/">CoffeeGeek</a>); about $2,029 at one retailer now</td>
+<td>Group heat is a known con</td>
+</tr>
+<tr class="odd">
+<td>Bezzera Strega</td>
+<td>Spring lever plus vibe pump</td>
+<td>Pump fill is electric; lifting the lever cuts the pump</td>
+<td>$2,699 (<a href="https://wholelattelove.com/bezzera-strega-lever-espresso-machine">WLL</a>)</td>
+<td>Owners complain of pump noise</td>
+</tr>
+<tr class="even">
+<td>Profitec Pro 800</td>
+<td>Spring lever, pump only fills, dual boiler</td>
+<td>Little</td>
+<td>$3,199-3,299 (<a href="https://www.wholelattelove.com/products/profitec-pro-800-lever-group-espresso-machine">WLL</a>); $2,968 on sale elsewhere</td>
+<td>Nothing to hook into</td>
+</tr>
+<tr class="odd">
+<td>Lelit Bianca V3</td>
+<td>Rotary pump, manual flow paddle</td>
+<td>Hand profiling at the paddle</td>
+<td>$2,999.95 (<a href="https://www.wholelattelove.com/products/lelit-bianca-v3-dual-boiler-espresso-machine">WLL</a>)</td>
+<td>Not a lever</td>
+</tr>
+<tr class="even">
+<td>Meticulous</td>
+<td>Motor-driven piston, ten sensors</td>
+<td>Open API, per the maker</td>
+<td>$1,350 CES 2025 preorder (<a href="https://techcrunch.com/2025/01/07/meticulous-shows-off-its-smart-espresso-machine-at-ces-2025">TechCrunch</a>); current retail unconfirmed</td>
+<td>No lever for a hand</td>
+</tr>
+<tr class="odd">
+<td>Gaggia Classic Pro E24 + GaggiMate Pro</td>
+<td>Vibe pump, small boiler, ESP32</td>
+<td>Web UI, WebSocket, pressure and flow profiles</td>
+<td>$499 sale, $549 list (<a href="https://www.wholelattelove.com/collections/gaggia/products/gaggia-classic-pro">WLL</a>) plus EUR 213.49</td>
+<td>Not a lever; plastic accessories</td>
+</tr>
+</tbody>
+</table></div>
+<p>The Strega comes closest to your brief: pump for the fill, spring for the extraction, lever as the switch. But nothing on it accepts a command.</p>
+<p>Meticulous is the mirror image. It has ten sensors and a scale under the drip tray (<a href="https://new.sca.coffee/entries/meticulous-espresso">SCA</a>), and a July Kickstarter update says the API is open, with TypeScript and Python clients (<a href="https://www.kickstarter.com/projects/meticulous/meticulous-espresso/posts/4143589">Kickstarter</a>). But you can’t pull it by hand, and the $1,850 retail price that circulates is unverified.</p>
+<p>New and expensive does not mean reliable. CoffeeGeek’s Mark Prince headlined his piece on the new Olympia Mina “A Beautiful, Frustrating Swiss Paradox” (12 Nov 2025), and it relays a valve failure after about a month of daily use (<a href="https://coffeegeek.com/opinions/coffee-at-the-moment/olympia-mina-beautiful-flawed-paradox/">CoffeeGeek</a>). Decent’s DE1 is a very scriptable pump machine. Decent says its tablet software and API are open, and pyDE1 is GPL-3.0 (<a href="https://github.com/jeffsf/pyDE1">pyDE1</a>). I couldn’t verify its current price, so it isn’t in the table.</p>
+<h3 id="if-you-would-rather-buy-than-build">If you would rather buy than build</h3>
+<p>Three tiers, using only prices the fact-checker could confirm (US, approximate, November 2026). The cheapest tier is the one that automates best, which tells you where the money in this project should go.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Tier</th>
+<th>Machine</th>
+<th>Grinder</th>
+<th>Rough total</th>
+<th>Lever alternative</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>About $600-1,000</td>
+<td>Gaggia Classic Pro E24 ($499 sale, $549 list) plus GaggiMate Pro (EUR 213)</td>
+<td>1Zpresso J-Ultra ($199)</td>
+<td>about $950</td>
+<td>Cafelat Robot ($399) plus J-Ultra, about $600; you supply hot water</td>
+</tr>
+<tr class="even">
+<td>About $1,500-2,700</td>
+<td>Breville Dual Boiler ($1,599.95) or Rancilio Silvia Pro X (about $2,195)</td>
+<td>DF64 Gen 2 ($399-450, <a href="https://df64coffee.com/a/s/products/df64-gen-2-single-dose-coffee-grinder">DF64</a>)</td>
+<td>about $2,000-2,650</td>
+<td>La Pavoni Europiccola ($1,108) plus J-Ultra, about $1,300</td>
+</tr>
+<tr class="odd">
+<td>$3,500 and up</td>
+<td>Lelit Bianca V3 ($2,999.95) or La Marzocco Linea Micra (about $3,900, <a href="https://www.gearpatrol.com/drinks/la-marzocco-linea-micra-review/">Gear Patrol</a>)</td>
+<td>Niche Zero (about $599-649, <a href="https://completehomebarista.com/guides/niche-zero-price-guide-2026/">price guide</a>)</td>
+<td>about $3,600-4,550</td>
+<td>Profitec Pro 800 (<span class="math inline">3, 199 − 3, 299)<em>o</em><em>r</em><em>O</em><em>l</em><em>y</em><em>m</em><em>p</em><em>i</em><em>a</em><em>C</em><em>r</em><em>e</em><em>m</em><em>i</em><em>n</em><em>a</em>(</span>4,305)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Only the first row has a documented pressure-and-flow automation path. The Silvia Pro X already has dual PIDs, and the open CleverCoffee project targets the base Silvia and controls temperature only. The Breville’s hooks are the ones described above. The middle and top tiers buy temperature stability and steam. They do not buy anything that helps with getting a cup to the bedside.</p>
+<h3 id="three-build-paths">Three build paths</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Path</th>
+<th>Parts (approx.)</th>
+<th>Time</th>
+<th>Skills</th>
+<th>Main risk</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Modify a pump machine</td>
+<td>$750-900</td>
+<td>1-3 weekends</td>
+<td>Mains wiring, crimping, light plumbing</td>
+<td>Mains faults; licence limits</td>
+</tr>
+<tr class="even">
+<td>2. Lever plus added automation</td>
+<td>$800-2,000</td>
+<td>2-4 months of weekends</td>
+<td>Mechanism design, motor control</td>
+<td>Actuator sizing, kickback, heat</td>
+</tr>
+<tr class="odd">
+<td>3. From scratch</td>
+<td>$1,500-4,000</td>
+<td>100-300 h</td>
+<td>Machining, pressure plumbing, safety</td>
+<td>Pressure vessel, lead, time</td>
+</tr>
+</tbody>
+</table></div>
+<p>Times, and the costs for paths 2 and 3, are my estimates from the anecdotes below.</p>
+<p><strong>1. Modify an existing machine.</strong> The GaggiMate Pro kit is EUR 213.49 on the official shop, with about a two-week restock (<a href="https://shop.gaggimate.eu/products/gaggimate-pro-kit">GaggiMate shop</a>). You need the Pro rather than the Standard (from EUR 152.49) for pressure and flow profiles. The repository has 995 stars and a CC BY-NC-SA 4.0 licence (<a href="https://github.com/jniebuhr/gaggimate">GitHub</a>). Its releases page marks v1.9.0 (29 September) as latest; the docs still say v1.7.3, so trust the releases page. Upstream describes an automatic shutoff if the controller hangs or overheats, which is the feature you want most at a bedside.</p>
+<p>Gaggiuino is older and bigger, with 2.7k stars and 2,380 commits (<a href="https://github.com/Zer0-bit/gaggiuino">GitHub</a>). Aftermath reports that its author took the current generation closed-source because of scalpers, in an “open-core” model (<a href="https://aftermath.site/gaggiuino-gaggia-classic-pro-mod-open-source-hack/">Aftermath</a>). Costs are forum anecdote: $388 for one premium kit, and about $400 in one <a href="https://kozikow.wordpress.com/2024/02/22/gaggiuino-build-log/">build log</a> that says going below $250 is hard. If you want a properly open licence, CleverCoffee is GPL-2.0 (<a href="https://github.com/rancilio-pid/clevercoffee">GitHub</a>), but it only controls temperature.</p>
+<p>This path ends with a scriptable machine, but no lever, grinder or bedside cup.</p>
+<p><strong>2. A lever or lever hybrid with automation added.</strong> You’ve ruled out a robot arm on an unmodified machine. An actuator built into the frame, through a coupling that can only push, is a different thing: retract it and the lever is just a lever. The closest precedent is Alex Moyse’s 2018 La Pavoni project. He used a refurbished 500 lb Thomson linear actuator that he called “complete overkill for the La Pavoni” (<a href="https://alexmoyse.com/?page_id=75">alexmoyse.com</a>). I found no record of the result, or of whether the lever still worked by hand. One GitHub project puts two linear actuators and an ESP32 on a Flair 58; its author says pressure sensing isn’t there yet (<a href="https://github.com/johnrbell/flair_eva_project">flair_eva_project</a>, unverified).</p>
+<p>From the force readings above, about 180 N (40 lb) at the handle covers 9 bar. Double it for stiction and you have a small lead-screw actuator, not a 500 lb one. Forum posters warn that Pavoni internals aren’t really built for a steady 9 bar (<a href="https://www.home-barista.com/levers/robo-pavoni-learning-to-make-espresso-machine-from-scratch-t4141.html">Home-Barista</a>), which points to the Robot as the testbed.</p>
+<p>A spring lever is simpler in one way: the motor only cocks it, so the profile stays mechanical. It is worse in another, because a spring lever can kick back hard if something releases it under load (my reasoning, not sourced). I found no consumer motor-assisted spring lever, so this is open ground.</p>
+<p><strong>3. From scratch.</strong> One open-boiler lever took about EUR 280 in parts and an estimated 70-80 hours. Another took about 120 hours and EUR 1,300. A 36-page thread, “<a href="https://www.home-barista.com/levers/building-lever-machine-from-scratch-t41716.html">Building a lever machine…. from scratch</a>", includes a month spent converting a lathe to CNC while the builder waited for a casting. (All unverified forum figures.) diyPresso is a halfway house: open firmware, One at EUR 1,250 (no steam), Two at EUR 1,695 (<a href="https://www.diypresso.com/product/diypresso-one/">diyPresso</a>). Hackaday said it “might not be the cheapest road to obtaining an espresso machine” (<a href="https://hackaday.com/2024/09/15/an-espresso-machine-for-the-diy-crowd/">Hackaday, 2024</a>).</p>
+<p>The hard limits are regulatory. The EU Pressure Equipment Directive applies only above 0.5 bar, and anything under its Article 4(1) thresholds falls under “sound engineering practice” (<a href="https://www.ce-richtlinien.eu/richtlinien/Druckgeraete/Leitlinie/PED_2014-68-EU_Guidelines_EN_v6.0.pdf">PED guidelines</a>). I couldn’t confirm where those thresholds fall for a small boiler. So skip the steam boiler and use thermoblocks. If you do build a boiler, fit a certified, marked safety valve. One retailer sells 2.1 bar valves for home boilers and warns never to fit a lower-rated one or bypass it (<a href="https://www.espressoparts.com/products/espresso-machine-1-4-boiler-safety-valve">Espressoparts</a>). Others still sell 1.8 bar valves, so match the boiler’s rating.</p>
+<p>For a pump-driven build, the natural actuator is a Fluid-o-Tech FG gear pump: 316L, 24 V brushless, speed-controlled, 30-210 l/h, up to 12 bar (<a href="https://www.fluidotech.it/en/products/technologies/external-gear-pumps/fg200-300-series/">Fluid-o-Tech</a>). Prices are all over the place: $880-1,331 new at one dealer depending on the snapshot, and about $600 new or $95 used per forum posts.</p>
+<h3 id="your-brothers-grinder">Your brother’s grinder</h3>
+<p>I can’t identify it from the description. A metal barrel with knurling and a crank fits half the premium hand grinders on sale, and no source treats knurling as a distinguishing mark. A few checks narrow it quickly:</p>
+<ul>
+<li>Look for engraving on the barrel, the crank arm or the top nut.</li>
+<li>See where the adjustment is. An external numbered dial just under the crank suggests a 1Zpresso J-Ultra or K-Ultra (the J-Ultra’s handle also folds). A stepless numbered ring suggests a Kinu M47.</li>
+<li>Weigh it. A Kinu M47 Phoenix is about 0.7 kg (<a href="https://www.homegrounds.co/kinu-m47-review/">Home Grounds</a>); one retailer’s 1.4 kg figure is contradicted elsewhere.</li>
+<li>Wooden parts suggest a Comandante, which leans toward filter.</li>
+</ul>
+<p>For reference, the reviewers’ espresso pick, the 1Zpresso J-Ultra, is $199 (<a href="https://1zpresso.coffee/product/jultra">1Zpresso</a>), and the X-Ultra is $159 (<a href="https://1zpresso.coffee/product/xultra">1Zpresso</a>).</p>
+<p><strong>Motorising it.</strong> 1Zpresso is relaxed about this. Its FAQ says any 6.35 mm (1/4 inch) drill fits all its grinders and doesn’t need to be powerful (<a href="https://1zpresso.coffee/faq/">1Zpresso FAQ</a>; paraphrased, since the same wording appears on a rival’s FAQ). The advice to run a drill only briefly to avoid heat is verbatim on a rival’s FAQ, so I haven’t attributed it to 1Zpresso. AeroPress excludes drill-adapter damage from its own grinder’s warranty. I found no stated policy from Kinu, Timemore or Comandante.</p>
+<p>On torque, a hobbyist on the ODrive forum wrote: “With a fine grind setting I measured about 3 Nm, so assuming 6 to have some headroom” (<a href="https://discourse.odriverobotics.com/t/research-motorizing-manual-coffee-grinder/6979">ODrive forum</a>). One anonymous measurement. Measure your brother’s grinder yourself: hang a luggage scale from the crank knob and multiply by the radius. At a 6 cm crank, 3 Nm is about 5 kgf. On speed, forum reports (unverified) put hand cranking near 120 rpm and say throughput stops improving around 80 rpm because the beans stop feeding. One builder ran a motorised HG-1 at 40-50 rpm for espresso. So you want a gearmotor or geared stepper giving 6-10 Nm at 40-120 rpm, not a drill at 400.</p>
+<p><strong>Keeping the crank.</strong> A hand grinder doesn’t freewheel. Bolt a motor to the shaft and the crank goes along for the ride, and a geared motor acts as a brake when you crank by hand. I found no documented build that solves this. The design I’d try replaces the crank nut with an adapter stub. The crank refits on top of the stub. Below it sits a timing-belt pulley on a sprag (one-way) clutch, driven by a gearmotor mounted to the side. When the motor drives, the sprag locks and turns the shaft. When you crank, the shaft overruns the stationary pulley and the motor is never back-driven. Support the stub in its own bearing in the frame and join it to the grinder shaft with an Oldham or jaw coupling. That keeps belt tension off the grinder’s top bearing and absorbs misalignment. A soft-jawed collar around the barrel takes the reaction torque, which is the knurling’s moment to be useful.</p>
+<p><strong>Grind by weight.</strong> Two open ESP32 projects use an HX711 and a load cell. <a href="https://github.com/jb-xyz/openGBW">openGBW</a> adjusts its overshoot offset after each grind: “the accuracy will increase with each grind”. <a href="https://github.com/jaapp/smart-grind-by-weight">smart-grind-by-weight</a> aims for ±0.03 g, which is a design goal with no measured data, and calls itself experimental. Both target Eureka electric grinders. A single-dose hand grinder allows simpler control: weigh the beans in, grind to empty, and detect empty when motor current drops to idle.</p>
+<p>One guide rates a Comandante C40 at 43 dB(A), a peak during full-torque cranking, against 59 for a Eureka Silenzio and 62 for a DF64 Gen 2 (<a href="https://beanbrewdigest.com/equipment-gear/what-is-the-most-quiet-coffee-grinder-available">Bean Brew Digest</a>). The distance isn’t stated, and another site puts hand grinders at 70-75 dB on a different basis. Hand grinders are probably quieter, but the published numbers can’t be compared.</p>
+<h3 id="concept-a-teasmade-for-espresso">Concept: a Teasmade for espresso</h3>
+<p>The Teasmade goes back to patents from 1891 and 1902 (Rowbottom, then Clarke, per the enthusiast site <a href="https://www.teasmade.uk/1891-samuel-rowbottom">teasmade.uk</a>); Goblin brought it to market in the mid-1930s. Its cycle ends itself. An alarm clock switches on a sealed kettle, and steam pressure pushes the water into the pot. The empty kettle then releases a switch beneath it, which cuts the element and sounds the buzzer (<a href="https://hackaday.com/2020/01/30/retrotechtacular-teasmade">Hackaday</a>). If the seal leaks, you just get no tea. That failure is benign, and that is the property to copy.</p>
+<p>The Barisieur ($445, or $399 on offer in 2019 per <a href="https://www.salon.com/2019/04/06/this-coffee-maker-alarm-clock-will-change-your-am-game">Salon</a>) lets you choose before, at or after the alarm, but it brews filter coffee. The robot cafes are the warning. Cafe X closed its San Francisco sites in January 2020 and its airport sites that August (<a href="https://abc7news.com/post/robot-baristas-cafe-x-closes-sf-locations-/5830767/">ABC7</a>). Briggo’s enclosed kiosk became Costa’s BaristaBot (<a href="https://www.bevnet.com/news/2020/costa-coffee-acquires-rebrands-briggo-machine-as-baristabot/">BevNET</a>), and the enclosed, fixed layout is the design that was acquired rather than closed. Arms aren’t ready for this. An SO-101 costs about $100-130, and the best documented result I found is 17 of 20 cube placements on one fixed setup (<a href="https://huggingface.co/omiya239532/so101_act_cotrain">HF model card</a>).</p>
+<p><strong>Architecture.</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>Choice</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Heat</td>
+<td>About 1 kW thermoblock for brew and Americano water, a 100-200 W cartridge heater in the group, a PID on each, and bimetal cutouts wired in series outside the firmware</td>
+<td>Little stored energy; group mass handled separately</td>
+</tr>
+<tr class="even">
+<td>Pressure</td>
+<td>Lever group with a push-only actuator (a roller in an open cradle under the lever, free when retracted); a small pump fills the cylinder at low pressure, as on the Strega</td>
+<td>Profile stays mechanical; a hand can do everything</td>
+</tr>
+<tr class="odd">
+<td>Grinder</td>
+<td>The sprag-coupled motorised hand grinder</td>
+<td>Crankable with the power off</td>
+</tr>
+<tr class="even">
+<td>Dosing</td>
+<td>Beans pre-weighed into a sealed tube at night; ground through a funnel into a basket on a load cell; spring-loaded tamper on a lead screw</td>
+<td>Puck prep is the hard chore; kiosks only solved it in enclosed machines</td>
+</tr>
+<tr class="odd">
+<td>Basket</td>
+<td>Drawer portafilter on a rail: out to dosing, in under the group, cam-lifted to seal</td>
+<td>Superautomatic brew units show dose-tamp-eject fits in a shoebox (my inference; untested with a lever)</td>
+</tr>
+<tr class="even">
+<td>Water</td>
+<td>1-1.5 L tank, level sensor, low-water heater cutout; one Third Wave Water packet per gallon of distilled or RO water, as Clive suggests (<a href="https://clivecoffee.com/products/third-wave-water-packets-12-pack">Clive</a>)</td>
+<td>No plumbing at a bedside</td>
+</tr>
+<tr class="odd">
+<td>Cup</td>
+<td>Fixed bay with cup-presence load cell, drip tray level sensor, double-wall glass</td>
+<td>No cup, no brew</td>
+</tr>
+<tr class="even">
+<td>Control</td>
+<td>ESP32 for real-time loops (GaggiMate as reference); Home Assistant or phone alarm over MQTT for timing</td>
+<td>Interlocks don’t depend on Wi-Fi</td>
+</tr>
+<tr class="odd">
+<td>Trigger</td>
+<td>A physical “arm” button pressed at night, then the alarm time; never runs unarmed</td>
+<td>A queue for tomorrow, not a daily habit</td>
+</tr>
+<tr class="even">
+<td>Manual override</td>
+<td>Actuator retracts clear of the lever; crank on the grinder; a switch that keeps heaters and PIDs but drops the scheduler</td>
+<td>It should be a decent manual machine with the brain unplugged</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Rough bill of materials</strong> (my estimates unless sourced):</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Item</th>
+<th>Approx. cost</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Spring-lever group as a part (about $495 in one old forum thread, unverified), or a Robot to start</td>
+<td>$400-600</td>
+</tr>
+<tr class="even">
+<td>Thermoblock, group heater, PIDs, SSRs, thermal fuses</td>
+<td>$100-200</td>
+</tr>
+<tr class="odd">
+<td>Pressure transducer ($38, vendor price) and Digmesa flow meter (roughly GBP 8-78)</td>
+<td>$60-150</td>
+</tr>
+<tr class="even">
+<td>Lead-screw lever actuator (about 500 N) and driver</td>
+<td>$80-200</td>
+</tr>
+<tr class="odd">
+<td>Grinder gearmotor, sprag pulley, belt, bearings, coupling</td>
+<td>$80-150</td>
+</tr>
+<tr class="even">
+<td>Load cells, HX711s, ESP32s, display</td>
+<td>$40-80</td>
+</tr>
+<tr class="odd">
+<td>316L fittings, PTFE hose, valves, tank, enclosure</td>
+<td>$300-600</td>
+</tr>
+<tr class="even">
+<td>Hand grinder if not borrowed (J-Ultra)</td>
+<td>$199</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td>about $1,250-2,200, before mistakes</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Build phases.</strong></p>
+<ol type="1">
+<li>Bench rig: thermoblock, PID and transducer on a plate, logging to a laptop. Characterise warm-up and the temperature dip at shot start. Builders warn that a block can lag the opening burst of flow, and that flow-based feed-forward helps (<a href="https://www.home-barista.com/espresso-machines/diy-espresso-machine-dual-thermoblock-dual-piston-pump-single-group-t77501.html">Home-Barista</a>).</li>
+<li>Grinder module, from torque measurement to grind-by-weight.</li>
+<li>Lever module: hand shots with logging, then the actuator replaying your own curves.</li>
+<li>Dosing and the drawer. This will take longest.</li>
+<li>Interlocks, arm-and-expire logic, scheduling.</li>
+<li>A month at the bedside with a phone decibel meter and a shot log.</li>
+</ol>
+<p><strong>Constraints.</strong></p>
+<p>The thermal budget is easy to work out. Heating water from 20 to 93 C takes about 305 J/g, so 1 kW delivers about 3.3 ml/s. That covers a 40 g shot in 30 seconds and 150 ml of Americano water in under a minute, and it agrees with a forum back-of-envelope figure of about 3 ml/s. The group is the slow part. Raising a 2.5 kg brass group by 70 K takes about 66 kJ, or about 7 minutes at 150 W before losses, so plan a 15-20 minute pre-alarm start. Don’t leave a dosed basket in a hot group. The SCA’s staling review links higher temperature to faster volatile loss (<a href="https://sca.coffee/sca-news/2012/02/15/what-is-the-shelf-life-of-roasted-coffee-a-literature-review-on-coffee-staling-bjcx7">SCA</a>), which is why this design grinds and doses a few minutes before the alarm.</p>
+<p>On noise, let the grinder be the alarm. It is the loudest part of the cycle either way, and grinding three minutes before you wake gives fresher coffee. Pump noise figures are only estimates (60-75 dB for vibe pumps in one guide), and how the pump is mounted matters as much as which type it is.</p>
+<p>For scald and fire safety: no steam boiler, an RCD-protected outlet, a thermal fuse in series with each heater, and a tilt switch. Firmware should never be the only thing that can switch a heater off. A 2021 Topten/eceee paper says EU coffee machines ship with a 30-minute auto-off default that users can’t lengthen (<a href="https://storage.topten.eu/source/files/D2_1_Criteria_Paper_Coffee_Machines.pdf">Topten</a>), though the underlying regulation’s status is muddled. Do the same thing, Teasmade-style. Heaters may run only inside an armed window from T−20 to T+10 minutes. A limit switch at the bottom of the lever stroke cuts them directly. If the machine isn’t armed, or there is no cup, it stays cold.</p>
+<p>Ground coffee degrades. Grinding releases volatiles that are easily lost (<a href="https://pages.uoregon.edu/chendon/coffee_literature/old_literature/2003%20J.%20Agric.%20Food%20Chem.,%20Volatiles%20released%20during%20grinding.pdf">Akiyama et al., J. Agric. Food Chem. 2003</a>). For packaged coffee, the SCA review cites nitrogen flushing that doubles sensory shelf life from 3 to 6 months, with the largest losses in the first days. Evidence on grinding the night before is anecdote in both directions. One Home-Barista tester preferred a batch ground 12 hours earlier (<a href="https://www.home-barista.com/brewing/experiments-with-preground-coffee-for-espresso-and-brew-pot-t6722.html">Home-Barista</a>), while others report clear decline by 24 hours. Nothing controlled covers an 8-hour overnight wait.</p>
+<p>Brewed espresso decays faster. Arii and Nishizawa’s 2017 paper is titled “<a href="https://pubmed.ncbi.nlm.nih.gov/28100101/">Espresso coffee foam delays cooling of the liquid phase</a>". A press write-up mentions a 15-minute best-drinking window (unverified). No sensory study follows a shot as it waits.</p>
+<p>That is the case for the Americano. Under Newton cooling the time constant is <em>τ = mc/hA</em>. For cups of similar shape, area scales as <em>V</em>^(2/3), so <em>τ</em> scales as <em>V</em>^(1/3). A 200 ml Americano therefore cools about 5^(1/3) ≈ 1.7 times slower than a 40 ml shot, before counting the cup, and a minute’s delay matters less in it. The sequence: hot water into the cup first, then the shot on top, timed to finish at the alarm rather than before it.</p>
+<h3 id="if-i-were-starting-this-weekend">If I were starting this weekend</h3>
+<ol type="1">
+<li>Ask your brother for photos of the grinder’s top nut, dial and burr, and for its weight on a kitchen scale. Borrow it if he’ll let you.</li>
+<li>Measure crank torque at an espresso setting with a luggage scale on the knob. Size the motor at twice the worst of three runs.</li>
+<li>Order an ESP32, an HX711 and a 500 g load cell, flash openGBW, and get readings to 0.1 g on the bench.</li>
+<li>Ask your father if you can log his machine’s pressure curve with a portafilter gauge. A real trace from a good manual Italian machine beats anything in the research.</li>
+<li>Choose a testbed. If you buy only one, make it the Robot: the lever is the new part, and the control loop on the Gaggia is already well documented.</li>
+<li>Draw the push-only lever cradle and the sprag pulley adapter, and print both in PETG before you cut any metal.</li>
+</ol>
+<h2 id="how-this-edition-was-made">How this edition was made</h2>
+<p>This edition breaks house rule 1 on purpose. You asked for depth, so it runs long. Future editions should be short.</p>
+<h3 id="the-pipeline">The pipeline</h3>
+<p>The research was split into nine slices: four on briefs and five on espresso. Each slice went to its own Sonnet researcher, which searched the web and wrote raw notes with a search log, a quote bank, sources and gaps. A separate Haiku fact-checker then took each slice, picked its most load-bearing quotes and numbers, and tried to confirm them with independent exact-phrase searches. It appended its verdicts to the end of the raw file. Two Opus writers drafted the two parts using only material that passed. Two Sonnet grounding checkers then went through every claim in the prose against the raw notes. They checked 190 claims and made 15 fixes, mostly softening things the notes did not quite support. I did the final edit.</p>
+<h3 id="what-broke-overnight">What broke overnight</h3>
+<p>Two things broke, and both shaped the result.</p>
+<ol type="1">
+<li><strong>Pages could not be opened.</strong> This sandbox’s network allowlist blocks direct page fetches for every host except GitHub. Requests to arXiv, Wikipedia, CIA.gov, PubMed, Home-Barista, Reddit, Hackaday and news sites all failed. Web search runs server-side, so it still worked. Every quote and figure here was confirmed from search results, not by reading the page it came from. The first run’s researchers gave up as soon as fetches failed, so that run (58 searches) was thrown away and restarted search-only.</li>
+<li><strong>Searches are capped at 200 per turn</strong>, shared by every agent. The restarted run hit the cap halfway, and five slices came back empty. Those were rerun in batches sized to fit under the cap, with fact-checking moved into a later turn so it had its own budget.</li>
+</ol>
+<p>Tally: 35 agents launched, 23 of them in the work you are reading (10 Sonnet researchers including one second pass, 9 Haiku fact-checkers, 2 Opus writers, 2 Sonnet checkers). 519 searches ran, 461 of them in kept work. There are about 36,000 words of raw notes.</p>
+<h3 id="the-verification-ledger">The verification ledger</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Slice</th>
+<th>Topic</th>
+<th>Research searches</th>
+<th>Items checked</th>
+<th>Verified</th>
+<th>Partial</th>
+<th>Not found</th>
+<th>Contradicted</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A1</td>
+<td>Briefing for a living</td>
+<td>36</td>
+<td>15</td>
+<td>10</td>
+<td>1</td>
+<td>4</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>A2</td>
+<td>Scientists and the daily stream</td>
+<td>42</td>
+<td>16</td>
+<td>8</td>
+<td>7</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>A3</td>
+<td>AI-written briefs</td>
+<td>32</td>
+<td>15</td>
+<td>10</td>
+<td>2</td>
+<td>3</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>A4</td>
+<td>The case against; the first hour</td>
+<td>32</td>
+<td>15</td>
+<td>7</td>
+<td>8</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>B1</td>
+<td>Building from scratch</td>
+<td>23 + 19</td>
+<td>18</td>
+<td>7</td>
+<td>7</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>B2</td>
+<td>Levers and hybrids</td>
+<td>41</td>
+<td>16</td>
+<td>8</td>
+<td>5</td>
+<td>3</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>B3</td>
+<td>Grinders and motors</td>
+<td>30</td>
+<td>15</td>
+<td>6</td>
+<td>7</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>B4</td>
+<td>Bedside automation and robotics</td>
+<td>32</td>
+<td>16</td>
+<td>3</td>
+<td>9</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>B5</td>
+<td>What to buy</td>
+<td>32</td>
+<td>16</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td><strong>All</strong></td>
+<td></td>
+<td><strong>319</strong></td>
+<td><strong>142</strong></td>
+<td><strong>64</strong></td>
+<td><strong>51</strong></td>
+<td><strong>24</strong></td>
+<td><strong>3</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><em>Verified</em> means an independent search result, from the primary source or a reputable outlet other than the one the researcher cited, showed the same wording or figure with the same attribution. <em>Partial</em> means the substance held but something was off (wording, a number, a date, an attribution); the prose uses the corrected version. <em>Not found</em> and <em>contradicted</em> items were dropped or are flagged in the text as unverified. The espresso slices fared worse because forum posts and retailer pages are hard to corroborate by search alone.</p>
+<p>The rule for reading this edition: a sentence in quotation marks was matched in at least one independent result, and a number without a flag was confirmed or corrected. Neither has been checked against the original page. Where it matters, such as a price before you buy or a quote before you repeat it, follow the link.</p>
+<h3 id="fixing-it-for-next-time">Fixing it for next time</h3>
+<p>Most of the friction was the network allowlist. To let tomorrow’s researchers read primary sources, open the cloud environment’s settings (the environment menu in the session’s title bar, then Edit). Under <strong>Network access</strong>, either choose a broader level or add allowed domains, leaving the package-manager box ticked. The domains these researchers needed most were home-barista.com, arxiv.org, printables.com, hackaday.com, pubmed.ncbi.nlm.nih.gov, cia.gov, sca.coffee, pewresearch.org, cjr.org, tomsguide.com, en.wikipedia.org and reddit.com. Steps are in the <a href="https://code.claude.com/docs/en/cloud-environments#network-access">cloud environment docs</a>. The 200-search cap is per turn, so a nightly job should run as several smaller batches, which is what this one ended up doing.</p>
+<h3 id="the-raw-research">The raw research</h3>
+<ul class="stack-list"><li><span class="id">A1</span><div><div class="t"><a href="raw/A1.html">Intelligence, medicine and other high-stakes daily briefs</a></div><div class="m">36 searches · 15 items checked · <a href="https://github.com/JackBocresion/Flyproj/blob/claude/loving-lamport-ulposy/morning-brief/2026-11-10/research/A1-briefing-for-a-living.md">markdown on GitHub</a></div><div class="m"><span class="chip ok">10 verified</span><span class="chip warn">1 partial</span><span class="chip bad">4 not found</span></div></div></li><li><span class="id">A2</span><div><div class="t"><a href="raw/A2.html">How mathematicians, scientists and programmers handle the daily stream</a></div><div class="m">42 searches · 16 items checked · <a href="https://github.com/JackBocresion/Flyproj/blob/claude/loving-lamport-ulposy/morning-brief/2026-11-10/research/A2-scientists-and-the-daily-stream.md">markdown on GitHub</a></div><div class="m"><span class="chip ok">8 verified</span><span class="chip warn">7 partial</span><span class="chip bad">1 not found</span></div></div></li><li><span class="id">A3</span><div><div class="t"><a href="raw/A3.html">AI-written personal briefs: what shipped and how they fail</a></div><div class="m">32 searches · 15 items checked · <a href="https://github.com/JackBocresion/Flyproj/blob/claude/loving-lamport-ulposy/morning-brief/2026-11-10/research/A3-ai-written-briefs.md">markdown on GitHub</a></div><div class="m"><span class="chip ok">10 verified</span><span class="chip warn">2 partial</span><span class="chip bad">3 not found</span></div></div></li><li><span class="id">A4</span><div><div class="t"><a href="raw/A4.html">The case against the morning brief, and the first hour</a></div><div class="m">32 searches · 15 items checked · <a href="https://github.com/JackBocresion/Flyproj/blob/claude/loving-lamport-ulposy/morning-brief/2026-11-10/research/A4-case-against-and-the-first-hour.md">markdown on GitHub</a></div><div class="m"><span class="chip ok">7 verified</span><span class="chip warn">8 partial</span></div></div></li><li><span class="id">B1</span><div><div class="t"><a href="raw/B1.html">Building an espresso machine from scratch</a></div><div class="m">23 + 19 searches · 18 items checked · <a href="https://github.com/JackBocresion/Flyproj/blob/claude/loving-lamport-ulposy/morning-brief/2026-11-10/research/B1-building-from-scratch.md">markdown on GitHub</a></div><div class="m"><span class="chip ok">7 verified</span><span class="chip warn">7 partial</span><span class="chip bad">3 not found</span><span class="chip bad">1 contradicted</span></div></div></li><li><span class="id">B2</span><div><div class="t"><a href="raw/B2.html">Lever machines and hybrids</a></div><div class="m">41 searches · 16 items checked · <a href="https://github.com/JackBocresion/Flyproj/blob/claude/loving-lamport-ulposy/morning-brief/2026-11-10/research/B2-levers-and-hybrids.md">markdown on GitHub</a></div><div class="m"><span class="chip ok">8 verified</span><span class="chip warn">5 partial</span><span class="chip bad">3 not found</span></div></div></li><li><span class="id">B3</span><div><div class="t"><a href="raw/B3.html">Hand grinders, and motorising one</a></div><div class="m">30 searches · 15 items checked · <a href="https://github.com/JackBocresion/Flyproj/blob/claude/loving-lamport-ulposy/morning-brief/2026-11-10/research/B3-grinders-and-motors.md">markdown on GitHub</a></div><div class="m"><span class="chip ok">6 verified</span><span class="chip warn">7 partial</span><span class="chip bad">1 not found</span><span class="chip bad">1 contradicted</span></div></div></li><li><span class="id">B4</span><div><div class="t"><a href="raw/B4.html">Waking up to espresso: robotics and automation</a></div><div class="m">32 searches · 16 items checked · <a href="https://github.com/JackBocresion/Flyproj/blob/claude/loving-lamport-ulposy/morning-brief/2026-11-10/research/B4-bedside-automation-and-robotics.md">markdown on GitHub</a></div><div class="m"><span class="chip ok">3 verified</span><span class="chip warn">9 partial</span><span class="chip bad">3 not found</span><span class="chip bad">1 contradicted</span></div></div></li><li><span class="id">B5</span><div><div class="t"><a href="raw/B5.html">What to buy in 2026</a></div><div class="m">32 searches · 16 items checked · <a href="https://github.com/JackBocresion/Flyproj/blob/claude/loving-lamport-ulposy/morning-brief/2026-11-10/research/B5-what-to-buy-2026.md">markdown on GitHub</a></div><div class="m"><span class="chip ok">5 verified</span><span class="chip warn">5 partial</span><span class="chip bad">6 not found</span></div></div></li></ul>
+
+    </article>
+  </div>
+</main>

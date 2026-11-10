@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>B5 raw research &middot; Morning Brief No. 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&display=swap">
+<style>
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+:root {
+  /* Layout: one ~68ch reading column; a mono metadata rail (contents, provenance) in the left gutter on wide screens */
+  --paper: #F1F2EF;
+  --paper-2: #E7E9E4;
+  --ink: #1C1D1A;
+  --muted: #5A5D56;
+  --rule: #D2D5CD;
+  --crema: #94531C;
+  --crema-soft: #EADBCB;
+  --ok: #2C6847;
+  --warn: #84640E;
+  --bad: #9A372B;
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", system-ui, sans-serif;
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+    --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+  --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 19px;
+  line-height: 1.58;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration-color: var(--crema); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+a:hover { color: var(--crema); }
+a:focus-visible { outline: 2px solid var(--crema); outline-offset: 2px; border-radius: 2px; }
+
+.band { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.band-top { background: var(--paper-2); border-bottom: 1px solid var(--rule); padding-block: 40px 36px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+
+/* masthead */
+.slug { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.slug b { color: var(--ink); font-weight: 500; }
+.title { font-family: var(--display); font-stretch: 72%; font-weight: 800; font-size: clamp(54px, 10vw, 112px); line-height: 0.9; letter-spacing: -0.01em; margin: 18px 0 10px; text-wrap: balance; }
+.title .no { color: var(--crema); font-stretch: 100%; font-weight: 500; font-size: 0.42em; letter-spacing: 0.02em; vertical-align: 0.95em; margin-left: 0.18em; }
+.deck { font-style: italic; font-size: clamp(19px, 2.2vw, 23px); color: var(--muted); max-width: 46em; margin: 0 0 30px; text-wrap: pretty; }
+
+.bluf { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 2px solid var(--ink); }
+.bluf > div { padding: 16px 22px 4px 0; min-width: 0; }
+.bluf > div + div { padding-left: 22px; border-left: 1px solid var(--rule); }
+.bluf h2 { font-family: var(--display); font-stretch: 85%; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 8px; color: var(--crema); }
+.bluf p { margin: 0 0 12px; font-size: 18px; line-height: 1.5; }
+
+.stats { margin-top: 22px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 22px; font-variant-numeric: tabular-nums; }
+.stats span b { color: var(--ink); font-weight: 500; }
+
+/* body grid */
+.band-body { padding-block: 44px 72px; }
+.grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 56px; }
+.rail { min-width: 0; }
+.rail nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); font-family: var(--mono); font-size: 12.5px; line-height: 1.45; }
+.rail .label { text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 0 0 10px; }
+.rail ol, .rail ul { list-style: none; margin: 0 0 26px; padding: 0; display: grid; gap: 7px; }
+.rail a { text-decoration: none; color: var(--muted); }
+.rail a:hover { color: var(--crema); }
+.rail li.sub a { padding-left: 12px; display: inline-block; }
+
+.prose { min-width: 0; max-width: 68ch; }
+.prose h2 { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: clamp(34px, 5vw, 50px); line-height: 1; letter-spacing: -0.005em; margin: 64px 0 22px; padding-top: 18px; border-top: 2px solid var(--ink); text-wrap: balance; }
+.prose > h2:first-child, .prose > .part:first-child h2:first-child { margin-top: 0; }
+.prose h3 { font-family: var(--display); font-stretch: 88%; font-weight: 700; font-size: 25px; line-height: 1.2; margin: 42px 0 12px; text-wrap: balance; }
+.prose h4 { font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; margin: 30px 0 8px; color: var(--muted); }
+.prose p { margin: 0 0 1.05em; text-wrap: pretty; }
+.prose ul, .prose ol { padding-left: 1.3em; margin: 0 0 1.1em; }
+.prose li { margin: 0 0 0.45em; }
+.prose li::marker { color: var(--crema); }
+.prose strong { font-weight: 650; }
+.prose hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
+.prose blockquote { margin: 22px 0 24px; padding: 2px 0 2px 20px; border-left: 3px solid var(--crema); font-style: italic; font-size: 20px; line-height: 1.5; }
+.prose blockquote p:last-child { margin-bottom: 0; }
+.prose blockquote em { font-style: normal; }
+.prose code { font-family: var(--mono); font-size: 0.82em; background: var(--paper-2); padding: 1px 5px; border-radius: 3px; }
+.prose pre { font-family: var(--mono); font-size: 13.5px; line-height: 1.5; background: var(--paper-2); border: 1px solid var(--rule); padding: 16px 18px; overflow-x: auto; border-radius: 4px; }
+.prose pre code { background: none; padding: 0; font-size: inherit; }
+
+.tablewrap { overflow-x: auto; margin: 22px 0 28px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); }
+.prose table { border-collapse: collapse; width: 100%; font-family: var(--display); font-stretch: 92%; font-size: 15px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.prose th { text-align: left; font-weight: 700; font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 10px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: bottom; }
+.prose td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top; min-width: 7em; }
+.prose tr:last-child td { border-bottom: 0; }
+
+figure.profile { margin: 8px 0 34px; }
+figure.profile svg { width: 100%; height: auto; display: block; }
+figure.profile figcaption { font-family: var(--mono); font-size: 12.5px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+.ax { stroke: var(--rule); stroke-width: 1; fill: none; }
+.axl { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+.c-lever { stroke: var(--crema); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.c-pump { stroke: var(--ink); stroke-width: 1.6; fill: none; stroke-dasharray: 5 5; }
+.c-lbl { font-family: var(--mono); font-size: 11.5px; }
+.c-lbl.l { fill: var(--crema); }
+.c-lbl.p { fill: var(--ink); }
+
+/* provenance + ledger */
+.ledger { width: 100%; }
+.chip { display: inline-block; font-family: var(--mono); font-size: 11.5px; line-height: 1; padding: 4px 6px; border-radius: 3px; border: 1px solid currentColor; margin: 0 4px 4px 0; white-space: nowrap; }
+.chip.ok { color: var(--ok); }
+.chip.warn { color: var(--warn); }
+.chip.bad { color: var(--bad); }
+.stack-list { list-style: none; padding: 0 !important; margin: 18px 0 26px !important; border-top: 2px solid var(--ink); }
+.stack-list li { margin: 0 !important; padding: 14px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 3.2em minmax(0, 1fr); gap: 0 12px; }
+.stack-list .id { font-family: var(--mono); font-size: 14px; color: var(--crema); padding-top: 3px; }
+.stack-list .t { font-family: var(--display); font-stretch: 90%; font-weight: 700; font-size: 18px; line-height: 1.3; }
+.stack-list .m { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.6; }
+.stack-list li::marker { content: none; }
+
+.backlink { font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--muted); }
+.backlink:hover { color: var(--crema); }
+.raw-head .title { font-size: clamp(36px, 6vw, 64px); font-stretch: 78%; }
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .rail nav { position: static; }
+  .rail ol, .rail ul { margin-bottom: 18px; }
+}
+@media (max-width: 640px) {
+  body { font-size: 18px; }
+  .bluf { grid-template-columns: minmax(0, 1fr); }
+  .bluf > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--rule); }
+  .band-top { padding-block: 28px 26px; }
+  .prose blockquote { font-size: 19px; padding-left: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+
+</style>
+</head>
+<body>
+<header class="band band-top raw-head">
+  <div class="wrap">
+    <div class="slug"><a class="backlink" href="../index.html">&larr; Morning Brief No. 1</a><span>Raw research &middot; slice B5</span></div>
+    <h1 class="title">What to buy in 2026</h1>
+    <div class="stats"><span><b>32</b> searches</span><span><b>16</b> items fact-checked</span><span><b>5</b> verified</span><span><b>5</b> partial</span><span><b>6</b> dropped or flagged</span></div>
+  </div>
+</header>
+<main class="band band-body">
+  <div class="wrap grid">
+    <aside class="rail"><nav aria-label="Sections"><p class="label">Sections</p><ol><li><a href="#scope">Scope</a></li><li><a href="#method-and-search-log">Method and search log</a></li><li><a href="#findings">Findings</a></li><li><a href="#quote-bank">Quote bank</a></li><li><a href="#disagreements-failure-modes-and-caveats">Disagreements, failure modes and caveats</a></li><li><a href="#sources">Sources</a></li><li><a href="#gaps">Gaps</a></li><li><a href="#verification-log-independent-fact-check">Verification log (independent fact-check)</a></li></ol>
+    <p class="label">Other slices</p><ul><li><a href="A1.html">A1 &middot; Briefing for a living</a></li><li><a href="A2.html">A2 &middot; Scientists and the daily stream</a></li><li><a href="A3.html">A3 &middot; AI-written briefs</a></li><li><a href="A4.html">A4 &middot; The case against</a></li><li><a href="B1.html">B1 &middot; Building from scratch</a></li><li><a href="B2.html">B2 &middot; Levers and hybrids</a></li><li><a href="B3.html">B3 &middot; Grinders and motors</a></li><li><a href="B4.html">B4 &middot; Bedside automation</a></li></ul></nav></aside>
+    <article class="prose">
+<h2 id="scope">Scope</h2>
+<p>Buyer’s guide for a math/CS person who wants a mixed manual/automatic espresso setup (lever feel, self-contained, automatable, bedside), a motor-assistable hand grinder, and a water plan. Covers what matters in a machine, tinker platforms with 2025-26 prices and tariff notes, Breville vs high-end Italian tradeoffs, three budget tiers, and water. Neighbouring slices (B1 scratch builds, B2 levers/hybrids, B3 grinders/motors, B4 bedside robotics) are deliberately not duplicated.</p>
+<h2 id="method-and-search-log">Method and search log</h2>
+<p>Method: WebSearch only (non-GitHub fetch blocked). 32 searches used (the cap). Results are mostly retailer pages, affiliate reviews and forum threads; primary-voice quotes from Hoffmann, Hedrick and Gagne could NOT be surfaced, so no quotes from them appear. Prices are observed snippets from search results, dated where the source gave a date; all need a live check.</p>
+<ol type="1">
+<li>GaggiMate vs Gaggiuino kit price 2026 (standard) - GaggiMate shop EUR prices; no official Gaggiuino price; Gaggia Classic Up 2026 reviews.</li>
+<li>Gaggia Classic Evo Pro E24 price tariff review (standard) - US/UK/EU prices; brass boiler vs older aluminium; no tariff info.</li>
+<li>Decent DE1 API price tariff (standard) - mostly noise; Decent tariff blog (20% rate, July 2025).</li>
+<li>Meticulous price/API (standard) - $1,350 preorder history; no open API confirmed; thin independent reviews.</li>
+<li>Rancilio Silvia Pro X price (standard) - about $2,195 US.</li>
+<li>Breville Dual Boiler Slayer mod / Oracle Jet (standard) - only Slayer-brand pricing (wrong product); no mod info.</li>
+<li>Lelit Bianca V3 price/paddle (standard) - about $2,999.95 US; paddle is manual flow control.</li>
+<li>La Marzocco Micra/Mini price app (standard) - Micra $3,900-4,500; Mini R $6,600; app conflict.</li>
+<li>Flair 58 / La Pavoni / Robot / Cremina lever guide (extended) - lever price ranges.</li>
+<li>Third Wave Water / SCA water standard (standard) - SCA espresso extension quote; DIY recipes.</li>
+<li>Gagne water recipe (standard) - no figures found; Clive recipe found.</li>
+<li>Motorized hand grinder conversions (standard) - Flair Power Tower, Skope X, DIY printed adapters, CoffeeGeek torque piece.</li>
+<li>GaggiMate features/docs (extended) - profile types, Pro kit transducer, ESP32 + SSR, licensing contrast.</li>
+<li>DE1 API/tablet/BLE (standard) - open source API, 10 Hz BLE cap, pyDE1.</li>
+<li>Espresso tariffs 2025-26 (standard) - Breville supply-chain shift; Decent tariff page.</li>
+<li>Hoffmann what matters (standard) - no Hoffmann text; retailer consensus.</li>
+<li>Hedrick buying advice (standard) - no Hedrick text; retailer disagreement on profiling.</li>
+<li>Oracle Jet price/reviews (standard) - $1,995-1,999.95; no repairability data.</li>
+<li>DIY automated lever / linear actuator (extended) - johnrbell/flair_eva_project; asciimike/coffee-tools.</li>
+<li>Breville Dual Boiler flow control mod (standard) - HB “Slayer shots” thread; needle valve vs dimmer.</li>
+<li>Decent price page (extended) - DE1PRO $3,699; MASHUP2 $2,999.</li>
+<li>Meticulous price (standard) - about $1,850 base, about $2,250 all-in per resale posts.</li>
+<li>Seattle Coffee Gear bench post (extended) - feature ranking; lab protocols for stability.</li>
+<li>Grinder prices (standard) - Encore ESP, DF64 Gen 2, Mignon Specialita, Niche Zero ranges.</li>
+<li>Hoffmann transcript attempt (extended) - nothing; Gaggia thermostat swing and sensor offset notes.</li>
+<li>La Pavoni PID mods (standard) - HB PID threads; no Londinium price.</li>
+<li>Kinu M47 / Comandante prices (standard) - scattered prices.</li>
+<li>Smart plug scheduling (standard) - plug ratings, safety cautions.</li>
+<li>Breville Dual Boiler price (standard) - $1,599.95 US.</li>
+<li>Gagne temperature/profiling (standard) - nothing specific.</li>
+<li>Hoffmann profiling (extended) - forum paraphrase; Decent founder concession about Hoffmann.</li>
+<li>Profitec Pro 800 / Elektra / Cremina prices (standard) - Pro 800 about $3,199-3,299 (2022-dated page); others none.</li>
+</ol>
+<h2 id="findings">Findings</h2>
+<h3 id="1-what-matters-in-a-home-machine-evidence-vs-opinion">1. What matters in a home machine (evidence vs opinion)</h3>
+<ul>
+<li>Consensus (retailer opinion, not measured): boiler configuration/temperature stability is the foundation; PID beats thermostat; dual boiler suits back-to-back milk drinks. <a href="https://www.seattlecoffeegear.com/blogs/scg-blog/the-espresso-machine-features-you-actually-want">Seattle Coffee Gear</a> says its bench ranks PID, shot timer and flow control as the features affecting shots; its measured numbers were not in the snippet.</li>
+<li>Evidence on stock Gaggia thermostat: one blog says thermostat hysteresis lets brew temperature vary by as much as 15 C, and a PID reads boiler, not group, temperature with a 5-12 C offset depending on source (PID setpoints near 103-104 C suggested). Anecdotal/blog, sources disagree. <a href="https://www.papelespresso.com/ideal-pid-temperature-settings-for-light-roast-espresso-on-a-gaggia-classic/">Cal Bryant / Papel Espresso results</a>, <a href="https://balancejournal.co/food-drink/gaggia-classic-temperature-surfing">Balance Journal</a>.</li>
+<li>Measurement protocols exist: a lab protocol wants first shot within 1 C of heated average; another uses group thermocouples over 50 shots targeting +/-0.5 C. <a href="https://kaffeemacher.ch/en/blogs/kaffeewissen/espresso-machines-test-protocol">Kaffeemacher protocol</a>.</li>
+<li>Pressure/flow profiling: opinions split. Vendor (Clive) says it makes espresso more forgiving; <a href="https://completehomebarista.com/faqs/equipment/buying/pressure-profiling-worth-it/">Complete Home Barista</a> says marginal gains for most, worthwhile for experimenters. Decent’s own docs claim flow profiling alone is not guaranteed better than pressure profiling and that pressure is the finer knob (<a href="https://decentespresso.com/docs/are_flow_profiles_better_than_pressure_profiles">Decent docs</a>). Decent’s founder reportedly conceded Hoffmann was right on a pressure-vs-flow peak near 8.6 bar (forum relay, unverified, see Quote bank).</li>
+<li>Needle-valve (Slayer-style) caveat: it controls flow, not pressure; advice is to master fixed-pressure shots first. <a href="https://www.home-barista.com/espresso-machines/breville-dual-boiler-slayer-shots-t54849-420.html">Home-Barista thread</a>.</li>
+<li>Warm-up, 58 mm group, serviceability, parts: no solid quantitative source found in this search set (see Gaps).</li>
+</ul>
+<h3 id="2-tinker-platforms-prices-as-observed-us-unless-noted">2. Tinker platforms (prices as observed; US unless noted)</h3>
+<ul>
+<li><strong>Gaggia Classic Evo Pro / E24 / “Classic Pro E24”</strong>: US $499 at <a href="https://www.wholelattelove.com/collections/gaggia/products/gaggia-classic-pro">Whole Latte Love</a>; TechRadar list $549/GBP549 (<a href="https://www.techradar.com/home/coffee-machines/tired-of-espresso-machines-you-have-to-micromanage-for-great-results-i-tested-one-that-satisfies-coffee-snobs-with-no-effort">TechRadar</a>); EUR 443-531 at <a href="https://aio.lv/en/product--gaggia-886948115010--10482287.md">aio.lv</a> (2026). E24 has a brass boiler (2023 Evo Pro was aluminium) per <a href="https://coffeeblog.co.uk/?p=5421">Coffee Kev</a>. Thermoblock steam, slow milk, plastic accessories (<a href="https://www.tomsguide.com/home/coffee-makers/gaggia-classic-e24-evo-pro-review">Tom’s Guide</a>). A 2026 “Classic Up” revision exists with flow profiling built in (<a href="https://tomscoffeecorner.com/gaggia-classic-up-2026-review/">Tom’s Coffee Corner</a>, <a href="https://www.expertreviews.co.uk/home-garden/small-appliances/coffee-machines/gaggia-classic-up-review">Expert Reviews</a>).</li>
+<li><strong>GaggiMate</strong> (open source, ESP32, touchscreen, web UI, BLE/WebSocket, SSR + PID): Standard Kit from EUR 152.49, Pro Kit from EUR 213.49 (shop page, stock sometimes zero) <a href="https://shop.gaggimate.eu/products/gaggimate-pro-kit">shop.gaggimate.eu</a>. Pressure transducer and full pressure/flow profiles need Pro. Docs: <a href="https://docs.gaggimate.eu/">docs.gaggimate.eu</a>. A <a href="https://archestra.ai/mcp-catalog/matvey-kuk__gaggimate-mcp">community MCP server</a> exists, which hints at scriptability; repo reportedly github.com/jniebuhr/gaggimate (from search text, check). Build writeups: <a href="https://magnusjensen.dev/blog/20251111-gaggimate">Magnus Jensen</a>, <a href="https://www.ulrichlehner.com/blog/gaggia-classic-gaggimate-pid/">Ulrich Lehner</a>.</li>
+<li><strong>Gaggiuino</strong> (STM32): <a href="https://gaggiuino.github.io/">project</a>; no official kit price found; one reviewer says it has partly gone closed and requires high effort; kit via Peak Coffee often backordered; Reddit estimate $200-400 kit (anecdote). A 2026 estimate puts Classic + Gaggiuino at $700-900 total.</li>
+<li><strong>Decent DE1PRO</strong>: $3,699 list, MASHUP2 $2,999 sale, stock limited (<a href="https://decentespresso.com/price">decentespresso.com/price</a>). Tablet software and API open source (<a href="https://decentespresso.com/de1">overview</a>); BLE capped near 10 messages/s per founder; third-party control via <a href="https://pypi.org/project/pyDE1/0.8.0/">pyDE1</a>. Tariff note July 2025: shipped to US tariffs prepaid, reduced rate of 20% under high-tech exemption, price is “to your door” (<a href="https://decentespresso.com/blog/trumps_tariffs_impact_on_your_decent_espresso_purchase">Decent blog</a>). A “Bengle” model page exists (<a href="https://decentespresso.com/bengle">decentespresso.com/bengle</a>), described with built-in tablet and two USB-C ports; price/specs unconfirmed.</li>
+<li><strong>Meticulous</strong>: robotic electronic lever, ten sensors, scale in drip tray (<a href="https://techcrunch.com/2025/01/07/meticulous-shows-off-its-smart-espresso-machine-at-ces-2025">TechCrunch CES 2025</a>). Resale posts in 2026 cite $1,850 base, roughly $400 tax/tariff/shipping, about $2,250 all-in (<a href="https://www.home-barista.com/buysell/meticulous-espresso-machine-denver-t104774.html">Home-Barista</a>). Open API not confirmed; independent reviews scarce; one owner says automated lever did not suit a lever user (<a href="https://www.home-barista.com/advice/are-you-happy-with-your-meticulous-espresso-machine-t104729.html">HB thread</a>). Steam wand sold separately.</li>
+<li><strong>Rancilio Silvia Pro X</strong>: about $2,195 US (<a href="https://www.wholelattelove.com/products/rancilio-silvia-pro-x-dual-boiler-espresso-machine">Whole Latte Love</a>); dual boiler, dual PID. Reviews are largely retailer/affiliate. Base Silvia PID mods are a long-standing tinker route (not priced here).</li>
+<li><strong>Lelit Bianca V3</strong>: about $2,999.95 US (<a href="https://www.wholelattelove.com/collections/lelit/products/lelit-bianca-v3-dual-boiler-espresso-machine">Whole Latte Love</a>); manual rotating flow paddle at group plus optional electronic low-flow mode. One summary flags thin build material as a downside. Lelit is owned by Breville since 2022 (<a href="https://en.wikipedia.org/wiki/Lelit">Wikipedia result</a>).</li>
+<li><strong>La Marzocco</strong>: Micra $3,900-4,500 (<a href="https://www.gearpatrol.com/drinks/la-marzocco-linea-micra-review/">Gear Patrol</a>, <a href="https://coffeedant.com/?p=167">Coffeedant</a>); Mini R about $6,600 at <a href="https://clivecoffee.com/collections/espresso-machines/products/la-marzocco-linea-mini-espresso-machine">Clive</a>. Home app handles scheduling, temperature, pre-brew. Source conflict on whether the original Mini has app (<a href="https://balancejournal.co/food-drink/la-marzocco-linea-mini-review">Balance Journal</a> says Mini R only).</li>
+<li><strong>Breville Dual Boiler (BES920)</strong>: about $1,599.95 US (<a href="https://www.wholelattelove.com/breville-bes920xl-dual-boiler-espresso-machine">Whole Latte Love</a>; <a href="https://baristalife.co/blogs/blog/breville-oracle-jet-vs-dual-boiler">Barista Life</a>, Aug 2026). Slayer-style needle-valve mod: one guide says under $60, 1-2 hours, reversible; kits $200-350 (<a href="https://completehomebarista.com/guides/breville-dual-boiler-flow-control-mod/">Complete Home Barista</a>, guides contradict each other). Dimmer on vibration pump discussed as alternative. Also a Breville/Sage Infuser/Barista profiling mod thread (<a href="https://www.home-barista.com/repairs/breville-sage-infuser-pressure-temperature-profiling-mod-t102215.html">HB</a>). Warranty impact not sourced.</li>
+<li><strong>Breville Oracle Jet</strong>: $1,995-1,999.95 (<a href="https://www.tomsguide.com/home/coffee-makers/breville-oracle-jet-review">Tom’s Guide</a>, <a href="https://www.techradar.com/home/coffee-machines/breville-oracle-jet-review">TechRadar</a>); automatic grind, dose, tamp; thermojet-style heating. No repairability data; original Oracle tamp complaints reported, unconfirmed for Jet; ProductReview.com.au 3.5 on 6 reviews. Breville Oracle Dual Boiler reported at $4,500 (company high).</li>
+<li><strong>Tariffs</strong>: Breville said it is shifting production out of China to Mexico/Indonesia, China exposure about 40% of purchases (July 2025) falling to about 10% by Jan 2026, and warned of higher US input costs in 2026-27 (<a href="https://www.channelnews.com.au/breville-to-shift-production-out-of-china-as-coffee-remains-growth-driver/">ChannelNews</a>). A Canadian roaster page says a Section 122 tariff ended July 24, 2026 and Section 301 tariffs began (unclear relevance to espresso gear) (<a href="https://roguewavecoffee.ca/pages/tariff-duties-for-u-s-customers">Rogue Wave</a>). No specific EU-to-US tariff figures for Lelit/Rancilio/Profitec found.</li>
+</ul>
+<h3 id="3-lever-and-lever-hybrid-options-feeds-b2">3. Lever and lever-hybrid options (feeds B2)</h3>
+<ul>
+<li>Manual levers: Flair 58 about $434-650 depending on model (Plus 2 $640-699 at <a href="https://www.cnn.com/cnn-underscored/reviews/best-manual-espresso-maker">CNN Underscored</a>); Cafelat Robot about $350-450; La Pavoni Europiccola about $750-1,100 (boiler + steam); Olympia Cremina about $3,650-3,800 (single source) (<a href="https://stillwatercoffee.ca/blogs/brew_hacks/flair-58-vs-cafelat-robot-vs-la-pavoni-europiccola">comparison</a>).</li>
+<li>Lever hybrids: Profitec Pro 800 (lever-actuated, dual boiler) US $3,199-3,299 on a page dated July 2022 (<a href="https://www.wholelattelove.com/products/profitec-pro-800-lever-group-espresso-machine">Whole Latte Love</a>), EUR 2,499 at a European retailer; Lelit Bianca paddle; Meticulous (robotic lever); Decent (no lever, but flow/pressure control).</li>
+<li>Tinker evidence for automating a lever: <a href="https://github.com/johnrbell/flair_eva_project">johnrbell/flair_eva_project</a> (Flair 58 + two linear actuators + ESP32, TMC2209, 0-1.2 MPa sensor; author notes pressure sensing not quite there); <a href="https://github.com/asciimike/coffee-tools">asciimike/coffee-tools</a> (BLE pressure sensor + scale); La Pavoni PID threads on <a href="https://www.home-barista.com/repairs/la-pavoni-pid-better-temperature-control-t17073-180.html">Home-Barista</a> (Auber PID, RTD, SSR; high/low switch kept as heater selector). Actuator sizing lesson: stronger gearmotor needed than expected to overcome spring (student report). Sensor placement: measure above puck, not at group.</li>
+</ul>
+<h3 id="4-breville-vs-high-end-manual-italian-tradeoffs-synthesis-partly-opinion">4. Breville vs high-end manual Italian: tradeoffs (synthesis, partly opinion)</h3>
+<ul>
+<li>Breville: integrated grinder/PID/dual boiler on BES920, strong features per dollar, app-less but modifiable, plastic and thin parts reputation, limited serviceability (no source quantified). Learn: PID tuning, grind dosing, temperature surfing is unnecessary; modding via needle valve or dimmer teaches flow vs pressure.</li>
+<li>High-end manual lever/E61: mechanical, long parts life, repair tradition (La Pavoni community has decades of PID/thermometry mods), more skill for temperature and technique. Learn: thermodynamics of boilers, lever pressure curves, flushing routines. Evidence base is forum anecdote; no failure-rate data found.</li>
+<li>Hybrid insight: a Gaggia + GaggiMate teaches the same control-loop concepts as either, at 1/3 the price, but is a thermoblock-steam, vibration-pump machine rather than a lever.</li>
+</ul>
+<h3 id="5-three-budget-tiers-machine--grinder-with-a-lever-option">5. Three budget tiers (machine + grinder, with a lever option)</h3>
+<p>Prices are observed snippets; verify.</p>
+<ul>
+<li>**Tier 1, about <span class="math inline">500 − 900 *  *  : <em>G</em><em>a</em><em>g</em><em>g</em><em>i</em><em>a</em><em>C</em><em>l</em><em>a</em><em>s</em><em>s</em><em>i</em><em>c</em><em>E</em>24(</span>499) + GaggiMate Pro kit (about EUR 213) = about <span class="math inline">750 − 800<em>i</em><em>n</em><em>c</em><em>l</em>.<em>s</em><em>h</em><em>i</em><em>p</em><em>p</em><em>i</em><em>n</em><em>g</em>; <em>g</em><em>r</em><em>i</em><em>n</em><em>d</em><em>e</em><em>r</em><em>a</em><em>t</em><em>t</em><em>h</em><em>i</em><em>s</em><em>t</em><em>i</em><em>e</em><em>r</em> : <em>h</em><em>a</em><em>n</em><em>d</em><em>g</em><em>r</em><em>i</em><em>n</em><em>d</em><em>e</em><em>r</em><em>K</em><em>i</em><em>n</em><em>u</em><em>M</em>47(<em>a</em><em>b</em><em>o</em><em>u</em><em>t</em><em>G</em><em>B</em><em>P</em>263/<em>E</em><em>U</em><em>R</em>316)<em>o</em><em>r</em><em>C</em><em>o</em><em>m</em><em>a</em><em>n</em><em>d</em><em>a</em><em>n</em><em>t</em><em>e</em><em>C</em>40<em>M</em><em>K</em>4(</span>260-420) or Baratza Encore ESP (about <span class="math inline">199, <em>s</em><em>t</em><em>e</em><em>p</em><em>p</em><em>e</em><em>d</em><em>a</em><em>d</em><em>j</em><em>u</em><em>s</em><em>t</em><em>m</em><em>e</em><em>n</em><em>t</em>).<em>L</em><em>e</em><em>v</em><em>e</em><em>r</em><em>o</em><em>p</em><em>t</em><em>i</em><em>o</em><em>n</em> : <em>F</em><em>l</em><em>a</em><em>i</em><em>r</em>58(</span>434-650) or Cafelat Robot ($350-450), plus hand grinder; no bedside automation without DIY actuator work. Total with grinder runs over $900 for Gaggia + Kinu.</li>
+<li>**Tier 2, about <span class="math inline">1, 500 − 2, 500 *  *  : <em>B</em><em>r</em><em>e</em><em>v</em><em>i</em><em>l</em><em>l</em><em>e</em><em>D</em><em>u</em><em>a</em><em>l</em><em>B</em><em>o</em><em>i</em><em>l</em><em>e</em><em>r</em>(</span>1,599.95) + needle valve mod (<span class="math inline">60)<em>o</em><em>r</em><em>S</em><em>i</em><em>l</em><em>v</em><em>i</em><em>a</em><em>P</em><em>r</em><em>o</em><em>X</em>(</span>2,195); grinder DF64 Gen 2 (<span class="math inline">300 − 400)<em>o</em><em>r</em><em>E</em><em>u</em><em>r</em><em>e</em><em>k</em><em>a</em><em>M</em><em>i</em><em>g</em><em>n</em><em>o</em><em>n</em><em>S</em><em>p</em><em>e</em><em>c</em><em>i</em><em>a</em><em>l</em><em>i</em><em>t</em><em>a</em>(</span>350-550). Lever option: La Pavoni Europiccola (<span class="math inline">750 − 1, 100)<em>w</em><em>i</em><em>t</em><em>h</em><em>P</em><em>I</em><em>D</em><em>m</em><em>o</em><em>d</em> + <em>h</em><em>a</em><em>n</em><em>d</em><em>g</em><em>r</em><em>i</em><em>n</em><em>d</em><em>e</em><em>r</em>, <em>o</em><em>r</em><em>M</em><em>e</em><em>t</em><em>i</em><em>c</em><em>u</em><em>l</em><em>o</em><em>u</em><em>s</em>(</span>1,850 plus about $400 import) if willing to pay near the top of the tier for an electronic lever.</li>
+<li>**Tier 3, <span class="math inline">3, 500 +  *  *  : <em>D</em><em>e</em><em>c</em><em>e</em><em>n</em><em>t</em><em>D</em><em>E</em>1<em>P</em><em>R</em><em>O</em>(</span>3,699; <span class="math inline">2, 999<em>M</em><em>A</em><em>S</em><em>H</em><em>U</em><em>P</em>2<em>w</em><em>h</em><em>e</em><em>n</em><em>i</em><em>n</em><em>s</em><em>t</em><em>o</em><em>c</em><em>k</em>)<em>w</em><em>i</em><em>t</em><em>h</em><em>o</em><em>p</em><em>e</em><em>n</em><em>A</em><em>P</em><em>I</em>, <em>o</em><em>r</em><em>L</em><em>e</em><em>l</em><em>i</em><em>t</em><em>B</em><em>i</em><em>a</em><em>n</em><em>c</em><em>a</em><em>V</em>3(</span>2,999.95) / La Marzocco Micra ($3,900-4,500); Profitec Pro 800 (about <span class="math inline">3, 200)<em>o</em><em>r</em><em>O</em><em>l</em><em>y</em><em>m</em><em>p</em><em>i</em><em>a</em><em>C</em><em>r</em><em>e</em><em>m</em><em>i</em><em>n</em><em>a</em>(</span>3,650-3,800) as lever options; grinder Niche Zero ($650-850) or hand grinder + motor base (Flair Power Tower is compatible with 1Zpresso K-series including K-Ultra).</li>
+</ul>
+<h3 id="6-motor-driven-hand-grinder-feeds-b3">6. Motor-driven hand grinder (feeds B3)</h3>
+<p>Commercial: <a href="https://flairespresso.com/blog/upgrade-your-1zpresso-grinder-with-the-flair-power-tower">Flair Power Tower</a> (K-Pro, K-Max, K-Ultra, K-Plus); Skope X adaptors for C40, ZP6, Kinu M47 (Dec 2023 forum post, availability unknown); DIY: <a href="https://makerworld.com/models/2845866">MakerWorld</a> printed adapter for J-Ultra; <a href="https://coffeegeek.com/opinions/coffee-at-the-moment/the-cordless-espresso-grinder-conundrum-why-torque-is-hard/">CoffeeGeek torque article</a> argues torque is the obstacle. Home-Barista thread: <a href="https://www.home-barista.com/advice/hand-grinder-to-electric-advice-t100888.html">hand grinder to electric</a>.</p>
+<h3 id="7-water-for-a-non-plumbed-bedside-machine">7. Water for a non-plumbed bedside machine</h3>
+<ul>
+<li>SCA espresso guidance: simply scaling up the filter standard would lead to heavy scale; espresso extension allows total hardness as low as 20 ppm CaCO3 and alkalinity up to 150 ppm (<a href="https://sca.coffee/sca-news/25/issue-9/english/water-and-coffee-acidity-how-to-adapt-your-water-for-different-extraction-methods-25-magazine-issue-9">SCA 25 Magazine</a>). Other pages cite the filter standard inconsistently (68 ppm Ca hardness, 40 ppm alkalinity, 150 ppm TDS); check the SCA original.</li>
+<li>TDS meter cannot verify hardness vs alkalinity separately.</li>
+<li>Third Wave Water espresso packet contents not fully disclosed; HB users speculate on bicarbonate/magnesium sulphate and calcium citrate oddities (<a href="https://www.home-barista.com/water/third-wave-water-t44736-70.html">HB</a>). Clive recommends packets in distilled water for most home users and a DIY two-concentrate recipe (magnesium sulfate + sodium bicarbonate, about 65 ppm hardness) (<a href="https://clivecoffee.com/blogs/learn/how-to-build-a-diy-water-recipe-for-espresso-at-home-clive-coffee">Clive</a>). A blog recipe: per litre RO, 0.17 g Epsom salt + 0.10 g sodium bicarbonate gives about 70 ppm hardness, 50 ppm alkalinity (low-quality source; verify by titration).</li>
+<li>Practical: because tank-fed, ensure a rinsed tank, regular descale, never run pure distilled in machines with level probes (some machines need minimum conductivity; not sourced here).</li>
+<li>Bedside scheduling: smart plug must be rated 15-20 A; some users reported melted timers; one guide says schedule about 30 min ahead; heating appliances unattended is a safety judgment, check manuals (<a href="https://www.home-barista.com/advice/smart-plugs-t98416.html">HB smart plugs</a>).</li>
+</ul>
+<h2 id="quote-bank">Quote bank</h2>
+<p>No Hoffmann, Hedrick or Gagne direct quotes were obtainable. The following are verbatim from search-result text.</p>
+<blockquote>
+<p>Our tablet software is open source, as is our API. This allows the community to extend the capabilities of our machine. Decent Espresso (vendor), undated page, PRIMARY (vendor’s own site), <a href="https://decentespresso.com/de1">source</a></p>
+</blockquote>
+<blockquote>
+<p>Simply scaling up the SCA standard would lead to heavy scale formation. and this leads to an extension of the recommendation at lower total hardness (as low as 20 ppm CaCO3) and especially much higher values of alkalinity of up to 150 ppm CaCO3. SCA 25 Magazine Issue 9, Specialty Coffee Association, undated, PRIMARY, <a href="https://sca.coffee/sca-news/25/issue-9/english/water-and-coffee-acidity-how-to-adapt-your-water-for-different-extraction-methods-25-magazine-issue-9">source</a></p>
+</blockquote>
+<blockquote>
+<p>Remember, with a needle valve it’s not pressure per se that you are controlling, it’s flow. Home-Barista forum poster (anonymous), undated, WEAK, <a href="https://www.home-barista.com/espresso-machines/breville-dual-boiler-slayer-shots-t54849-420.html">source</a></p>
+</blockquote>
+<blockquote>
+<p>Hoffmann challenged me years ago on this, and I thought it was both counterintuitive and unlikely. I asked the Decent community to do the research, and it turns out I was wrong, and Hoffmann was right. Presented as Decent’s creator (John Buckman) via forum relay; credentials: Decent founder; undated; WEAK (search relay, not verified on the page), <a href="https://www.home-barista.com/marketplace/decent-espresso-news-t66649-2730.html">source</a> (page URL uncertain, fact-check)</p>
+</blockquote>
+<blockquote>
+<p>bluetooth is limited to 10hz, or 10 messages per second, and what’s more, if you send more than that, messages get dropped. Decent founder per forum relay, undated, WEAK, <a href="https://www.home-barista.com/marketplace/decent-espresso-news-t66649.html">source</a> (page URL uncertain)</p>
+</blockquote>
+<blockquote>
+<p>buy Third Wave Water packets, add one to a gallon of distilled water, and move on with your life. Clive Coffee (retailer blog), undated, PRIMARY for Clive’s view, <a href="https://clivecoffee.com/blogs/learn/how-to-build-a-diy-water-recipe-for-espresso-at-home-clive-coffee">source</a></p>
+</blockquote>
+<blockquote>
+<p>for $500 I expect more than a crappy plastic tamp. Tom’s Guide reviewer on Gaggia Classic E24, 2025-26, PRIMARY, <a href="https://www.tomsguide.com/home/coffee-makers/gaggia-classic-e24-evo-pro-review">source</a></p>
+</blockquote>
+<h2 id="disagreements-failure-modes-and-caveats">Disagreements, failure modes and caveats</h2>
+<ul>
+<li>Profiling value: vendors (Clive, Seattle Coffee Gear) call it valuable; independent-leaning guide says marginal for most. No controlled taste data found.</li>
+<li>Sensor offset and setpoint disagreements on PID Gaggias (5-12 C).</li>
+<li>Gaggiuino vs GaggiMate: licensing/openness claim from a single reviewer; Gaggiuino kit availability constrained.</li>
+<li>Meticulous: scarce independent reviews; resale listings are the main source; steam wand extra.</li>
+<li>Oracle Jet: price high; failure data absent; tamp complaints from original Oracle.</li>
+<li>La Marzocco Mini app status conflicts; Micra price $3,900 vs $4,500.</li>
+<li>Decent price in 2026 seen at $3,699 vs $2,199 in an old thread; DE1 BLE 10 Hz cap limits closed-loop control from remote apps.</li>
+<li>Forum-mod safety: needle valve and dimmer mods may affect warranty and pump life (unsourced).</li>
+<li>Unattended heating appliance on a bedside table is a fire-safety risk; use rated plugs and manufacturer guidance.</li>
+<li>Complete Home Barista and several “pages.dev” guides look like low-reliability affiliate/AI content; not relied on for numbers.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Whole Latte Love product pages (Gaggia, Silvia Pro X, Bianca V3, BES920, Profitec Pro 800), US retailer, 2022-2026, retail prices; Pro 800 page stale (2022).</li>
+<li>decentespresso.com/price, /de1, /blog/trumps_tariffs…, Decent Espresso, 2025-26, vendor, reliable for own prices.</li>
+<li>shop.gaggimate.eu, docs.gaggimate.eu, GaggiMate, 2026, vendor.</li>
+<li>Tom’s Guide, TechRadar Gaggia and Oracle Jet reviews, 2025-26, reputable outlets.</li>
+<li>Gear Patrol Micra review, reputable; Clive Coffee pages, retailer.</li>
+<li>Home-Barista threads (Slayer shots, La Pavoni PID, Meticulous resale, grinder to electric), forum, anecdotal.</li>
+<li>SCA 25 Magazine issue 9, SCA, water chemistry primary.</li>
+<li>ChannelNews Breville tariffs/production, trade press, Aug 2025.</li>
+<li>GitHub johnrbell/flair_eva_project and asciimike/coffee-tools, hobby repos.</li>
+<li>CoffeeGeek torque article, opinion.</li>
+<li>Kaffeemacher test protocol, Swiss reviewer, methodology.</li>
+<li>Seattle Coffee Gear features post, retailer, testing claims.</li>
+<li>Complete Home Barista, daily-grind-guide, pages.dev guides: low reliability.</li>
+</ul>
+<h2 id="gaps">Gaps</h2>
+<ul>
+<li>No verbatim Hoffmann, Hedrick, Gagne or Kaffeemacher statements; no Home-Barista expert quotes on what matters.</li>
+<li>No live 2026 Gaggiuino kit price; Londinium R24, Elektra, Cremina prices unverified; Profitec Pro 800 price stale.</li>
+<li>No hard data on tariff effects per brand (Italian imports), warm-up times, parts availability or serviceability; no failure-rate data.</li>
+<li>No official Breville US prices for Barista Pro/Touch/Impress; Oracle Jet repairability unknown.</li>
+<li>Gagne’s water recipe numbers; Third Wave Water espresso formula.</li>
+<li>GaggiMate Home Assistant support and official API unconfirmed; Meticulous API unconfirmed; Decent Bengle specs/price.</li>
+<li>Whether motorizing Kinu M47 with a drill adapter is available off-the-shelf.</li>
+</ul>
+<h2 id="verification-log-independent-fact-check">Verification log (independent fact-check)</h2>
+<p>Checked 16 items with 17 WebSearch calls (budget reached). Only GitHub hosts were fetchable, so no page was read directly; every check rests on search snippets. Verdicts reflect that.</p>
+<ul>
+<li>VERIFIED - Breville Dual Boiler BES920 at <span class="math inline">1, 599.95(<em>U</em><em>S</em>).<em>C</em><em>o</em><em>n</em><em>f</em><em>i</em><em>r</em><em>m</em><em>e</em><em>d</em><em>b</em><em>y</em><em>B</em><em>r</em><em>e</em><em>v</em><em>i</em><em>l</em><em>l</em><em>e</em>′<em>s</em><em>U</em><em>S</em><em>p</em><em>r</em><em>o</em><em>d</em><em>u</em><em>c</em><em>t</em><em>p</em><em>a</em><em>g</em><em>e</em><em>a</em><em>n</em><em>d</em><em>r</em><em>e</em><em>t</em><em>a</em><em>i</em><em>l</em><em>e</em><em>r</em><em>l</em><em>i</em><em>s</em><em>t</em><em>i</em><em>n</em><em>g</em><em>s</em>(<em>W</em><em>h</em><em>o</em><em>l</em><em>e</em><em>L</em><em>a</em><em>t</em><em>t</em><em>e</em><em>L</em><em>o</em><em>v</em><em>e</em>,<em>M</em><em>a</em><em>j</em><em>e</em><em>s</em><em>t</em><em>y</em><em>C</em><em>o</em><em>f</em><em>f</em><em>e</em><em>e</em>,<em>S</em><em>e</em><em>a</em><em>t</em><em>t</em><em>l</em><em>e</em><em>C</em><em>o</em><em>f</em><em>f</em><em>e</em><em>e</em><em>G</em><em>e</em><em>a</em><em>r</em>)<em>i</em><em>n</em><em>s</em><em>e</em><em>a</em><em>r</em><em>c</em><em>h</em><em>s</em><em>n</em><em>i</em><em>p</em><em>p</em><em>e</em><em>t</em><em>s</em>.<em>N</em><em>o</em><em>t</em><em>e</em> : <em>W</em><em>h</em><em>o</em><em>l</em><em>e</em><em>L</em><em>a</em><em>t</em><em>t</em><em>e</em><em>L</em><em>o</em><em>v</em><em>e</em>′<em>s</em><em>C</em><em>a</em><em>n</em><em>a</em><em>d</em><em>i</em><em>a</em><em>n</em><em>l</em><em>i</em><em>s</em><em>t</em><em>i</em><em>n</em><em>g</em><em>i</em><em>s</em><em>C</em></span>1,899.99, and the Australian BES920BSS is listed at A$1,299. URL: <a href="https://www.breville.com/en-us/product/BES920">https://www.breville.com/en-us/product/BES920</a></li>
+<li>VERIFIED - Lelit Bianca V3 dual boiler at $2,999.95. Confirmed by Whole Latte Love and Clive Coffee regular prices. Refurbished units list at $2,699.95. Warranty is 3 years. URL: <a href="https://www.wholelattelove.com/collections/lelit/products/lelit-bianca-v3-dual-boiler-espresso-machine">https://www.wholelattelove.com/collections/lelit/products/lelit-bianca-v3-dual-boiler-espresso-machine</a></li>
+<li>VERIFIED - Rancilio Silvia Pro X at about $2,195 (US). Confirmed by Whole Latte Love and Walmart regular prices. Seattle Coffee Gear lists $1,990 and Majesty a sale price of $2,195, so the price varies by retailer. URL: <a href="https://www.wholelattelove.com/products/rancilio-silvia-pro-x-dual-boiler-espresso-machine">https://www.wholelattelove.com/products/rancilio-silvia-pro-x-dual-boiler-espresso-machine</a></li>
+<li>VERIFIED (with caveat) - Gaggia Classic Pro E24 at $499 (US, Whole Latte Love). Confirmed as the current sale price on the collection page, with a regular price of $549. Listing names are confused between “Classic E24” and “Classic Pro E24”, and a 2-year warranty applies at this retailer. URL: <a href="https://www.wholelattelove.com/collections/gaggia/products/gaggia-classic-pro">https://www.wholelattelove.com/collections/gaggia/products/gaggia-classic-pro</a></li>
+<li>VERIFIED (with caveat) - Breville China exposure about 40% of purchases (July 2025) falling to about 10% by Jan 2026. ChannelNews reports this as share of purchases tied to the US-China trade relationship, not share of production. Motley Fool AU adds Vietnam and Cambodia alongside Mexico and Indonesia as new sites. URL: <a href="https://www.channelnews.com.au/breville-to-shift-production-out-of-china-as-coffee-remains-growth-driver/">https://www.channelnews.com.au/breville-to-shift-production-out-of-china-as-coffee-remains-growth-driver/</a></li>
+<li>PARTIAL - La Marzocco Micra “$3,900-4,500”. Gear Patrol confirms $3,900 only. The $4,500 top is not confirmed in the search results. Regional prices vary widely (aio.lv EUR 4,478.99 incl. VAT, Stali AUD 5,999, Kaffeemacher about EUR 3,330), so the range should be stated as US-only and dated. URL: <a href="https://www.gearpatrol.com/drinks/la-marzocco-linea-micra-review/">https://www.gearpatrol.com/drinks/la-marzocco-linea-micra-review/</a></li>
+<li>PARTIAL - Breville Oracle Jet “$1,995-1,999.95”. Tom’s Guide’s review gives $2,000 (GBP 1,700), the launch article gives $1,999, and a third party shows $1,982.99 on Amazon. Correct US range is about $1,983-2,000; $1,995 is not seen in any snippet. URL: <a href="https://www.tomsguide.com/home/coffee-makers/breville-oracle-jet-review">https://www.tomsguide.com/home/coffee-makers/breville-oracle-jet-review</a></li>
+<li>PARTIAL - Decent “Our tablet software is open source, as is our API. This allows the community to extend the capabilities of our machine.” Substance confirmed on Decent’s own DE1 overview page (primary), and a search summary describes the same statement. The verbatim sentence was not seen in an independent snippet, so wording should be checked on the live page. URL: <a href="https://www.decentespresso.com/de1">https://www.decentespresso.com/de1</a></li>
+<li>PARTIAL - Clive Coffee “buy Third Wave Water packets, add one to a gallon of distilled water, and move on with your life.” The Clive listing confirms the method (one packet per gallon of distilled or RO water, for espresso or drip). The exact sentence was not found. A customer review says “Just buy a gallon of distilled and drop one packet in.” Clive’s 12-pack is shown as sold out in one listing. URL: <a href="https://clivecoffee.com/products/third-wave-water-packets-12-pack">https://clivecoffee.com/products/third-wave-water-packets-12-pack</a></li>
+<li>PARTIAL - Tom’s Guide “for $500 I expect more than a crappy plastic tamp.” The exact sentence was not seen. Tom’s Guide does criticise the plastic tamp as the only accessory at about $500, and a follow-up Tom’s Guide piece calls it “a crappy plastic one”. Use the paraphrase or cite the review with the wording checked. URL: <a href="https://www.tomsguide.com/home/coffee-makers/gaggia-classic-e24-evo-pro-review">https://www.tomsguide.com/home/coffee-makers/gaggia-classic-e24-evo-pro-review</a></li>
+<li>NOT_FOUND - Decent DE1PRO at $3,699 list. The official comparison page appears in results but no price is in the snippet. Resale listings are $3,000-3,200, and a forum note says the price rose $100 with v1.43. The $3,699 figure is unconfirmed and should be checked on decentespresso.com/price before use. URL: <a href="https://decentespresso.com/price">https://decentespresso.com/price</a></li>
+<li>NOT_FOUND - Decent 20% tariff rate under a high-tech exemption. Decent’s blog confirms US-bound machines ship with tariffs prepaid, so the price is “to your door”. The 20% rate and any high-tech exemption are not confirmed, and the only 20% figure found is a generic MFN rate for espresso makers. URL: <a href="https://www.decentespresso.com/blog/trumps_tariffs_impact_on_your_decent_espresso_purchase">https://www.decentespresso.com/blog/trumps_tariffs_impact_on_your_decent_espresso_purchase</a></li>
+<li>NOT_FOUND - SCA “Simply scaling up the SCA standard would lead to heavy scale formation…” (SCA 25 Magazine issue 9). No snippet had this wording. The substance (espresso water guidance differs from filter, with lower hardness and higher alkalinity allowed) matches the SCAE water chart report, but that is a different document. URL: <a href="https://sca.coffee/sca-news/25/issue-9/english/water-and-coffee-acidity-how-to-adapt-your-water-for-different-extraction-methods-25-magazine-issue-9">https://sca.coffee/sca-news/25/issue-9/english/water-and-coffee-acidity-how-to-adapt-your-water-for-different-extraction-methods-25-magazine-issue-9</a></li>
+<li>NOT_FOUND - Decent founder “bluetooth is limited to 10hz, or 10 messages per second…” No Decent source surfaced; results were unrelated BLE threads. Do not use without a primary source. URL: <a href="https://www.home-barista.com/marketplace/decent-espresso-news-t66649.html">https://www.home-barista.com/marketplace/decent-espresso-news-t66649.html</a></li>
+<li>NOT_FOUND - Needle valve “with a needle valve it’s not pressure per se that you are controlling, it’s flow.” The exact wording was not found. General valve sources support the physics, but the forum attribution cannot be confirmed. URL: <a href="https://www.home-barista.com/espresso-machines/breville-dual-boiler-slayer-shots-t54849-420.html">https://www.home-barista.com/espresso-machines/breville-dual-boiler-slayer-shots-t54849-420.html</a></li>
+<li>NOT_FOUND - Hoffmann quoted via Decent founder (“Hoffmann challenged me years ago on this… Hoffmann was right.”). Extended search returned only unrelated people named Hoffmann. Attribution and wording unconfirmed; the relay page URL is also uncertain. Drop from the quote bank unless a primary source is found. URL: <a href="https://www.home-barista.com/marketplace/decent-espresso-news-t66649-2730.html">https://www.home-barista.com/marketplace/decent-espresso-news-t66649-2730.html</a></li>
+</ul>
+
+    </article>
+  </div>
+</main>
+</body>
+</html>

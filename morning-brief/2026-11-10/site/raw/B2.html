@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>B2 raw research &middot; Morning Brief No. 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&display=swap">
+<style>
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+:root {
+  /* Layout: one ~68ch reading column; a mono metadata rail (contents, provenance) in the left gutter on wide screens */
+  --paper: #F1F2EF;
+  --paper-2: #E7E9E4;
+  --ink: #1C1D1A;
+  --muted: #5A5D56;
+  --rule: #D2D5CD;
+  --crema: #94531C;
+  --crema-soft: #EADBCB;
+  --ok: #2C6847;
+  --warn: #84640E;
+  --bad: #9A372B;
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", system-ui, sans-serif;
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+    --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+  --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 19px;
+  line-height: 1.58;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration-color: var(--crema); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+a:hover { color: var(--crema); }
+a:focus-visible { outline: 2px solid var(--crema); outline-offset: 2px; border-radius: 2px; }
+
+.band { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.band-top { background: var(--paper-2); border-bottom: 1px solid var(--rule); padding-block: 40px 36px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+
+/* masthead */
+.slug { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.slug b { color: var(--ink); font-weight: 500; }
+.title { font-family: var(--display); font-stretch: 72%; font-weight: 800; font-size: clamp(54px, 10vw, 112px); line-height: 0.9; letter-spacing: -0.01em; margin: 18px 0 10px; text-wrap: balance; }
+.title .no { color: var(--crema); font-stretch: 100%; font-weight: 500; font-size: 0.42em; letter-spacing: 0.02em; vertical-align: 0.95em; margin-left: 0.18em; }
+.deck { font-style: italic; font-size: clamp(19px, 2.2vw, 23px); color: var(--muted); max-width: 46em; margin: 0 0 30px; text-wrap: pretty; }
+
+.bluf { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 2px solid var(--ink); }
+.bluf > div { padding: 16px 22px 4px 0; min-width: 0; }
+.bluf > div + div { padding-left: 22px; border-left: 1px solid var(--rule); }
+.bluf h2 { font-family: var(--display); font-stretch: 85%; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 8px; color: var(--crema); }
+.bluf p { margin: 0 0 12px; font-size: 18px; line-height: 1.5; }
+
+.stats { margin-top: 22px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 22px; font-variant-numeric: tabular-nums; }
+.stats span b { color: var(--ink); font-weight: 500; }
+
+/* body grid */
+.band-body { padding-block: 44px 72px; }
+.grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 56px; }
+.rail { min-width: 0; }
+.rail nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); font-family: var(--mono); font-size: 12.5px; line-height: 1.45; }
+.rail .label { text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 0 0 10px; }
+.rail ol, .rail ul { list-style: none; margin: 0 0 26px; padding: 0; display: grid; gap: 7px; }
+.rail a { text-decoration: none; color: var(--muted); }
+.rail a:hover { color: var(--crema); }
+.rail li.sub a { padding-left: 12px; display: inline-block; }
+
+.prose { min-width: 0; max-width: 68ch; }
+.prose h2 { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: clamp(34px, 5vw, 50px); line-height: 1; letter-spacing: -0.005em; margin: 64px 0 22px; padding-top: 18px; border-top: 2px solid var(--ink); text-wrap: balance; }
+.prose > h2:first-child, .prose > .part:first-child h2:first-child { margin-top: 0; }
+.prose h3 { font-family: var(--display); font-stretch: 88%; font-weight: 700; font-size: 25px; line-height: 1.2; margin: 42px 0 12px; text-wrap: balance; }
+.prose h4 { font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; margin: 30px 0 8px; color: var(--muted); }
+.prose p { margin: 0 0 1.05em; text-wrap: pretty; }
+.prose ul, .prose ol { padding-left: 1.3em; margin: 0 0 1.1em; }
+.prose li { margin: 0 0 0.45em; }
+.prose li::marker { color: var(--crema); }
+.prose strong { font-weight: 650; }
+.prose hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
+.prose blockquote { margin: 22px 0 24px; padding: 2px 0 2px 20px; border-left: 3px solid var(--crema); font-style: italic; font-size: 20px; line-height: 1.5; }
+.prose blockquote p:last-child { margin-bottom: 0; }
+.prose blockquote em { font-style: normal; }
+.prose code { font-family: var(--mono); font-size: 0.82em; background: var(--paper-2); padding: 1px 5px; border-radius: 3px; }
+.prose pre { font-family: var(--mono); font-size: 13.5px; line-height: 1.5; background: var(--paper-2); border: 1px solid var(--rule); padding: 16px 18px; overflow-x: auto; border-radius: 4px; }
+.prose pre code { background: none; padding: 0; font-size: inherit; }
+
+.tablewrap { overflow-x: auto; margin: 22px 0 28px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); }
+.prose table { border-collapse: collapse; width: 100%; font-family: var(--display); font-stretch: 92%; font-size: 15px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.prose th { text-align: left; font-weight: 700; font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 10px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: bottom; }
+.prose td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top; min-width: 7em; }
+.prose tr:last-child td { border-bottom: 0; }
+
+figure.profile { margin: 8px 0 34px; }
+figure.profile svg { width: 100%; height: auto; display: block; }
+figure.profile figcaption { font-family: var(--mono); font-size: 12.5px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+.ax { stroke: var(--rule); stroke-width: 1; fill: none; }
+.axl { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+.c-lever { stroke: var(--crema); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.c-pump { stroke: var(--ink); stroke-width: 1.6; fill: none; stroke-dasharray: 5 5; }
+.c-lbl { font-family: var(--mono); font-size: 11.5px; }
+.c-lbl.l { fill: var(--crema); }
+.c-lbl.p { fill: var(--ink); }
+
+/* provenance + ledger */
+.ledger { width: 100%; }
+.chip { display: inline-block; font-family: var(--mono); font-size: 11.5px; line-height: 1; padding: 4px 6px; border-radius: 3px; border: 1px solid currentColor; margin: 0 4px 4px 0; white-space: nowrap; }
+.chip.ok { color: var(--ok); }
+.chip.warn { color: var(--warn); }
+.chip.bad { color: var(--bad); }
+.stack-list { list-style: none; padding: 0 !important; margin: 18px 0 26px !important; border-top: 2px solid var(--ink); }
+.stack-list li { margin: 0 !important; padding: 14px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 3.2em minmax(0, 1fr); gap: 0 12px; }
+.stack-list .id { font-family: var(--mono); font-size: 14px; color: var(--crema); padding-top: 3px; }
+.stack-list .t { font-family: var(--display); font-stretch: 90%; font-weight: 700; font-size: 18px; line-height: 1.3; }
+.stack-list .m { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.6; }
+.stack-list li::marker { content: none; }
+
+.backlink { font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--muted); }
+.backlink:hover { color: var(--crema); }
+.raw-head .title { font-size: clamp(36px, 6vw, 64px); font-stretch: 78%; }
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .rail nav { position: static; }
+  .rail ol, .rail ul { margin-bottom: 18px; }
+}
+@media (max-width: 640px) {
+  body { font-size: 18px; }
+  .bluf { grid-template-columns: minmax(0, 1fr); }
+  .bluf > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--rule); }
+  .band-top { padding-block: 28px 26px; }
+  .prose blockquote { font-size: 19px; padding-left: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+
+</style>
+</head>
+<body>
+<header class="band band-top raw-head">
+  <div class="wrap">
+    <div class="slug"><a class="backlink" href="../index.html">&larr; Morning Brief No. 1</a><span>Raw research &middot; slice B2</span></div>
+    <h1 class="title">Lever machines and hybrids</h1>
+    <div class="stats"><span><b>41</b> searches</span><span><b>16</b> items fact-checked</span><span><b>8</b> verified</span><span><b>5</b> partial</span><span><b>3</b> dropped or flagged</span></div>
+  </div>
+</header>
+<main class="band band-body">
+  <div class="wrap grid">
+    <aside class="rail"><nav aria-label="Sections"><p class="label">Sections</p><ol><li><a href="#scope">Scope</a></li><li><a href="#method-and-search-log">Method and search log</a></li><li><a href="#findings">Findings</a></li><li><a href="#quote-bank">Quote bank</a></li><li><a href="#disagreements-failure-modes-and-caveats">Disagreements, failure modes and caveats</a></li><li><a href="#sources">Sources</a></li><li><a href="#gaps">Gaps</a></li><li><a href="#verification-log-independent-fact-check">Verification log (independent fact-check)</a></li></ol>
+    <p class="label">Other slices</p><ul><li><a href="A1.html">A1 &middot; Briefing for a living</a></li><li><a href="A2.html">A2 &middot; Scientists and the daily stream</a></li><li><a href="A3.html">A3 &middot; AI-written briefs</a></li><li><a href="A4.html">A4 &middot; The case against</a></li><li><a href="B1.html">B1 &middot; Building from scratch</a></li><li><a href="B3.html">B3 &middot; Grinders and motors</a></li><li><a href="B4.html">B4 &middot; Bedside automation</a></li><li><a href="B5.html">B5 &middot; What to buy</a></li></ul></nav></aside>
+    <article class="prose">
+<h2 id="scope">Scope</h2>
+<p>Lever espresso machines: mechanics (spring vs direct lever, declining pressure), the 2025-2026 model landscape with prices, and which designs or documented projects blend manual lever action with pumps, motors, sensors or apps. Lens: self-contained, works by hand, can also run automated. Grinders, robot-arm-on-manual-machine ideas, and Breville/other slices are out of lane.</p>
+<h2 id="method-and-search-log">Method and search log</h2>
+<p>Method: WebSearch only (server-side), 36 queries total counting parallel batches; page fetching is blocked so every claim rests on search-result text, not on reading full pages. Search summaries are secondary; numbers below are as relayed by those summaries and should be checked at the linked page. No query contained anything about the reader.</p>
+<ol type="1">
+<li>spring lever vs manual lever pressure profile peak/end bar shot time (extended) - retailer/blog ranges: peak 9-12 bar, end 3-7 bar; no measured data.</li>
+<li>La Pavoni Europiccola 2025 price US (standard) - US retail about $989-1,108; EU Lusso EUR 699.</li>
+<li>Olympia Cremina price 2025 pressure gauge mod (standard) - Cerini gauge kit $175; new Cremina about $4,305 US; EUR 3,149 sale in EU; CoffeeGeek Nov 2025 piece on Mina.</li>
+<li>Londinium R24 rotary pump lever profile price (standard) - only forum price hearsay (~$3,500); no profile detail.</li>
+<li>Meticulous price 2026 API (standard) - CES-2025 preorder $1,350; no API confirmed in that search.</li>
+<li>motorized lever linear actuator La Pavoni (extended) - Alex Moyse actuator project; Robo-Pavoni forum thread; Instructables lever build.</li>
+<li>Bezzera Strega hybrid review price (standard) - pump+spring lever; $2,699 WLL; Strega V AUD/USD 4,450.</li>
+<li>La Marzocco Leva sensors/display price (standard) - Leva X digital, $16.8k-34.7k.</li>
+<li>Flair 58x / Cafelat Robot price / SEP (standard) - Robot ~$400; Flair 58 $464-580 (low-quality mirrors).</li>
+<li>Decent DE1 lever profile API (standard) - pyDE1 (GPL-3.0, HTTP/MQTT), Streamline app GPL3.</li>
+<li>Elektra Micro Casa a Leva price/overheating (standard) - $1,599 (CoffeeGeek test) to $1,749; group heat is a recognised con.</li>
+<li>La Pavoni group overheating tips (extended) - cooling methods, mods; 2-3 shots then cool.</li>
+<li>Smart Espresso Profiler on levers (extended) - SEP + Naked Portafilter sensor; 356 shots on Cremina; Bookoo support Sept 2025.</li>
+<li>Kees van der Westen / Strietman CT2 / Argos price (standard) - weak; CT2 about $3k hearsay.</li>
+<li>Profitec Pro 800 (standard) - $2,968-3,299 US; EUR ~3,500; pump never applies brew pressure.</li>
+<li>Londinium L1 pressure profile (standard) - forum: peak 7.5-8.5 bar; L1 launch GBP 1,600 (2011).</li>
+<li>Lelit Bianca flow paddle (standard) - $2,999.95 US; paddle kit GBP 299; EUR 2,153 (Dec 2025).</li>
+<li>Meticulous reliability (standard) - nothing Meticulous-specific (miss).</li>
+<li>New lever 2026 launches (extended) - nothing motor-assisted; La Marzocco Leva X1; Flair 58 Plus 2 $699 (low quality source).</li>
+<li>Home-barista daily living (extended) - mostly review sites; two-three shots before overheating.</li>
+<li>Decent price 2026 / vs Meticulous (standard) - DE1XXL ~$4,000-4,199 undated; Meticulous $2,000 MSRP at one stage.</li>
+<li>Cafelat Robot gauge/Bluetooth (standard) - Robot T-splitter with Bookoo sensor; mechanical gauge kit $99-160.</li>
+<li>Gaggiuino (standard) - open-source Gaggia retrofit; Nano/BlackPill hardware.</li>
+<li>Flair 58 hybrid/automation (standard) - electric preheat only; fully manual lever.</li>
+<li>Decent “Comparing Decent to Breville and Lever machines” (extended) - manufacturer argument; Lever Blog nuance.</li>
+<li>CoffeeGeek Mina “paradox” (extended) - Mark Prince, 12 Nov 2025; preheating burden; valve failure report.</li>
+<li>Measured spring-lever pressure (extended) - Lever Blog 8.6 -&gt; 3.7 bar; Paul Pratt recalled 8 -&gt; 6 bar; force estimates 12.7-13.7 kg for 9 bar.</li>
+<li>Strega owners (extended) - lift lever to stop pump = preinfusion control; pump noise gripe.</li>
+<li>Meticulous 2026 price (extended) - <span class="math inline">1, 850<em>r</em><em>e</em><em>t</em><em>a</em><em>i</em><em>l</em>, </span>2,180 landed, shipping from Sept 2025, 50-100 units/week.</li>
+<li>Meticulous API/github (standard) - community MCP servers use local network interface; no official SDK confirmed.</li>
+<li>“Connected Pavoni” thread (extended) - fan+PID group cooling, Arduino/ESP8266 logging, pressure transducer.</li>
+<li>Moyse “Espresso &amp; Actuators” (extended) - Aug 2018 write-up; lever position controls volume and pressure.</li>
+<li>Motor-driven lever/servo piston (extended) - Duvall FC-1 (servo ball screw, commercial), Muvna Mach crank; no motorised consumer lever.</li>
+<li>Lever mods (standard) - PID, pressurestat, gauge adapters, Fuji PXG4 build.</li>
+<li>Hoffmann Cremina (standard) - no usable quote; Cremina half-pump preheat tip.</li>
+<li>La Pavoni Professional price (standard) - EUR 851-1,122; AUD 1,329-1,640. 37-40. Daily Coffee News cranked espresso (extended); Londinium Vectis (standard, miss: irrelevant results); 8.6 bar phrase check (standard); Gaggiuino repo (standard); Cremina US price (standard).</li>
+</ol>
+<h2 id="findings">Findings</h2>
+<h3 id="mechanics-spring-vs-direct-lever-pressure-curve">Mechanics: spring vs direct lever, pressure curve</h3>
+<ul>
+<li>Spring lever: lifting the lever fills the cylinder and compresses a spring; releasing lets the spring drive the piston (<a href="https://espressoexplained.com/lever-espresso-machines/">Espresso Explained</a>, via search summary). Direct (manual) lever: the user’s arm force is the pressure, so the profile is entirely hand-shaped.</li>
+<li>Pressure numbers (all anecdotal/retailer unless noted):
+<ul>
+<li>Retailer 1st-line: spring peak about 9-11 bar, tapering to 5-6 bar (<a href="https://www.1st-line.com/products/manual-lever-espresso-machines/">1st-line</a>).</li>
+<li>Espresso Academy: 10-12 bar at start, declining as spring decompresses; no data cited (<a href="https://espressoacademy.it/en/guide-en/what-is-the-best-pressure-for-an-espresso-machine/">source</a>).</li>
+<li>The Lever Blog (a lever retailer’s blog): peak 8.6 bar declining to 3.7 bar at shot end, near-constant flow with medium-dark roasts; machine not identified in the excerpt (<a href="https://thelevermag.com/blogs/articles/decent-espresso">source</a>). A home-barista post reproducing a Decent curve description gave ~8.6 peak, ~4 end, ~30 s, ~10 s preinfusion (could not confirm original wording).</li>
+<li>Home-barista, Paul Pratt’s restored spring lever, recalled: 8 bar max falling to 6 at the end (<a href="https://www.home-barista.com/levers/lever-machine-pressures-t6885.html">thread</a>). Evidence class: anecdote from a knowledgeable person, recalled.</li>
+<li>Londinium L1 forum posts: peak ~7.5 bar then mostly 5 then 4 bar; another says 8.5 bar peak on release (<a href="https://www.home-barista.com/levers/londinium-l1-p-t36614-10.html">home-barista L1-P</a>).</li>
+<li>Shot time: a blog gives 30-40 s total at 1:2 with a 15-18 s decline phase (<a href="https://jayarr.coffee/blog/pressure-profiling-espresso-guide/">Jayarr</a>); weak source.</li>
+</ul></li>
+<li>Direct levers: home-barista force calculations put about 12.7 kg (horizontal handle) to 13.7 kg on a La Pavoni for 9 bar; force varies with lever angle, so the curve is a hump (<a href="https://www.home-barista.com/levers/computing-brew-pressure-direct-lever-espresso-machines-t36395.html">thread</a>). The Robo-Pavoni thread notes the Pavoni is not really up to 9 bar rigours (<a href="https://www.home-barista.com/levers/robo-pavoni-learning-to-make-espresso-machine-from-scratch-t4141.html">thread</a>); relevant for any actuator design that would assume 9 bar through a Pavoni piston.</li>
+<li>Why it tastes different: the argument (declining pressure as puck erodes reduces channeling and late bitterness) comes from sellers and blogs (<a href="https://www.papelespresso.com/espresso-pressure-profiling-beginner-guide/">Papel Espresso</a>, <a href="https://www.brewedbarista.com/guides/lever-espresso-machines-worth-it">Brewed Barista</a>). Decent argues flat 9 bar is a drawback and ships lever-imitating profiles (<a href="https://decentespresso.com/docs/comparing_decent_to_breville_and_lever_machines">Decent</a>) and that 9 bar is historical inheritance from 1940s lever spring size (<a href="https://decentespresso.com/blog/the_nine_bar_question">Decent blog</a>). Both are interested parties. No controlled taste trial found. The Lever Blog adds that the ideal curve for light roasts differs from the dark-roast constant-flow curve.</li>
+<li>Preinfusion: L1 boiler-fed preinfuses at roughly 0.8-1.5 bar boiler pressure; plumbed L1-P at line pressure 2-3 bar (forum estimates). Strega: pump fills, lifting the lever stops the pump, so preinfusion is lever-controlled; some owners note pump and lever are alternatives, so no passive spring-pressure preinfusion (<a href="https://www.home-barista.com/levers/bezzera-streger-new-owner-t96794.html">home-barista</a>).</li>
+</ul>
+<h3 id="heat-management">Heat management</h3>
+<ul>
+<li>La Pavoni/Cremina style: group sits on the boiler; owners report overheating after 2-3 shots (<a href="https://www.home-barista.com/levers/cooling-la-pavoni-group-head-t873.html">home-barista cooling thread</a>, <a href="https://www.coffeeness.de/en/la-pavoni-professional-review/">2026 review</a>). Remedies: wet cloth on group, cold portafilter, drawing cool water up through the group, shutting off boiler after first shots, temperature strips, PTFE isolator, heat-sink, two-position pressurestat. Isolator numbers (105 C, 3-6 C) come from promotional pages; unverified.</li>
+<li>Elektra: group overheating listed as a con; retailer says Elektra reprogrammed steam pressure in 2017 to reduce it (seller claim) (<a href="https://www.1st-line.com/buy/elektra-microcasa-leva-espresso-machine/">1st-line</a>).</li>
+<li>Dipper vs saturated groups: not separately sourced in my searches (gap).</li>
+</ul>
+<h3 id="models-and-prices-observed-in-search-results-dates-as-noted">Models and prices (observed in search results; dates as noted)</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Type</th>
+<th>Price / market</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>La Pavoni Europiccola EPC-8</td>
+<td>direct lever</td>
+<td>$989 (Majesty, sale) to $1,108 (WLL), US, 2025-26</td>
+<td><a href="https://www.wholelattelove.com/products/la-pavoni-europiccola-epc-8-espresso-machine">WLL</a>, <a href="https://majestycoffee.com/products/la-pavoni-europiccola-8-cup-espresso-machine-epc-8">Majesty</a></td>
+</tr>
+<tr class="even">
+<td>Europiccola Lusso</td>
+<td>direct lever</td>
+<td>EUR 699</td>
+<td><a href="https://www.techradar.com/home/coffee-machines/using-la-pavonis-europiccola-lever-espresso-machine-is-a-labor-of-love-but-the-steep-learning-curve-made-me-a-better-at-home-barista">TechRadar</a></td>
+</tr>
+<tr class="odd">
+<td>La Pavoni Professional</td>
+<td>direct lever</td>
+<td>EUR 851 (IT comparison) to 1,122 (CZ); AUD 1,329-1,640</td>
+<td><a href="https://www.trovaprezzi.it/Fprezzo_macchine-da-caffe_la_pavoni_professional.aspx">trovaprezzi</a></td>
+</tr>
+<tr class="even">
+<td>Olympia Cremina</td>
+<td>direct lever, Swiss</td>
+<td>US $4,305 Cerini regular; EU EUR 3,149 sale (3,499 list)</td>
+<td><a href="https://www.cerinicoffee.com/products/olympia-express-cremina-espresso-machine-made-in-switzerland">Cerini</a>, <a href="https://espressoperfetto.de/en/produkt/olympia-express-cremina-white/">Espresso Perfetto</a></td>
+</tr>
+<tr class="odd">
+<td>Olympia Mina</td>
+<td>direct lever, new</td>
+<td>~$1K per CoffeeGeek post</td>
+<td><a href="https://coffeegeek.com/opinions/coffee-at-the-moment/olympia-mina-beautiful-flawed-paradox/">CoffeeGeek</a></td>
+</tr>
+<tr class="even">
+<td>Elektra Micro Casa a Leva</td>
+<td>spring/piston</td>
+<td>$1,599 (CoffeeGeek test), $1,749 asked</td>
+<td><a href="https://coffeegeek.com/reviews/firstlooks/elektra-micro-casa-a-leva/">CoffeeGeek</a></td>
+</tr>
+<tr class="odd">
+<td>Bezzera Strega</td>
+<td>spring lever + vibe pump</td>
+<td>$2,699 WLL; Strega V (tanked) 4,450 (Di Pacci, currency unclear)</td>
+<td><a href="https://wholelattelove.com/bezzera-strega-lever-espresso-machine">WLL</a></td>
+</tr>
+<tr class="even">
+<td>Profitec Pro 800</td>
+<td>spring lever, pump for fill only</td>
+<td>$2,968-3,299 US; ~EUR 3,500</td>
+<td><a href="https://www.wholelattelove.com/products/profitec-pro-800-lever-group-espresso-machine">WLL</a></td>
+</tr>
+<tr class="odd">
+<td>Londinium R24</td>
+<td>spring lever, rotary pump</td>
+<td>early forum: ~$3,500 (hearsay); L1 launch GBP 1,600 (2011)</td>
+<td><a href="https://www.home-barista.com/levers/londinium-r24-t65994.html">forum</a></td>
+</tr>
+<tr class="even">
+<td>Strietman CT2</td>
+<td>small lever</td>
+<td>~$3k (forum hearsay)</td>
+<td><a href="https://www.home-barista.com/levers/3-small-levers-compared-londinium-vectis-odyssey-argos-and-strietman-ct2-t95568.html">forum</a></td>
+</tr>
+<tr class="odd">
+<td>La Marzocco Leva X (digital) / S (analog)</td>
+<td>commercial spring lever</td>
+<td>1-group X $16,830 (Di Pacci USA); 2-group X $32,994-34,650; S 2-group $24,400</td>
+<td><a href="https://www.coffeemachinedepot.com/products/la-marzocco-leva-x-2-group-commercial-espresso-machine-digital-version">Coffee Machine Depot</a></td>
+</tr>
+<tr class="even">
+<td>Cafelat Robot</td>
+<td>direct lever, no electronics</td>
+<td>~$400 US; gauge kit $99</td>
+<td><a href="https://idrinkcoffee.com/en-us/products/cafelat-robot-pressure-gauge-kit">IDrinkCoffee</a></td>
+</tr>
+<tr class="odd">
+<td>Flair 58 / 58x</td>
+<td>direct lever, 58 has electric preheat</td>
+<td>58 <span class="math inline">464 − 580; 58<em>x</em> </span>85 less than heated; sources mixed quality</td>
+<td><a href="https://flairespresso.com/?p=7627">Flair</a></td>
+</tr>
+<tr class="even">
+<td>Lelit Bianca V3</td>
+<td>pump, flow paddle</td>
+<td>$2,999.95 US; EUR 2,153 (Dec 2025)</td>
+<td><a href="https://aio.lv/en/product--lelit-le-pl162t-eucw--10824285.md">Aio.lv</a></td>
+</tr>
+<tr class="odd">
+<td>Meticulous</td>
+<td>motor-driven piston, app</td>
+<td><span class="math inline">1, 350<em>C</em><em>E</em><em>S</em> − 2025<em>p</em><em>r</em><em>e</em><em>o</em><em>r</em><em>d</em><em>e</em><em>r</em>; </span>1,850 retail, ~$2,180 landed (2026 sources); shipping from Sept 2025 at 50-100/week</td>
+<td><a href="https://techcrunch.com/2025/01/07/meticulous-shows-off-its-smart-espresso-machine-at-ces-2025">TechCrunch</a>, <a href="https://roastaroma.com/gear/meticulous-espresso">Roastaroma</a></td>
+</tr>
+<tr class="even">
+<td>Decent DE1XXL</td>
+<td>pump, software profiles</td>
+<td>about $4,000-4,199 (undated)</td>
+<td><a href="https://www.home-barista.com/advice/why-would-you-not-buy-de1-t71691-50.html">home-barista</a></td>
+</tr>
+</tbody>
+</table></div>
+<p>Not priced reliably: Kees van der Westen Spirit/Spiritello (one page EUR 14,754, ambiguous), Odyssey Argos, Ponte Vecchio.</p>
+<h3 id="hybrids-and-automation">Hybrids and automation</h3>
+<ul>
+<li>Pump + spring lever: Strega (pump fills/preinfuses, spring lever extracts, lever lift cuts pump). Profitec Pro 800 pump only fills. Londinium R24 uses a rotary pump (quieter fill). La Marzocco Leva X adds a digital pressure/time display per group (sensor hardware not described in results).</li>
+<li>Motor-driven piston replaying lever profiles: Meticulous (app, saved profiles); Decent DE1 (pump, software profiles; open Tcl/JS app, GPL3 Streamline; pyDE1 GPL-3.0 with HTTP/MQTT API on PyPI). Decent says its profiles imitate lever curves (<a href="https://decentespresso.com/docs/comparing_decent_to_breville_and_lever_machines">Decent</a>). Meticulous: community MCP servers (erdos2n, NatiCha) drive it over a local-network interface; no official SDK confirmed.</li>
+<li>Servo ball-screw piston exists commercially (Duvall FC-1), not a hand-operable consumer lever.</li>
+<li>Sensing/logging on real levers: Smart Espresso Profiler (Hungarian-designed app plus Naked Portafilter Bluetooth sensor; one Cremina user logged 356 shots from July 2020; Bookoo sensor support added Sept 2025) (<a href="https://apps.apple.com/us/app/smart-espresso-profiler/id1391707089">App Store</a>, <a href="https://www.home-barista.com/espresso-machines/smart-espresso-profiler-bluetooth-transducer-long-term-user-experience-t72171.html">home-barista</a>). Cafelat Robot: T-splitter with Bookoo monitor logs via Bookoo/Beanconqueror/Odyssey apps (<a href="https://cafune.ca/products/bookoo-espresso-monitor-kit">Cafune</a>); Robot official gauge is mechanical.</li>
+<li>DIY projects:
+<ul>
+<li>Alex Moyse (Aug 2018): refurbished Thomson linear actuator (about 500 lb, ~2 in/s, “overkill”) in a steel frame, linear pot for position, goal that lever position sets volume and pressure; companion “La Pavoni IOT Modification Part 1” (Jul 2018) (<a href="https://alexmoyse.com/?page_id=75">alexmoyse.com</a>). This is the closest documented motorised lever; the search did not reveal results data or whether the lever remained hand-usable.</li>
+<li>“Connected Pavoni” (coffeeforums.co.uk, ~2020): fan + PID group cooling, Arduino then ESP8266, pressure transducer, load cells under machine (<a href="https://coffeeforums.co.uk/topic/51981-the-connected-pavoni-adding-too-many-wires-to-a-la-pavoni/">thread</a>); “La Pavoni Europiccola Arduino Companion” (<a href="https://www.home-barista.com/levers/la-pavoni-europiccola-arduino-companion-t95700.html">thread</a>).</li>
+<li>PID retrofits on Pavoni (pressurestat remains the boiler control; PID needs work) (<a href="https://www.home-barista.com/repairs/la-pavoni-pid-better-temperature-control-t17073-90.html">long thread</a>).</li>
+<li>Gaggiuino (Gaggia Classic, Arduino Nano/STM32 BlackPill, dimmer/SSR phase control, pressure transducer, pressure profiling, auto/manual modes) (<a href="https://www.github.com/dlime/gaggiuino">GitHub dlime/gaggiuino</a>). Pump machine, not a lever, but the best-documented open-source template for profile control.</li>
+<li>Crank-geared machines (Muvna Mach, Ikape Alkaid) show mechanical-ratio alternatives to a lever (<a href="https://dailycoffeenews.com/2025/12/11/the-screwy-new-world-of-cranked-and-geared-espresso/">Daily Coffee News, Dec 2025</a>).</li>
+</ul></li>
+<li>2025-2026 newcomers found: Olympia Mina (Nov 2025 opinion), Meticulous shipping, Muvna Mach, Bookoo sensor. No commercial motor-assisted spring lever found (searched twice).</li>
+<li>Auto-on timers: not covered by any lever result; the Pavoni pressurestat-and-timer idea (Ceccarelli page on pressurestat DIY) is the nearest (<a href="https://www.francescoceccarelli.eu/La_Pavoni/Faidate/ep_pressostato_eng.htm">page</a>).</li>
+</ul>
+<h3 id="what-lever-owners-say-anecdoteopinion">What lever owners say (anecdote/opinion)</h3>
+<ul>
+<li>Steep learning curve, rewarding ritual (TechRadar, Europiccola). Needs partial depressurisation before removing portafilter; unintuitive (TechGearLab). Only 2-3 shots before overheating; unforgiving about bean freshness (2012 owner blog). Strega owners: pull consistently sweet shots easily; pump is noisy; some bypass it with a switch. Home-barista users who moved from Decent to spring lever say the lever gives similar declining-pressure benefits with a simpler interface.</li>
+<li>Multi-year daily-routine accounts: not found (gap).</li>
+</ul>
+<h2 id="quote-bank">Quote bank</h2>
+<blockquote>
+<p>The Lever controls both the pressure and the volume of the brew. Alex Moyse, builder (LinkedIn lists him at Microsoft), Aug 2018, PRIMARY (own site), <a href="https://alexmoyse.com/?page_id=75">source</a>. Wording came via search summary; no second search confirmed it exactly.</p>
+</blockquote>
+<blockquote>
+<p>complete overkill for the La Pavoni Alex Moyse, same page, PRIMARY, same caveat; fragment only.</p>
+</blockquote>
+<blockquote>
+<p>puck resistance of this espresso gives a peak of 8.6 bar of pressure, which eventually declines to 3.7 bar at the end of the shot The Lever Blog (lever retailer), undated, SECONDARY/commercial, <a href="https://thelevermag.com/blogs/articles/decent-espresso">source</a>. Second exact-phrase search did not return the page; a related home-barista post reproduced similar numbers. Treat as unconfirmed.</p>
+</blockquote>
+<blockquote>
+<p>As I recall the max pressure was 8 bar, falling to 6 at the end. Home-barista forum poster relaying Paul Pratt’s restored spring lever data, undated, WEAK (recollection), <a href="https://www.home-barista.com/levers/lever-machine-pressures-t6885.html">source</a>. Not independently confirmed.</p>
+</blockquote>
+<blockquote>
+<p>genuine paradox, a machine built with futuristic precision to honour an old-world craft CoffeeGeek opinion piece (Mark Prince, 12 Nov 2025), SECONDARY, <a href="https://coffeegeek.com/opinions/coffee-at-the-moment/olympia-mina-beautiful-flawed-paradox/">source</a>. Partial wording from search summary; paraphrase risk.</p>
+</blockquote>
+<blockquote>
+<p>The pump never applies pressure to the coffee (paraphrase only: Whole Latte Love review says brew pressure on the Pro 800 comes from spring and the user’s hand). No quote assembled.</p>
+</blockquote>
+<h2 id="disagreements-failure-modes-and-caveats">Disagreements, failure modes and caveats</h2>
+<ul>
+<li>Peak pressure for spring levers ranges from 7.5 to 12 bar across sources; none show transducer traces. Retailers (Espresso Academy, 1st-line) skew high; forum/owner numbers skew 8-9.</li>
+<li>Taste claims for declining pressure are sellers’ and enthusiasts’ opinion; Decent (a seller) and lever sellers each argue their side.</li>
+<li>Reliability: CoffeeGeek relays a user report of valve failure after about 100 shots on the new Mina; Meticulous support/parts are unproven per one review and ships 50-100 units/week; I found no Meticulous-specific failure data.</li>
+<li>Heat: small Pavonis overheat after 2-3 shots; mods claims from promotional pages.</li>
+<li>Motorising a lever: Robo-Pavoni thread warns Pavoni parts not up to 9 bar; a direct lever through an actuator needs about 13 kg-force equivalent at the handle; a spring lever needs the actuator to re-cock the spring (Moyse’s 500 lb actuator is oversized by an order of magnitude).</li>
+<li>Price sources mix currencies, retailers and dates; several “2026” review mirror pages (pages.dev) are low quality and were not relied on.</li>
+<li>Search-result summaries paraphrase; verbatim wording was not verified at page level.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Home-barista Lever forum threads (pressures, Pavoni cooling, Strega, L1, R24, Cremina gauge): user posts, anecdotal, undated or old.</li>
+<li>Whole Latte Love, Majesty Coffee, Cerini Coffee, Di Pacci, Coffee Machine Depot: retailers, price-reliable as of observation, no dates.</li>
+<li>CoffeeGeek (Mark Prince, 12 Nov 2025; Elektra review): editorial, moderate-high.</li>
+<li>TechRadar Europiccola piece: editorial, undated.</li>
+<li>TechCrunch Meticulous CES 2025 (7 Jan 2025): reliable for preorder price only.</li>
+<li>Roastaroma Meticulous review (2026): moderate, single reviewer.</li>
+<li>Alex Moyse (Aug 2018): primary, hobbyist.</li>
+<li>Decent Espresso docs/blog: manufacturer, interested party; open-source software claims credible.</li>
+<li>pyDE1 on PyPI: project page, reliable for existence/licence.</li>
+<li>Gaggiuino GitHub (dlime fork): primary repo; hardware targets vary.</li>
+<li>Daily Coffee News (Howard Bryman, 11 Dec 2025): trade press, snippet only.</li>
+<li>App Store / Google Play SEP listings: primary for features.</li>
+<li>The Lever Blog: lever retailer, commercial.</li>
+</ul>
+<h2 id="gaps">Gaps</h2>
+<ul>
+<li>No transducer-measured spring-lever curve with date and machine found; no controlled taste study.</li>
+<li>Dipper vs saturated group differences not sourced.</li>
+<li>Official 2025-26 prices for Londinium, Kees van der Westen, Strietman, Odyssey, Ponte Vecchio not found; Cremina SL/69 and Meticulous retail confirmation indirect.</li>
+<li>Meticulous official API documentation not located; only third-party MCP wrappers.</li>
+<li>Moyse’s project outcome (did it work, can the lever still be hand-pulled) unknown; no other motorised-lever build found; no auto-on-timer lever documentation.</li>
+<li>Reddit not reached; multi-year daily-owner accounts missing.</li>
+</ul>
+<h2 id="verification-log-independent-fact-check">Verification log (independent fact-check)</h2>
+<ul>
+<li>PARTIAL. Quote: “The Lever controls both the pressure and the volume of the brew” (Moyse). One search summary places this sentence on the primary page, in the form “What I described above is that the Lever controls both the pressure and the volume of the brew”. Not repeated in any other result and the page was not read directly, so treat the wording as unconfirmed. URL: <a href="https://alexmoyse.com/?page_id=75">https://alexmoyse.com/?page_id=75</a></li>
+<li>VERIFIED. Quote: “complete overkill for the La Pavoni” (Moyse, actuator). Two separate search summaries of the primary page carry this wording, with 500 lb and about 2 in/s. A retailer listing confirms a 500 lbf Thomson actuator, though its stated travel rate is 1.40 in/s. URL: <a href="https://alexmoyse.com/?page_id=75">https://alexmoyse.com/?page_id=75</a></li>
+<li>PARTIAL. Quote: “puck resistance of this espresso gives a peak of 8.6 bar … declines to 3.7 bar” (Lever Blog). The exact phrase appears on the cited Lever Blog page per the search summary. It describes one illustrative shot, not a general lever benchmark, and the source is a lever retailer. No independent confirmation. URL: <a href="https://thelevermag.com/blogs/articles/decent-espresso">https://thelevermag.com/blogs/articles/decent-espresso</a></li>
+<li>NOT_FOUND. Quote: “As I recall the max pressure was 8 bar, falling to 6 at the end” (Paul Pratt). The post was not found. The Pratt thread reportedly describes around 8 bar after a spring change, down from 12 bar, and the 8-to-6 pattern appears only in other posters’ descriptions of other machines. URL: <a href="https://www.home-barista.com/levers/lever-machine-pressures-t6885.html">https://www.home-barista.com/levers/lever-machine-pressures-t6885.html</a></li>
+<li>PARTIAL. Quote: “a genuine paradox, a machine built with futuristic precision to honour an old-world craft” (Mark Prince, CoffeeGeek). The article exists: “The Olympia Express Mina: A Beautiful, Frustrating Swiss Paradox”, listed as dated 12 Nov 2025. The sentence comes from a search summary and reads as paraphrase, so the exact wording is not confirmed. The same summary reports a valve failure after about a month of daily use, not the about 100 shots in the file. URL: <a href="https://coffeegeek.com/opinions/coffee-at-the-moment/olympia-mina-beautiful-flawed-paradox/">https://coffeegeek.com/opinions/coffee-at-the-moment/olympia-mina-beautiful-flawed-paradox/</a></li>
+<li>VERIFIED. La Pavoni Europiccola EPC-8 at $1,108 (Whole Latte Love, no sale shown). Rustic Kitchen shows $989 (noted as pre-tariff promo) and Reach.dog $995. The $989 low end is at a different retailer than the one the file cites (Majesty), and the dates are unclear. URL: <a href="https://www.wholelattelove.com/products/la-pavoni-europiccola-epc-8-espresso-machine">https://www.wholelattelove.com/products/la-pavoni-europiccola-epc-8-espresso-machine</a></li>
+<li>VERIFIED. Olympia Cremina at $4,305 regular and sale price on Cerini Coffee’s US listing. A reseller shows $4,198.95 and other markets show lower prices (CHF 3,680, GBP 3,959). The EUR 3,149 sale figure was not checked. URL: <a href="https://www.cerinicoffee.com/products/olympia-express-cremina-espresso-machine-made-in-switzerland">https://www.cerinicoffee.com/products/olympia-express-cremina-espresso-machine-made-in-switzerland</a></li>
+<li>VERIFIED. Bezzera Strega at $2,699 (Whole Latte Love listing, a lever with pump). A reseller tracker shows the price moving from $2,499.07 to $2,699, date unknown. Artizan lists a different model, the Strega TOP, at $2,899. URL: <a href="https://wholelattelove.com/bezzera-strega-lever-espresso-machine">https://wholelattelove.com/bezzera-strega-lever-espresso-machine</a></li>
+<li>PARTIAL. Profitec Pro 800 “$2,968-3,299 US”. Whole Latte Love shows $3,199 and $3,299 for new units and $2,699 refurbished. The $2,968 low end is a sale price at Barista &amp; Espresso, not the file’s cited source, and Clive Coffee lists $3,299. The range holds but the attribution should be corrected. URL: <a href="https://www.wholelattelove.com/products/profitec-pro-800-lever-group-espresso-machine">https://www.wholelattelove.com/products/profitec-pro-800-lever-group-espresso-machine</a></li>
+<li>VERIFIED. Lelit Bianca at $2,999.95 US. The price is for the whole Bianca V3 machine, which has the built-in flow paddle, not for a paddle add-on. Several retailers show it. The GBP 299 paddle kit was not checked. URL: <a href="https://www.wholelattelove.com/products/lelit-bianca-v3-dual-boiler-espresso-machine">https://www.wholelattelove.com/products/lelit-bianca-v3-dual-boiler-espresso-machine</a></li>
+<li>VERIFIED. Meticulous CES 2025 preorder at $1,350 (TechCrunch, 7 Jan 2025). Japanese retailer listing shows a later preorder at about JPY 297,000, sold out, delivery after June 2025. URL: <a href="https://techcrunch.com/2025/01/07/meticulous-shows-off-its-smart-espresso-machine-at-ces-2025">https://techcrunch.com/2025/01/07/meticulous-shows-off-its-smart-espresso-machine-at-ces-2025</a></li>
+<li>NOT_FOUND. Meticulous “<span class="math inline">1, 850<em>r</em><em>e</em><em>t</em><em>a</em><em>i</em><em>l</em>, </span>2,180 landed” attributed to Roastaroma. The Roastaroma review was not found. Results show only the $1,350 Indiegogo price and an Australian AUD 2,495 listing, now sold out. URL: <a href="https://roastaroma.com/gear/meticulous-espresso">https://roastaroma.com/gear/meticulous-espresso</a></li>
+<li>PARTIAL. La Marzocco Leva X 1-group “$16,830”. That figure is a DiPacci USA sale price (regular $18,700, tax included). La Marzocco USA’s own page lists the 1-group at $15,000, and Daily Coffee News reports launch pricing from $15,000. The row should say reseller sale price, not list. URL: <a href="https://dipacciusa.com/products/leva-x-coffee-machine">https://dipacciusa.com/products/leva-x-coffee-machine</a></li>
+<li>VERIFIED. Elektra Micro Casa a Leva “$1,599”. CoffeeGeek’s First Look page gives “Price When Tested” as $1599. Current listings are higher (Artizan $2,029). The $1,749 asking price was not checked. URL: <a href="https://coffeegeek.com/reviews/firstlooks/elektra-micro-casa-a-leva/">https://coffeegeek.com/reviews/firstlooks/elektra-micro-casa-a-leva/</a></li>
+<li>NOT_FOUND. Decent DE1XXL “about $4,000-4,199 (undated)”. No source for the XXL price was found. Results show only DE1XL resale listings at $2,500-3,000. URL: <a href="https://www.home-barista.com/advice/why-would-you-not-buy-de1-t71691-50.html">https://www.home-barista.com/advice/why-would-you-not-buy-de1-t71691-50.html</a></li>
+<li>VERIFIED. Cafelat Robot “~$400 US”. Prima Coffee lists the standard Robot at $399 (out of stock when captured), and Coffeeunits lists the Barista model with gauge at $399, down from $440. The $99 gauge kit was not checked. URL: <a href="https://prima-coffee.com/brew/espresso/home/cafelat/">https://prima-coffee.com/brew/espresso/home/cafelat/</a></li>
+</ul>
+
+    </article>
+  </div>
+</main>
+</body>
+</html>

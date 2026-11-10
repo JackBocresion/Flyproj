@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>A1 raw research &middot; Morning Brief No. 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&display=swap">
+<style>
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+:root {
+  /* Layout: one ~68ch reading column; a mono metadata rail (contents, provenance) in the left gutter on wide screens */
+  --paper: #F1F2EF;
+  --paper-2: #E7E9E4;
+  --ink: #1C1D1A;
+  --muted: #5A5D56;
+  --rule: #D2D5CD;
+  --crema: #94531C;
+  --crema-soft: #EADBCB;
+  --ok: #2C6847;
+  --warn: #84640E;
+  --bad: #9A372B;
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", system-ui, sans-serif;
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+    --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+  --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 19px;
+  line-height: 1.58;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration-color: var(--crema); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+a:hover { color: var(--crema); }
+a:focus-visible { outline: 2px solid var(--crema); outline-offset: 2px; border-radius: 2px; }
+
+.band { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.band-top { background: var(--paper-2); border-bottom: 1px solid var(--rule); padding-block: 40px 36px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+
+/* masthead */
+.slug { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.slug b { color: var(--ink); font-weight: 500; }
+.title { font-family: var(--display); font-stretch: 72%; font-weight: 800; font-size: clamp(54px, 10vw, 112px); line-height: 0.9; letter-spacing: -0.01em; margin: 18px 0 10px; text-wrap: balance; }
+.title .no { color: var(--crema); font-stretch: 100%; font-weight: 500; font-size: 0.42em; letter-spacing: 0.02em; vertical-align: 0.95em; margin-left: 0.18em; }
+.deck { font-style: italic; font-size: clamp(19px, 2.2vw, 23px); color: var(--muted); max-width: 46em; margin: 0 0 30px; text-wrap: pretty; }
+
+.bluf { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 2px solid var(--ink); }
+.bluf > div { padding: 16px 22px 4px 0; min-width: 0; }
+.bluf > div + div { padding-left: 22px; border-left: 1px solid var(--rule); }
+.bluf h2 { font-family: var(--display); font-stretch: 85%; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 8px; color: var(--crema); }
+.bluf p { margin: 0 0 12px; font-size: 18px; line-height: 1.5; }
+
+.stats { margin-top: 22px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 22px; font-variant-numeric: tabular-nums; }
+.stats span b { color: var(--ink); font-weight: 500; }
+
+/* body grid */
+.band-body { padding-block: 44px 72px; }
+.grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 56px; }
+.rail { min-width: 0; }
+.rail nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); font-family: var(--mono); font-size: 12.5px; line-height: 1.45; }
+.rail .label { text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 0 0 10px; }
+.rail ol, .rail ul { list-style: none; margin: 0 0 26px; padding: 0; display: grid; gap: 7px; }
+.rail a { text-decoration: none; color: var(--muted); }
+.rail a:hover { color: var(--crema); }
+.rail li.sub a { padding-left: 12px; display: inline-block; }
+
+.prose { min-width: 0; max-width: 68ch; }
+.prose h2 { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: clamp(34px, 5vw, 50px); line-height: 1; letter-spacing: -0.005em; margin: 64px 0 22px; padding-top: 18px; border-top: 2px solid var(--ink); text-wrap: balance; }
+.prose > h2:first-child, .prose > .part:first-child h2:first-child { margin-top: 0; }
+.prose h3 { font-family: var(--display); font-stretch: 88%; font-weight: 700; font-size: 25px; line-height: 1.2; margin: 42px 0 12px; text-wrap: balance; }
+.prose h4 { font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; margin: 30px 0 8px; color: var(--muted); }
+.prose p { margin: 0 0 1.05em; text-wrap: pretty; }
+.prose ul, .prose ol { padding-left: 1.3em; margin: 0 0 1.1em; }
+.prose li { margin: 0 0 0.45em; }
+.prose li::marker { color: var(--crema); }
+.prose strong { font-weight: 650; }
+.prose hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
+.prose blockquote { margin: 22px 0 24px; padding: 2px 0 2px 20px; border-left: 3px solid var(--crema); font-style: italic; font-size: 20px; line-height: 1.5; }
+.prose blockquote p:last-child { margin-bottom: 0; }
+.prose blockquote em { font-style: normal; }
+.prose code { font-family: var(--mono); font-size: 0.82em; background: var(--paper-2); padding: 1px 5px; border-radius: 3px; }
+.prose pre { font-family: var(--mono); font-size: 13.5px; line-height: 1.5; background: var(--paper-2); border: 1px solid var(--rule); padding: 16px 18px; overflow-x: auto; border-radius: 4px; }
+.prose pre code { background: none; padding: 0; font-size: inherit; }
+
+.tablewrap { overflow-x: auto; margin: 22px 0 28px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); }
+.prose table { border-collapse: collapse; width: 100%; font-family: var(--display); font-stretch: 92%; font-size: 15px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.prose th { text-align: left; font-weight: 700; font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 10px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: bottom; }
+.prose td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top; min-width: 7em; }
+.prose tr:last-child td { border-bottom: 0; }
+
+figure.profile { margin: 8px 0 34px; }
+figure.profile svg { width: 100%; height: auto; display: block; }
+figure.profile figcaption { font-family: var(--mono); font-size: 12.5px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+.ax { stroke: var(--rule); stroke-width: 1; fill: none; }
+.axl { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+.c-lever { stroke: var(--crema); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.c-pump { stroke: var(--ink); stroke-width: 1.6; fill: none; stroke-dasharray: 5 5; }
+.c-lbl { font-family: var(--mono); font-size: 11.5px; }
+.c-lbl.l { fill: var(--crema); }
+.c-lbl.p { fill: var(--ink); }
+
+/* provenance + ledger */
+.ledger { width: 100%; }
+.chip { display: inline-block; font-family: var(--mono); font-size: 11.5px; line-height: 1; padding: 4px 6px; border-radius: 3px; border: 1px solid currentColor; margin: 0 4px 4px 0; white-space: nowrap; }
+.chip.ok { color: var(--ok); }
+.chip.warn { color: var(--warn); }
+.chip.bad { color: var(--bad); }
+.stack-list { list-style: none; padding: 0 !important; margin: 18px 0 26px !important; border-top: 2px solid var(--ink); }
+.stack-list li { margin: 0 !important; padding: 14px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 3.2em minmax(0, 1fr); gap: 0 12px; }
+.stack-list .id { font-family: var(--mono); font-size: 14px; color: var(--crema); padding-top: 3px; }
+.stack-list .t { font-family: var(--display); font-stretch: 90%; font-weight: 700; font-size: 18px; line-height: 1.3; }
+.stack-list .m { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.6; }
+.stack-list li::marker { content: none; }
+
+.backlink { font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--muted); }
+.backlink:hover { color: var(--crema); }
+.raw-head .title { font-size: clamp(36px, 6vw, 64px); font-stretch: 78%; }
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .rail nav { position: static; }
+  .rail ol, .rail ul { margin-bottom: 18px; }
+}
+@media (max-width: 640px) {
+  body { font-size: 18px; }
+  .bluf { grid-template-columns: minmax(0, 1fr); }
+  .bluf > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--rule); }
+  .band-top { padding-block: 28px 26px; }
+  .prose blockquote { font-size: 19px; padding-left: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+
+</style>
+</head>
+<body>
+<header class="band band-top raw-head">
+  <div class="wrap">
+    <div class="slug"><a class="backlink" href="../index.html">&larr; Morning Brief No. 1</a><span>Raw research &middot; slice A1</span></div>
+    <h1 class="title">Intelligence, medicine and other high-stakes daily briefs</h1>
+    <div class="stats"><span><b>36</b> searches</span><span><b>15</b> items fact-checked</span><span><b>10</b> verified</span><span><b>1</b> partial</span><span><b>4</b> dropped or flagged</span></div>
+  </div>
+</header>
+<main class="band band-body">
+  <div class="wrap grid">
+    <aside class="rail"><nav aria-label="Sections"><p class="label">Sections</p><ol><li><a href="#scope">Scope</a></li><li><a href="#method-and-search-log">Method and search log</a></li><li><a href="#findings">Findings</a></li><li><a href="#quote-bank">Quote bank</a></li><li><a href="#disagreements-failure-modes-and-caveats">Disagreements, failure modes and caveats</a></li><li><a href="#sources">Sources</a></li><li><a href="#gaps">Gaps</a></li><li><a href="#verification-log-independent-fact-check">Verification log (independent fact-check)</a></li></ol>
+    <p class="label">Other slices</p><ul><li><a href="A2.html">A2 &middot; Scientists and the daily stream</a></li><li><a href="A3.html">A3 &middot; AI-written briefs</a></li><li><a href="A4.html">A4 &middot; The case against</a></li><li><a href="B1.html">B1 &middot; Building from scratch</a></li><li><a href="B2.html">B2 &middot; Levers and hybrids</a></li><li><a href="B3.html">B3 &middot; Grinders and motors</a></li><li><a href="B4.html">B4 &middot; Bedside automation</a></li><li><a href="B5.html">B5 &middot; What to buy</a></li></ul></nav></aside>
+    <article class="prose">
+<h2 id="scope">Scope</h2>
+<p>What professionals who write or receive high-stakes briefs (intelligence, clinical handoffs and morning report, surgical briefings/checklists, military command briefings, aviation CRM, trading research) have learned about format and effect. Slice A1 only. Heads of state appear only as context.</p>
+<h2 id="method-and-search-log">Method and search log</h2>
+<p>Method: WebSearch only (WebFetch is blocked for non-GitHub hosts). 30 searches returned results; the last 6 attempted were refused because the shared search budget ran out. Search results come back as summaries, so most direct quotations below could not be checked against the original page, and almost none got a second-search confirmation. Treat everything marked WEAK or SECONDARY as needing fact-checking.</p>
+<ol type="1">
+<li>(extended) Kent WEP ranges: gave the 93/75/50/30/7 midpoints with ± ranges; noted versions differ.</li>
+<li>(extended) Priess book, briefer follow-up: reviews only; the briefer’s value is conversation, not late-breaking updates.</li>
+<li>(extended) 9/11 Commission and Aug 6 2001 PDB: origin, “36th item”, White House fact sheet; no new detail.</li>
+<li>(extended) I-PASS NEJM 2014: 23% and 30% figures confirmed, PSNet mislabels one.</li>
+<li>(extended) Urbach Ontario: 0.71% to 0.65%, OR 0.91, P=0.13; 101 hospitals.</li>
+<li>(extended) Haynes 2009: 1.5% to 0.8%; 11.0% to 7.0%; 8 hospitals, 7,688 patients; 19 items.</li>
+<li>(extended) Kent “poets and mathematicians”: the “poets” line confirmed; the “estimates are not facts” line not found.</li>
+<li>(extended) Helgerson book: scope and publication details only, no findings.</li>
+<li>(extended) “Tyranny of current intelligence”: found as a heading in a CIA analytic-pathologies report; no PDB-specific passage.</li>
+<li>(extended) ICD 203: seven-band scale reproduced from a GitHub copy; official PDF text was garbled.</li>
+<li>(extended) Gawande checklist and introductions: summaries only; “hokey” reported secondhand.</li>
+<li>(extended) Bumiller 2010 NYT “death by PowerPoint”: article found as PDF repost; Mattis/McMaster attribution.</li>
+<li>(extended) Mattis/McMaster quotes second check: wording consistent across several reposts.</li>
+<li>(standard) McChrystal spaghetti slide: quote reported as an adviser’s recollection.</li>
+<li>(extended) Morell’s book: “most blatant attempt to politicize intelligence” attributed to Morell by a reviewer; NPR interview.</li>
+<li>(extended) Gawande/Pronovost central line: Keystone ~10% fewer deaths claim; no “66%” confirmation.</li>
+<li>(extended) Morning report research: multicentre surveys, directors survey, d=0.26 intervention.</li>
+<li>(standard) Joint Commission handoffs: “80%” traces to a single spokesperson; 37% unsuccessful handoffs; 52% reduction in defective handoffs.</li>
+<li>(extended) Priess/Lawfare review: only the book blurb that some presidents saw the PDB as the most important document they read.</li>
+<li>(extended) 9/11 Commission “blinking red”: Tenet quote confirmed in the report chapter.</li>
+<li>(extended) Politicization/PDB: Kerr, McGovern, WMD commission; no usable quotes.</li>
+<li>(extended) BLUF and PDB writing: Brennan 2015 remarks (first PDB had 14 items, most two sentences or fewer); Becky Root Cipher Brief column.</li>
+<li>(extended) Kent 1951 Yugoslavia “serious possibility”: Kent meant ~65:35; colleagues read it far lower.</li>
+<li>(standard) Mandel and Barnes 2014 PNAS: 1,514 forecasts, Canadian unit, 2005-2011; very good discrimination and calibration.</li>
+<li>(extended) Cipher Brief “What I Learned Writing for the PDB”: Root, 15 years writing for the PDB, one-page items.</li>
+<li>(extended) Meador and Cerf, “Rethinking the PDB”, Studies in Intelligence Dec 2013: tablet, briefer “drives”.</li>
+<li>(extended) I-PASS design: pre-post, nine hospitals, no concurrent control; handoff time unchanged (2.4 vs 2.5 min).</li>
+<li>(extended) Reames 2015 Michigan Medicare: RR 1.03 (0.97-1.10), no benefit.</li>
+<li>(extended) CRM meta-analyses: attitude-level effects strongest; mixed for outcomes; healthcare umbrella review unsupportive of outcome claims.</li>
+<li>(extended) Lingard 2008 briefing study: 302 procedures; three-fold reduction in communication failures per one secondary source.</li>
+<li>(standard) Gawande “volume and complexity” quote: reproduced on several secondary sites; page 11 attributed.</li>
+<li>(extended) WHO checklist, “hokey”, “not intended to be comprehensive”: found the WHO form’s own wording.</li>
+<li>(extended) Gawande on Ontario: Incidental Economist guest post quote; Medscape/Aspen remarks; Urbach in Globe and Mail.</li>
+<li>(extended) Urbach discussion/limitations: authors’ acknowledgements; no new numbers.</li>
+<li>(standard) Heuer: Davis introduction; no direct quote.</li>
+<li>(extended) Sell-side morning notes: nothing usable (gap). The final 6 (second-check on Gawande, 9/11 verbatim, Priess verbatim, Kent verbatim, Friedman, Urbach quote) were refused for budget.</li>
+</ol>
+<h2 id="findings">Findings</h2>
+<h3 id="intelligence-estimative-language">Intelligence: estimative language</h3>
+<ul>
+<li>Kent’s 1964 essay “Words of Estimative Probability” (Studies in Intelligence, Fall 1964) mapped words to odds. Midpoints reported consistently: almost certain 93% (±6), probable 75% (±12), chances about even 50% (±10), probably not 30% (±10), almost certainly not 7% (±5) (<a href="https://www.globalsecurity.org/intell/ops/probability.htm">GlobalSecurity</a>; <a href="https://en.wikipedia.org/wiki/Words_of_estimative_probability">Wikipedia</a>). Opinion/history, not a trial: these were Kent’s ranges, based on colleagues’ readings.</li>
+<li>Origin story: NIE 29-51 (March 1951), “Probability of an Invasion of Yugoslavia in 1951”, said an attack was a “serious possibility”. Kent says he meant about 65:35 for an attack; colleagues read it as much lower, with reported spreads of ~20-80% (secondary, unconfirmed against primary) (<a href="https://en.wikipedia.org/wiki/Words_of_estimative_probability">Wikipedia</a>; <a href="https://www.files.ethz.ch/isn/55739/kesselman_thesis_final.pdf">Kesselman thesis</a>).</li>
+<li>Kent split colleagues into “poets” (prefer words) and “mathematicians” (prefer numbers) (<a href="https://en.wikipedia.org/wiki/Words_of_estimative_probability">Wikipedia</a>).</li>
+<li>Modern practice: ICD 203 prescribes seven likelihood bands (e.g. almost no chance/remote 01-05%, very unlikely 05-20%, unlikely 20-45%, roughly even 45-55%, likely 55-80%, almost certain 95-99%) and forbids combining a confidence level and a likelihood term in one sentence (<a href="https://www.intelligence.gov/assets/documents/intelligence-community-directives/ICD_203.pdf">ICD 203 PDF</a>; table as reproduced in <a href="https://github.com/wesinator/ICD203-intel-analysis">GitHub copy</a>). Table values come from a secondary reproduction; check against the PDF.</li>
+<li>Evidence on perception: a 2023 survey of 123 people found perceptions of these words largely consistent with Kent’s era, with wide spreads (<a href="https://arxiv.org/pdf/2405.15185">arXiv 2405.15185</a> via search summary). Wording remains understood differently by different readers, so a numeric range is safer.</li>
+<li>Evidence on accuracy: Mandel and Barnes (PNAS 2014) assessed 1,514 strategic intelligence forecasts from a Canadian unit (2005-2011); discrimination and calibration were “very good”, better for senior analysts and easier questions; analysts were more underconfident on high-importance questions (<a href="https://pmc.ncbi.nlm.nih.gov/articles/4121776/">PMC</a>; <a href="https://phys.org/news/2014-07-accuracy-strategic-intelligence.html">Phys.org</a>).</li>
+</ul>
+<h3 id="intelligence-pdb-format">Intelligence: PDB format</h3>
+<ul>
+<li>BLUF structure: the what, the why, what comes next; typically one page (<a href="https://www.thecipherbrief.com/column_article/what-i-learned-writing-for-the-presidents-daily-brief">Cipher Brief, Becky Root</a>). Early PDBs were very short: Brennan said the first issue was 14 items, most no more than two sentences (<a href="https://www.cia.gov/stories/story/brennan-delivers-keynote-at-presidents-daily-brief-public-release-event">CIA, Brennan keynote</a>).</li>
+<li>Live briefer: Priess (former daily briefer under Clinton and Bush) argues the briefer’s value is answering questions and discussing nuance, not late updates (reported in a search summary; exact wording could not be confirmed) (<a href="https://www.lawfaremedia.org/article/getting-it-right-first-customer">Lawfare</a>; <a href="https://worldview.stratfor.com/article/presidents-book-secrets-david-priess">Stratfor</a>). Context only: Bush reportedly valued candid “I don’t know; I’ll get it for you” answers from briefers (secondary).</li>
+<li>Meador and Cerf (Studies in Intelligence, Dec 2013) proposed a tablet PDB with the briefer “driving” interactive content (<a href="https://www.cia.gov/resources/csi/studies-in-intelligence/volume-57-no-4/rethinking-the-presidents-daily-intelligence-brief">CIA</a>; <a href="https://www.nextgov.com/cybersecurity/2014/03/a-wish-list-for-a-digitized-presidents-daily-brief/255007/">Nextgov</a>). Proposal, not evidence of effect.</li>
+<li>Helgerson, Getting to Know the President (CSI 1996): covers briefings of candidates and presidents-elect, based on declassified records and interviews; as Clinton’s briefer he reportedly avoided trying to influence Clinton’s views. No findings retrieved (<a href="https://www.govinfo.gov/app/details/GOVPUB-PREX3-PURL-gpo31699">CSI/GovInfo listing</a>).</li>
+</ul>
+<h3 id="intelligence-critiques-and-failures">Intelligence: critiques and failures</h3>
+<ul>
+<li>Tyranny of current intelligence: a CIA analytic-pathologies report has a section so titled, calling it “a plague recognized by all informed critics” per the search summary (<a href="https://www.cia.gov/resources/csi/static/e228eea610f76862a05274ca88500679/analytic_pathologies_report.pdf">CIA PDF</a>). A 2016 Air University paper and a 2010 Intelligence and National Security article make the same claim for the US and UK (<a href="https://www.jcs.mil/Portals/36/Documents/Doctrine/Education/jpme_papers/rojas_t.pdf?ver=2017-12-29-142154-987">JCS paper</a>; <a href="https://www.tandfonline.com/doi/abs/10.1080/02684527.2010.537118">T&amp;F</a>). Opinion/analysis, not measurement.</li>
+<li>August 6 2001 PDB: titled “Bin Ladin Determined to Strike in US”; prepared in response to the president’s questions; per the Commission, the 36th PDB item that year on Bin Ladin/al Qaeda and the first devoted to a US attack. The White House fact sheet says it was mostly historical analysis, with no mention of planes as weapons (<a href="https://en.wikipedia.org/wiki/Bin_Ladin_Determined_To_Strike_in_US">Wikipedia</a>; <a href="https://irp.fas.org/news/2004/04/wh041004.html">White House fact sheet</a>; <a href="https://9-11commission.gov/report/911Report_Ch8.htm">Commission ch. 8</a>). The chapter is titled “The System Was Blinking Red”, from Tenet. The lesson drawn depends on who reads it: a historical item delivered into a flood of 36 items, versus a missed alarm. Contested.</li>
+<li>Politicization/pressure: Morell, a briefer to Bush, is reported to call Libby’s interventions “the most blatant attempt to politicize intelligence that I saw in thirty three years” (reviewer’s paraphrase/quote, unverified), yet in a 2015 NPR interview called the pressure-on-Iraq thesis “a myth” (<a href="https://www.npr.org/2015/05/10/405624427/flawed-intelligence-in-the-war-of-our-time">NPR</a>). The 2005 WMD Commission said tough policymaker questioning is not politicization (<a href="https://policy.defense.gov/portals/11/Documents/hdasa/references/GPO-WMD.pdf">report</a>). Kerr’s 2004 review warned of analysts giving more certainty than the facts supported (secondary, GMU chapter).</li>
+<li>Morell put his confidence in the bin Laden compound at about 60% (<a href="https://www.armytimes.com/news/pentagon-congress/2020/07/03/only-verified-intelligence-a-look-at-presidents-briefings/">Army Times/AP</a>). Illustrates stating confidence to the reader.</li>
+</ul>
+<h3 id="medicine-morning-report">Medicine: morning report</h3>
+<ul>
+<li>Multicentre survey: residents report high attendance, clinical duties are the main barrier (85%); residents rate clinical reasoning (82%) and evidence-based medicine (77%) as top topics (<a href="https://link.springer.com/article/10.1007/s11606-020-06351-7">JGIM 2020</a>). Program director presence linked to higher attendance (78% vs 61%) (<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8477724/">PMC8477724</a>). Older survey: most programs lack written goals and 77% do not track outcomes (<a href="https://www.researchgate.net/publication/259631906_Morning_Report_Can_an_Established_Medical_Education_Tradition_Be_Validated">Validation review</a>). A resident-as-teacher intervention improved meeting audience needs, d=0.26 (<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1435882/">PMC1435882</a>). Evidence is perception surveys; no patient-outcome data found.</li>
+</ul>
+<h3 id="medicine-handoffs">Medicine: handoffs</h3>
+<ul>
+<li>I-PASS (Starmer et al., NEJM 2014): nine hospitals, 10,740 admissions; medical errors 24.5 to 18.8 per 100 admissions (23% relative reduction); preventable adverse events 4.7 to 3.3 (30%); nonpreventable events unchanged; oral handoff time unchanged, 2.4 vs 2.5 min (<a href="https://www.nejm.org/doi/full/10.1056/NEJMsa1405556">NEJM</a>; <a href="https://www.sciencedaily.com/releases/2014/11/141105203533.htm">ScienceDaily</a>). Design: prospective pre-post, no randomization or concurrent control, authors state it precludes establishing causation; reductions seen at six of nine sites (<a href="https://www.ncbi.nlm.nih.gov/books/NBK613742/">MHS IV review</a>). A PSNet page mislabels 23% as preventable adverse events.</li>
+<li>Joint Commission: “about 80%” of serious errors involving miscommunication at handoff traces to one spokesperson; other estimates 50-80% or over 75%. In its Hand-off Communications Project receivers judged about 37% of handoffs unsuccessful and full implementers cut defective handoffs by 52% on average (<a href="https://www.healthcareitnews.com/news/joint-commission-confronts-deadly-miscommunications">Healthcare IT News</a>; <a href="https://jointcommission.org/-/media/tjc/documents/resources/patient-safety-topics/sentinel-event/sea_58_hand_off_comms_9_6_17_final_(1).pd">Sentinel Event Alert 58</a>). Treat 80% as folklore.</li>
+</ul>
+<h3 id="medicine-surgical-checklists-and-briefings">Medicine: surgical checklists and briefings</h3>
+<ul>
+<li>Haynes et al. (NEJM 2009): 8 hospitals in 8 countries, 7,688 patients (3,733 before, 3,955 after); death 1.5% to 0.8% (P=0.003); inpatient complications 11.0% to 7.0% (P&lt;0.001); 19-item checklist; before/after design (<a href="https://www.nejm.org/doi/full/10.1056/NEJMsa0810119">NEJM</a>; <a href="https://news.harvard.edu/gazette/story/2009/01/surgical-safety-checklist-drops-deaths-and-complications-by-more-than-one-third/">Harvard Gazette</a>).</li>
+<li>Urbach et al. (NEJM 2014), Ontario: 101 hospitals, 109,341 procedures before and 106,370 after; adjusted mortality 0.71% to 0.65% (OR 0.91, P=0.13); no significant complication change (<a href="https://www.nejm.org/doi/full/10.1056/NEJMsa1308261">NEJM</a>; <a href="https://www.ices.on.ca/news-releases/study-shows-introduction-of-surgical-safety-checklists-in-ontario-have-not-reduced-post-operative-mortality-or-complications/">ICES</a>). Compliance was not measured. Critics (including Gawande) say a mandate without training, culture work or compliance monitoring explains the null; a blogger calculated about 40% power (not Gawande’s) (<a href="https://theincidentaleconomist.com/wordpress/when-checklists-work-and-when-they-dont/">Incidental Economist</a>; <a href="https://www.medscape.com/viewarticle/821910">Medscape</a>; <a href="https://kevinmd.com/2014/03/nejm-publish-bad-study-checklists.html">KevinMD</a>).</li>
+<li>Reames et al. 2015, Michigan Medicare: difference-in-differences against 950 non-participating hospitals; 30-day mortality RR 1.03 (0.97-1.10); $516 higher index-admission payments (<a href="https://www.ovid.com/jnls/lww-medicalcare/abstract/10.1097/mlr.0000000000000277~evaluation-of-the-effectiveness-of-a-surgical-checklist-in?redirectionsource=fulltextview">Medical Care abstract</a>). Second null result in a real-world rollout.</li>
+<li>Lingard et al. (Arch Surg 2008): 302 procedures; checklist-structured team briefing reduced communication failures per procedure (one source: three-fold) (<a href="https://pubmed.ncbi.nlm.nih.gov/18209148/">PubMed</a>; <a href="https://psnet.ahrq.gov/issue/evaluation-preoperative-checklist-and-team-briefing-among-surgeons-nurses-and">PSNet</a>). An earlier paper reports paradoxical effects of briefings on OR performance (<a href="https://link.springer.com/article/10.1007/s10111-007-0086-8">Springer</a>).</li>
+<li>Gawande’s team-introduction step: reported as having felt “hokey” to him, justified by research that people who know names work together better (HuffPost review, secondary) (<a href="https://www.huffpost.com/entry/check-please-atul-gawande_b_410507">HuffPost</a>). The WHO form says it “is not intended to be comprehensive” (<a href="https://www.who.int/docs/default-source/patient-safety/9789241598590-eng-checklist.pdf">WHO form</a>). Pronovost central-line checklist: Keystone linked to about 10% fewer deaths, which researchers say they could not attribute definitively (<a href="https://gazette.jhu.edu/2011/02/14/safety-checklist-use-yields-10-percent-drop-in-hospital-deaths">JHU Gazette</a>).</li>
+</ul>
+<h3 id="military-briefings">Military briefings</h3>
+<ul>
+<li>Bumiller, NYT 27 Apr 2010 “We Have Met the Enemy and He Is PowerPoint”: Gen. Mattis said “PowerPoint makes us stupid”; McMaster (banned PowerPoint at Tal Afar 2005) said it can create “the illusion of understanding and the illusion of control” and that “some problems in the world are not bullet-izable”. The article also describes McChrystal reacting to the “spaghetti” COIN-dynamics slide. Some sites misattribute the Mattis line to McMaster (<a href="http://www.californiaskywatch.com/warcosts/wp-content/uploads/war-cost/472C_2010_WAR_We_Have_Met_the_Enemy_He_Is_Powerpoint_by_Bumiller_NYTimes_April_27_2010.pdf">article PDF repost</a>; <a href="https://www.nextgov.com/people/2010/09/speaking-truth-to-powerpoint/223359/">Nextgov</a>). Critique is anecdotal; no outcome data.</li>
+</ul>
+<h3 id="aviation-crm">Aviation CRM</h3>
+<ul>
+<li>CRM training started in 1979 after high-profile accidents. Meta-analyses find effects mostly at attitude and learning level; about half of studies in one 2006 review mixed; a healthcare umbrella review found outcome evidence unsupported (<a href="https://www.researchgate.net/publication/247502783_Crew_Resource_Management_Training_Effectiveness_A_Meta-Analysis_and_Some_Critical_Needs">O’Connor meta-analysis</a>; <a href="https://www.ovid.com/jnls/journalpatientsafety/fulltext/10.1097/pts.0000000000000816~what-do-we-really-know-about-crew-resource-management-in">Umbrella review</a>). Briefing-specific evidence not found.</li>
+</ul>
+<h3 id="trading-desks">Trading desks</h3>
+<ul>
+<li>No usable evidence found on morning meetings or research morning notes. Only generic: buy-side reports are typically one to two pages (<a href="https://en.wikipedia.org/wiki/Buy-side_analyst">Wikipedia</a>).</li>
+</ul>
+<h2 id="quote-bank">Quote bank</h2>
+<p>Honest status: no quote below got a verified second exact-phrase search except where stated. All text is as it appeared inside a search result.</p>
+<blockquote>
+<p>PowerPoint makes us stupid Gen. James N. Mattis, USMC, Joint Forces Command, April 2010 (conference in North Carolina). SECONDARY (NYT via reposts). <a href="https://www.schoolinfosystem.org/2010/04/28/we_have_met_the/">source</a>. Appeared in two searches; one aggregator-style set of pages repeats it. Some sites attribute it to McMaster, which is wrong per the article text.</p>
+</blockquote>
+<blockquote>
+<p>It’s dangerous because it can create the illusion of understanding and the illusion of control Brig. (later Lt. Gen.) H.R. McMaster, telephone interview with Bumiller, NYT, 27 Apr 2010. SECONDARY. <a href="https://www.nextgov.com/people/2010/09/speaking-truth-to-powerpoint/223359/">source</a>. Search result said wording was consistent across several outlets. The “Some problems in the world are not bullet-izable” line appeared in the same set.</p>
+</blockquote>
+<blockquote>
+<p>When we understand that slide, we’ll have won the war. Gen. Stanley McChrystal, ISAF commander, reported by an adviser, 2009-10. WEAK/SECONDARY (one adviser’s recollection; wording varies across outlets). <a href="https://robertgaskins.com/files/Enemy%20Lurks%20in%20Briefings%20on%20Afghan%20War%20-%20PowerPoint%20-%20NYTimes.com.htm">source</a>. No second check.</p>
+</blockquote>
+<blockquote>
+<p>the system was blinking red George Tenet, DCI, as quoted in the 9/11 Commission Report chapter 8 title and text. PRIMARY (official report). <a href="https://9-11commission.gov/report/911Report_Ch8.htm">source</a>. Same phrase appeared in the exec summary result.</p>
+</blockquote>
+<blockquote>
+<p>My suspicion is that a government mandate without a serious effort to change the culture and practice of surgical teams results in limited change and weak, if any, reduction in mortality. Without measuring actual compliance with using the checklist, it’s like running a drug trial without knowing if the patients actually took the drug. Atul Gawande, surgeon and author, guest post c. March 2014. SECONDARY (as relayed in a search summary; the post is at The Incidental Economist). <a href="https://theincidentaleconomist.com/wordpress/when-checklists-work-and-when-they-dont/">source</a>. Second search refused for budget; not independently confirmed. Wording may be trimmed.</p>
+</blockquote>
+<blockquote>
+<p>with active clinical engagement at every hospital and ongoing coaching in how to do it Atul Gawande on Scotland’s checklist gains, Medscape, March 2014 (followed by “It took time.”). SECONDARY. <a href="https://www.medscape.com/viewarticle/821910">source</a>. No second check.</p>
+</blockquote>
+<blockquote>
+<p>This checklist is not intended to be comprehensive. WHO Surgical Safety Checklist form. PRIMARY (WHO). <a href="https://www.who.int/docs/default-source/patient-safety/9789241598590-eng-checklist.pdf">source</a>. Reported from a search result; form wording may differ slightly.</p>
+</blockquote>
+<blockquote>
+<p>the most blatant attempt to politicize intelligence that I saw in thirty three years in the business Michael Morell, former CIA deputy director, on Libby’s interventions. WEAK (reviewer’s quote of the book; not checked). <a href="https://www.historynewsnetwork.org/article/review-of-michael-morells-the-great-war-of-our-tim">source</a>. No second check.</p>
+</blockquote>
+<blockquote>
+<p>That is a myth. Michael Morell, NPR interview, 10 May 2015, on whether the CIA faced political pressure on Saddam’s weapons. SECONDARY (fragment only). <a href="https://www.npr.org/2015/05/10/405624427/flawed-intelligence-in-the-war-of-our-time">source</a>. Fragment; context needed.</p>
+</blockquote>
+<blockquote>
+<p>I don’t know the answer; let me get it for you. Reported as the candid answer President G.W. Bush valued from briefers. WEAK (paraphrase in a summary, speaker uncertain). <a href="https://www.cuip.org/what-is-the-presidential-daily-brief">source</a>. Do not use as a direct quote without checking Priess.</p>
+</blockquote>
+<blockquote>
+<p>The advantage of having a briefer in the room comes much less from his or her ability to deliver late-breaking updates than from his or her ability to answer questions, discuss analytic nuances, or provide information that would not have come out without conversation. Attributed to David Priess, former CIA daily briefer; appeared in a search summary as a direct quotation without a page cited. WEAK until checked against the book. <a href="https://www.lawfaremedia.org/article/getting-it-right-first-customer">source</a>. No second check.</p>
+</blockquote>
+<h2 id="disagreements-failure-modes-and-caveats">Disagreements, failure modes and caveats</h2>
+<ul>
+<li>Strong designs are rare. I-PASS and Haynes are before/after; Ontario and Michigan, run as real rollouts, were null. The best defensible summary: structured communication helps when implemented with training and measured compliance; mandated or ritual use may not.</li>
+<li>The Ontario null is itself contested (power, 3-month windows, no compliance data). Gawande’s rebuttal is an inference.</li>
+<li>I-PASS did not lengthen the oral handoff (2.4 vs 2.5 min), a useful design lesson: structure without more time.</li>
+<li>Words vs numbers: Kent’s table versus ICD 203 bands differ in numbers; readers vary. Kent himself used a numeric “65:35” private reading for “serious possibility” versus colleagues’ much lower readings.</li>
+<li>Format versus content: the PDB 36-items-before-Aug-6 story cuts both ways: volume of items can numb readers; a historical piece may fail to stand out.</li>
+<li>Politicization: a briefer’s own accounts conflict (Morell on Libby versus “a myth”). Do not treat a single memoir line as the consensus.</li>
+<li>The “80% of errors” handoff figure is a single spokesperson’s estimate.</li>
+<li>CRM evidence is mostly attitudes and training, not briefing formats.</li>
+<li>PowerPoint critique is quote-driven; no measurement of decision quality.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Words of estimative probability, Wikipedia, <a href="https://en.wikipedia.org/wiki/Words_of_estimative_probability">https://en.wikipedia.org/wiki/Words_of_estimative_probability</a> (secondary, summary of Kent 1964)</li>
+<li>Statements of Estimative Probability, GlobalSecurity, <a href="https://www.globalsecurity.org/intell/ops/probability.htm">https://www.globalsecurity.org/intell/ops/probability.htm</a> (secondary reproduction of Kent table)</li>
+<li>ICD 203, ODNI, <a href="https://www.intelligence.gov/assets/documents/intelligence-community-directives/ICD_203.pdf">https://www.intelligence.gov/assets/documents/intelligence-community-directives/ICD_203.pdf</a> (primary; text extraction garbled, table checked via GitHub copy)</li>
+<li>Mandel and Barnes PNAS 2014, <a href="https://pmc.ncbi.nlm.nih.gov/articles/4121776/">https://pmc.ncbi.nlm.nih.gov/articles/4121776/</a> (peer-reviewed)</li>
+<li>9/11 Commission ch. 8, <a href="https://9-11commission.gov/report/911Report_Ch8.htm">https://9-11commission.gov/report/911Report_Ch8.htm</a> (primary)</li>
+<li>White House fact sheet on PDB excerpt, <a href="https://irp.fas.org/news/2004/04/wh041004.html">https://irp.fas.org/news/2004/04/wh041004.html</a> (primary but partisan)</li>
+<li>Brennan keynote, CIA, <a href="https://www.cia.gov/stories/story/brennan-delivers-keynote-at-presidents-daily-brief-public-release-event">https://www.cia.gov/stories/story/brennan-delivers-keynote-at-presidents-daily-brief-public-release-event</a> (primary)</li>
+<li>Root, Cipher Brief 2022, <a href="https://www.thecipherbrief.com/column_article/what-i-learned-writing-for-the-presidents-daily-brief">https://www.thecipherbrief.com/column_article/what-i-learned-writing-for-the-presidents-daily-brief</a> (practitioner)</li>
+<li>Meador and Cerf, CSI Dec 2013, <a href="https://www.cia.gov/resources/csi/studies-in-intelligence/volume-57-no-4/rethinking-the-presidents-daily-intelligence-brief">https://www.cia.gov/resources/csi/studies-in-intelligence/volume-57-no-4/rethinking-the-presidents-daily-intelligence-brief</a> (primary proposal)</li>
+<li>Starmer et al., NEJM 2014, <a href="https://www.nejm.org/doi/full/10.1056/NEJMsa1405556">https://www.nejm.org/doi/full/10.1056/NEJMsa1405556</a> (peer-reviewed, pre-post)</li>
+<li>Haynes et al., NEJM 2009, <a href="https://www.nejm.org/doi/full/10.1056/NEJMsa0810119">https://www.nejm.org/doi/full/10.1056/NEJMsa0810119</a> (peer-reviewed, before/after)</li>
+<li>Urbach et al., NEJM 2014, <a href="https://www.nejm.org/doi/full/10.1056/NEJMsa1308261">https://www.nejm.org/doi/full/10.1056/NEJMsa1308261</a> (peer-reviewed)</li>
+<li>Reames et al., Medical Care 2015, abstract link above (peer-reviewed)</li>
+<li>Lingard et al., Arch Surg 2008, <a href="https://pubmed.ncbi.nlm.nih.gov/18209148/">https://pubmed.ncbi.nlm.nih.gov/18209148/</a> (peer-reviewed)</li>
+<li>Morning report surveys, <a href="https://link.springer.com/article/10.1007/s11606-020-06351-7">https://link.springer.com/article/10.1007/s11606-020-06351-7</a> and <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8477724/">https://pmc.ncbi.nlm.nih.gov/articles/PMC8477724/</a> (peer-reviewed surveys)</li>
+<li>Joint Commission SEA 58, link above (primary; the 80% figure is from Healthcare IT News, secondary)</li>
+<li>Gawande on Ontario, <a href="https://theincidentaleconomist.com/wordpress/when-checklists-work-and-when-they-dont/">https://theincidentaleconomist.com/wordpress/when-checklists-work-and-when-they-dont/</a> (primary guest post, as relayed)</li>
+<li>Medscape on Ontario, <a href="https://www.medscape.com/viewarticle/821910">https://www.medscape.com/viewarticle/821910</a> (trade press)</li>
+<li>Bumiller NYT 2010 repost, link above (reposted PDF; original at nytimes.com not checked)</li>
+<li>Nextgov “Speaking truth to PowerPoint”, <a href="https://www.nextgov.com/people/2010/09/speaking-truth-to-powerpoint/223359/">https://www.nextgov.com/people/2010/09/speaking-truth-to-powerpoint/223359/</a> (trade press; misattributes Mattis line)</li>
+<li>Morell reviews and NPR, links above (secondary)</li>
+<li>CRM meta-analysis and umbrella review, links above (peer-reviewed)</li>
+</ul>
+<h2 id="gaps">Gaps</h2>
+<ul>
+<li>No verbatim Kent essay text, Priess, Helgerson or Gawande book passages confirmed; all book-level quotes are secondhand.</li>
+<li>Not found: Studies in Intelligence passages on PDB length or tailoring; PDB declassified examples; second-check of the Gawande and Mattis/McMaster quotes beyond one result set.</li>
+<li>Not found: any evidence on trading-desk morning meetings or research notes; briefing-specific CRM evidence; deep morning-report outcome data; Helgerson findings.</li>
+<li>Final six planned searches were refused when the search budget ran out; a follow-up round is needed for quote verification (Kent, Priess, 9/11 Commission text on the PDB, Gawande, Urbach statements).</li>
+</ul>
+<h2 id="verification-log-independent-fact-check">Verification log (independent fact-check)</h2>
+<p>Checked 15 items with 15 WebSearch calls (budget 20). WebFetch was not used. Verdicts reflect search snippets and summaries only, not the original pages, so the VERIFIED items rest on agreement across several outlets.</p>
+<ul>
+<li>VERIFIED: Quote, Mattis, “PowerPoint makes us stupid” (Bumiller, NYT, Apr 2010). Wording recurs across independent reposts and news sites (Nextgov, Tampa Bay Times archive, QuotePark, Free Republic) with Mattis as speaker. The researcher’s schoolinfosystem source is one of several. Source: <a href="https://www.nextgov.com/modernization/2010/05/powerpoint-combatants-go-at-it-again/251255/">https://www.nextgov.com/modernization/2010/05/powerpoint-combatants-go-at-it-again/251255/</a></li>
+<li>NOT_FOUND: Quote, McMaster, “can create the illusion of understanding and the illusion of control”. Only one search summary carries the wording. The conference context (Mattis, North Carolina, April 2010) is confirmed, but no snippet or second outlet shows the exact sentence. Keep attribution soft or re-check the NYT text. Source: <a href="https://www.nextgov.com/people/2010/09/speaking-truth-to-powerpoint/223359/">https://www.nextgov.com/people/2010/09/speaking-truth-to-powerpoint/223359/</a></li>
+<li>VERIFIED: Quote, Tenet, “the system was blinking red” (9/11 Commission Report, ch. 8). The chapter title “THE SYSTEM WAS BLINKING RED” appears in the official report copies on govinfo.gov and 9-11commission.gov, and in Wikisource and UNT transcriptions. Tenet’s use of the phrase in the text is from a search summary of the chapter. Source: <a href="https://9-11commission.gov/report/911Report_Ch8.pdf">https://9-11commission.gov/report/911Report_Ch8.pdf</a></li>
+<li>NOT_FOUND: Quote, Gawande, “a government mandate without a serious effort to change the culture and practice of surgical teams”. The Incidental Economist post is the cited source and is in the results, but the verbatim sentence appears only in one search summary. Gawande’s culture-change argument is consistent with his ACS remarks, but the exact wording is unconfirmed. Source: <a href="https://theincidentaleconomist.com/wordpress/when-checklists-work-and-when-they-dont/">https://theincidentaleconomist.com/wordpress/when-checklists-work-and-when-they-dont/</a></li>
+<li>VERIFIED: Quote, WHO checklist, “This checklist is not intended to be comprehensive.” The line appears in a WHO-published 2009 implementation manual hosted by Leapfrog and in Becker’s and AO Foundation reprints. The WHO’s own PDF was not the host returned. Source: <a href="https://www.who.int/docs/default-source/patient-safety/9789241598590-eng-checklist.pdf">https://www.who.int/docs/default-source/patient-safety/9789241598590-eng-checklist.pdf</a></li>
+<li>VERIFIED: Number, Kent 1964 WEP midpoints (almost certain 93% +/-6; probable 75% +/-12; chances about even 50% +/-10; probably not 30% +/-10; almost certainly not 7% +/-5). Matches GlobalSecurity and Wikipedia. Band widths differ in another summary (for example 87-99% and 63-87%), so state the midpoints only. Source: <a href="https://www.globalsecurity.org/intell/ops/probability.htm">https://www.globalsecurity.org/intell/ops/probability.htm</a></li>
+<li>VERIFIED: Number, I-PASS (Starmer et al., NEJM 2014). Errors 24.5 to 18.8 per 100 admissions (23%), 10,740 admissions, preventable adverse events 4.7 to 3.3 (30%), nonpreventable 3.0 vs 2.8 (P=0.79), nine sites with no significant change at three. Matches the NEJM record. Source: <a href="https://www.nejm.org/doi/full/10.1056/NEJMsa1405556">https://www.nejm.org/doi/full/10.1056/NEJMsa1405556</a></li>
+<li>VERIFIED: Number, Haynes et al. (NEJM 2009). 7,688 patients (3,733 before, 3,955 after), mortality 1.5% to 0.8%, complications 11% to 7%, eight hospitals. Harvard Gazette and other outlets agree. Caveat: item count differs across secondary sources (19 items in one, six in another). The paper should settle the “19-item” wording. Source: <a href="https://news.harvard.edu/gazette/story/2009/01/surgical-safety-checklist-drops-deaths-and-complications-by-more-than-one-third/">https://news.harvard.edu/gazette/story/2009/01/surgical-safety-checklist-drops-deaths-and-complications-by-more-than-one-third/</a></li>
+<li>VERIFIED: Number, Urbach et al. (NEJM 2014, Ontario). 101 hospitals, 109,341 and 106,370 procedures, adjusted mortality 0.71% to 0.65%, non-significant; complications 3.86% to 3.82%. Matches summaries from MDedge, HospiMedica and The Hospitalist. OR 0.91 and P=0.13 were not rechecked. Source: <a href="https://www.nejm.org/doi/full/10.1056/NEJMsa1308261">https://www.nejm.org/doi/full/10.1056/NEJMsa1308261</a></li>
+<li>VERIFIED: Number, Mandel and Barnes (PNAS 2014). 1,514 forecasts from a Canadian intelligence unit, March 2005 to December 2011, “very good” discrimination and calibration. Matches PMC and Phys.org. Source: <a href="https://pmc.ncbi.nlm.nih.gov/articles/4121776/">https://pmc.ncbi.nlm.nih.gov/articles/4121776/</a></li>
+<li>VERIFIED: Number, Reames et al. (Medical Care 2015, Michigan Medicare). Difference-in-differences against 950 non-participating hospitals, 30-day mortality RR 1.03 (0.97-1.10), $516 higher index-admission payments. Matches the PubMed/PSNet record as summarised. Source: <a href="https://www.ovid.com/jnls/lww-medicalcare/abstract/10.1097/mlr.0000000000000277~evaluation-of-the-effectiveness-of-a-surgical-checklist-in?redirectionsource=fulltextview">https://www.ovid.com/jnls/lww-medicalcare/abstract/10.1097/mlr.0000000000000277~evaluation-of-the-effectiveness-of-a-surgical-checklist-in?redirectionsource=fulltextview</a></li>
+<li>NOT_FOUND: Number, Joint Commission handoffs (SEA 58). The alert exists (issue 58, September 2017), but no result gave the 52% reduction in defective handoffs or the 37% unsuccessful-handoff figure. Treat both as unconfirmed. Source: <a href="https://www.jointcommission.org/resources/sentinel-event/sentinel-event-alert-newsletters/sentinel-event-alert-58-inadequate-hand-off-communication/">https://www.jointcommission.org/resources/sentinel-event/sentinel-event-alert-newsletters/sentinel-event-alert-58-inadequate-hand-off-communication/</a></li>
+<li>PARTIAL: Quote, Morell, “the most blatant attempt to politicize intelligence”. Correct version: “Libby’s attempt to intimidate Miscik was the most blatant attempt to politicize intelligence that I saw in thirty-three years in the business, and it would not be the last attempt by Libby to do so.” The file’s version drops the subject and the “attempt to intimidate Miscik” context, and it attributes the sentence as a reviewer’s quote. The wording is from the memoir as reported in summaries; the HNN review the researcher cited is one of them. Source: <a href="https://www.historynewsnetwork.org/article/review-of-michael-morells-the-great-war-of-our-tim">https://www.historynewsnetwork.org/article/review-of-michael-morells-the-great-war-of-our-tim</a></li>
+<li>VERIFIED: Quote, Priess, “The advantage of having a briefer in the room comes much less from his or her ability to deliver late-breaking updates than from his or her ability to answer questions, discuss analytic nuances…” Same wording in a Rogue Women Writers review and interview and in a Goodreads repost of it, both attributed to Priess. Confirmed as the book’s passage, not only the Lawfare summary. Source: <a href="https://roguewomenwriters.com/david-priess-goes-rogue-the-presidents-book-of-secrets-a-review-and-interview-with-author-david-priess/">https://roguewomenwriters.com/david-priess-goes-rogue-the-presidents-book-of-secrets-a-review-and-interview-with-author-david-priess/</a></li>
+<li>NOT_FOUND: Number, Brennan keynote, “first PDB had 14 items, most two sentences or fewer”. The CIA keynote and the September 2015 release were confirmed, but no result gave the 14-item figure or the two-sentence detail. Treat as unconfirmed. Source: <a href="https://www.cia.gov/stories/story/brennan-delivers-keynote-at-presidents-daily-brief-public-release-event">https://www.cia.gov/stories/story/brennan-delivers-keynote-at-presidents-daily-brief-public-release-event</a></li>
+</ul>
+
+    </article>
+  </div>
+</main>
+</body>
+</html>

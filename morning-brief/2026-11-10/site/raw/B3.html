@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>B3 raw research &middot; Morning Brief No. 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&display=swap">
+<style>
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+:root {
+  /* Layout: one ~68ch reading column; a mono metadata rail (contents, provenance) in the left gutter on wide screens */
+  --paper: #F1F2EF;
+  --paper-2: #E7E9E4;
+  --ink: #1C1D1A;
+  --muted: #5A5D56;
+  --rule: #D2D5CD;
+  --crema: #94531C;
+  --crema-soft: #EADBCB;
+  --ok: #2C6847;
+  --warn: #84640E;
+  --bad: #9A372B;
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", system-ui, sans-serif;
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+    --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+  --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 19px;
+  line-height: 1.58;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration-color: var(--crema); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+a:hover { color: var(--crema); }
+a:focus-visible { outline: 2px solid var(--crema); outline-offset: 2px; border-radius: 2px; }
+
+.band { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.band-top { background: var(--paper-2); border-bottom: 1px solid var(--rule); padding-block: 40px 36px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+
+/* masthead */
+.slug { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.slug b { color: var(--ink); font-weight: 500; }
+.title { font-family: var(--display); font-stretch: 72%; font-weight: 800; font-size: clamp(54px, 10vw, 112px); line-height: 0.9; letter-spacing: -0.01em; margin: 18px 0 10px; text-wrap: balance; }
+.title .no { color: var(--crema); font-stretch: 100%; font-weight: 500; font-size: 0.42em; letter-spacing: 0.02em; vertical-align: 0.95em; margin-left: 0.18em; }
+.deck { font-style: italic; font-size: clamp(19px, 2.2vw, 23px); color: var(--muted); max-width: 46em; margin: 0 0 30px; text-wrap: pretty; }
+
+.bluf { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 2px solid var(--ink); }
+.bluf > div { padding: 16px 22px 4px 0; min-width: 0; }
+.bluf > div + div { padding-left: 22px; border-left: 1px solid var(--rule); }
+.bluf h2 { font-family: var(--display); font-stretch: 85%; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 8px; color: var(--crema); }
+.bluf p { margin: 0 0 12px; font-size: 18px; line-height: 1.5; }
+
+.stats { margin-top: 22px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 22px; font-variant-numeric: tabular-nums; }
+.stats span b { color: var(--ink); font-weight: 500; }
+
+/* body grid */
+.band-body { padding-block: 44px 72px; }
+.grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 56px; }
+.rail { min-width: 0; }
+.rail nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); font-family: var(--mono); font-size: 12.5px; line-height: 1.45; }
+.rail .label { text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 0 0 10px; }
+.rail ol, .rail ul { list-style: none; margin: 0 0 26px; padding: 0; display: grid; gap: 7px; }
+.rail a { text-decoration: none; color: var(--muted); }
+.rail a:hover { color: var(--crema); }
+.rail li.sub a { padding-left: 12px; display: inline-block; }
+
+.prose { min-width: 0; max-width: 68ch; }
+.prose h2 { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: clamp(34px, 5vw, 50px); line-height: 1; letter-spacing: -0.005em; margin: 64px 0 22px; padding-top: 18px; border-top: 2px solid var(--ink); text-wrap: balance; }
+.prose > h2:first-child, .prose > .part:first-child h2:first-child { margin-top: 0; }
+.prose h3 { font-family: var(--display); font-stretch: 88%; font-weight: 700; font-size: 25px; line-height: 1.2; margin: 42px 0 12px; text-wrap: balance; }
+.prose h4 { font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; margin: 30px 0 8px; color: var(--muted); }
+.prose p { margin: 0 0 1.05em; text-wrap: pretty; }
+.prose ul, .prose ol { padding-left: 1.3em; margin: 0 0 1.1em; }
+.prose li { margin: 0 0 0.45em; }
+.prose li::marker { color: var(--crema); }
+.prose strong { font-weight: 650; }
+.prose hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
+.prose blockquote { margin: 22px 0 24px; padding: 2px 0 2px 20px; border-left: 3px solid var(--crema); font-style: italic; font-size: 20px; line-height: 1.5; }
+.prose blockquote p:last-child { margin-bottom: 0; }
+.prose blockquote em { font-style: normal; }
+.prose code { font-family: var(--mono); font-size: 0.82em; background: var(--paper-2); padding: 1px 5px; border-radius: 3px; }
+.prose pre { font-family: var(--mono); font-size: 13.5px; line-height: 1.5; background: var(--paper-2); border: 1px solid var(--rule); padding: 16px 18px; overflow-x: auto; border-radius: 4px; }
+.prose pre code { background: none; padding: 0; font-size: inherit; }
+
+.tablewrap { overflow-x: auto; margin: 22px 0 28px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); }
+.prose table { border-collapse: collapse; width: 100%; font-family: var(--display); font-stretch: 92%; font-size: 15px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.prose th { text-align: left; font-weight: 700; font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 10px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: bottom; }
+.prose td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top; min-width: 7em; }
+.prose tr:last-child td { border-bottom: 0; }
+
+figure.profile { margin: 8px 0 34px; }
+figure.profile svg { width: 100%; height: auto; display: block; }
+figure.profile figcaption { font-family: var(--mono); font-size: 12.5px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+.ax { stroke: var(--rule); stroke-width: 1; fill: none; }
+.axl { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+.c-lever { stroke: var(--crema); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.c-pump { stroke: var(--ink); stroke-width: 1.6; fill: none; stroke-dasharray: 5 5; }
+.c-lbl { font-family: var(--mono); font-size: 11.5px; }
+.c-lbl.l { fill: var(--crema); }
+.c-lbl.p { fill: var(--ink); }
+
+/* provenance + ledger */
+.ledger { width: 100%; }
+.chip { display: inline-block; font-family: var(--mono); font-size: 11.5px; line-height: 1; padding: 4px 6px; border-radius: 3px; border: 1px solid currentColor; margin: 0 4px 4px 0; white-space: nowrap; }
+.chip.ok { color: var(--ok); }
+.chip.warn { color: var(--warn); }
+.chip.bad { color: var(--bad); }
+.stack-list { list-style: none; padding: 0 !important; margin: 18px 0 26px !important; border-top: 2px solid var(--ink); }
+.stack-list li { margin: 0 !important; padding: 14px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 3.2em minmax(0, 1fr); gap: 0 12px; }
+.stack-list .id { font-family: var(--mono); font-size: 14px; color: var(--crema); padding-top: 3px; }
+.stack-list .t { font-family: var(--display); font-stretch: 90%; font-weight: 700; font-size: 18px; line-height: 1.3; }
+.stack-list .m { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.6; }
+.stack-list li::marker { content: none; }
+
+.backlink { font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--muted); }
+.backlink:hover { color: var(--crema); }
+.raw-head .title { font-size: clamp(36px, 6vw, 64px); font-stretch: 78%; }
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .rail nav { position: static; }
+  .rail ol, .rail ul { margin-bottom: 18px; }
+}
+@media (max-width: 640px) {
+  body { font-size: 18px; }
+  .bluf { grid-template-columns: minmax(0, 1fr); }
+  .bluf > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--rule); }
+  .band-top { padding-block: 28px 26px; }
+  .prose blockquote { font-size: 19px; padding-left: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+
+</style>
+</head>
+<body>
+<header class="band band-top raw-head">
+  <div class="wrap">
+    <div class="slug"><a class="backlink" href="../index.html">&larr; Morning Brief No. 1</a><span>Raw research &middot; slice B3</span></div>
+    <h1 class="title">Hand grinders, and motorising one</h1>
+    <div class="stats"><span><b>30</b> searches</span><span><b>15</b> items fact-checked</span><span><b>6</b> verified</span><span><b>7</b> partial</span><span><b>2</b> dropped or flagged</span></div>
+  </div>
+</header>
+<main class="band band-body">
+  <div class="wrap grid">
+    <aside class="rail"><nav aria-label="Sections"><p class="label">Sections</p><ol><li><a href="#scope">Scope</a></li><li><a href="#method-and-search-log">Method and search log</a></li><li><a href="#findings">Findings</a></li><li><a href="#quote-bank">Quote bank</a></li><li><a href="#disagreements-failure-modes-and-caveats">Disagreements, failure modes and caveats</a></li><li><a href="#sources">Sources</a></li><li><a href="#gaps">Gaps</a></li><li><a href="#verification-log-independent-fact-check">Verification log (independent fact-check)</a></li></ol>
+    <p class="label">Other slices</p><ul><li><a href="A1.html">A1 &middot; Briefing for a living</a></li><li><a href="A2.html">A2 &middot; Scientists and the daily stream</a></li><li><a href="A3.html">A3 &middot; AI-written briefs</a></li><li><a href="A4.html">A4 &middot; The case against</a></li><li><a href="B1.html">B1 &middot; Building from scratch</a></li><li><a href="B2.html">B2 &middot; Levers and hybrids</a></li><li><a href="B4.html">B4 &middot; Bedside automation</a></li><li><a href="B5.html">B5 &middot; What to buy</a></li></ul></nav></aside>
+    <article class="prose">
+<h2 id="scope">Scope</h2>
+<p>Candidate identification for the brother’s knurled, cranked hand grinder; motorising a hand grinder while keeping manual use; grind-by-weight/automation projects; freshness implications of grinding the night before; buy-instead single-dose electric grinders with prices and noise.</p>
+<h2 id="method-and-search-log">Method and search log</h2>
+<p>Method: 32 WebSearch calls (search-result text only, plus WebFetch of GitHub READMEs; non-GitHub fetches blocked, printables.com fetch failed with ENOTFOUND). Search tool is US-only and returns summaries, so most numbers are secondary and flagged.</p>
+<ol type="1">
+<li>1Zpresso J-Max/J-Ultra/K-Ultra/X-Ultra price comparison (extended) - 2026 prices J-Ultra ~$199, K-Ultra $259-289, X-Ultra $159-169; click sizes.</li>
+<li>Kinu M47 (standard) - failed, results were shoes.</li>
+<li>Hand grinder motorize/1Zpresso warranty/drill adapter (extended) - 1Zpresso FAQ drill statement; Aeropress warranty exclusion; Home-Barista stall RPMs; Printables Trifecta; Gawoody kit.</li>
+<li>3D printed motor adapters (standard) - Printables/MakerWorld drill adapters; ZP6-A2 Hybrid.</li>
+<li>Open-source grind by weight ESP32 HX711 (standard) - jaapp, openGBW, ahuber21, CaffePeso.</li>
+<li>Aroma loss after grinding (extended) - 14% grinding loss (industrial, old), 35% in 30 days paper sachet, 15-min headspace study (no numbers).</li>
+<li>Drill torque/stall (extended) - ODrive 3 Nm; CoffeeGeek 3-4 Nm; stall RPMs.</li>
+<li>Prices Niche/DF64/Lagom/Sculptor (extended) - Niche Zero ~$600-690, DF64 G2 $399-450, Sculptor 064S $599.</li>
+<li>Grinder dB (extended) - no clean numbers; conflicting.</li>
+<li>Fetch jaapp/smart-grind-by-weight README.</li>
+<li>Fetch jb-xyz/openGBW README.</li>
+<li>Pre-ground sensory/grind-ahead (extended) - forum anecdotes only.</li>
+<li>Freezer/vacuum/nitrogen storage (extended) - SCA literature review; Foods 2025 polyphenol kinetics.</li>
+<li>RPM, heat, fines (extended) - vendor blogs; one fines/permeability paper.</li>
+<li>Lagom P64/P100/Niche Duo price (standard) - junk results.</li>
+<li>One-way clutch/sprag for hand grinder (extended) - no direct example; woodgears.ca keeps crank.</li>
+<li>Timemore/Kingrinder prices (extended) - C3 $79-99, C5 ESP Pro <span class="math inline">115, <em>K</em>6 </span>100-110.</li>
+<li>Weber HG-2/Helor/Lido/Comandante prices (extended) - HG-2 ~$1,495-1,750; others old guide.</li>
+<li>Niche Duo (standard) - junk (64 Audio Duo).</li>
+<li>Kinu M47 retry (standard) - Phoenix ~£189-195, ~US$214; specs.</li>
+<li>Niche Duo retry (standard) - 83 mm flat burrs, GBP only.</li>
+<li>dB at 1 m (extended) - Bean Brew Digest 1 m figures; Coffee Chronicler 20 cm.</li>
+<li>Printables Trifecta fetch - failed (network).</li>
+<li>CoffeeGeek torque article (extended) - Mark Prince; 3-4 Nm estimate; Amazon Basics 2.5 Nm, HOTO 6 Nm.</li>
+<li>1Zpresso FAQ drill wording (standard) - verbatim.</li>
+<li>Penn State freezing study (standard) - could not confirm; Bath particle-size study.</li>
+<li>Drill failure stories (standard) - nothing grinder-specific.</li>
+<li>Ground coffee stale timing (extended) - patent CO2 4-8 days; retailer blogs.</li>
+<li>Prices round 2 (extended) - Specialita ~$549, Niche $599-649.</li>
+<li>Home-barista motorizing thread speeds (extended) - 80 rpm saturation, 120 rpm hand speed, 40-50 rpm HG-1 motor, Justin Chae K6 build.</li>
+<li>GitHub search fetch - 0 results.</li>
+<li>Identification (extended) - J-Ultra foldable handle, external dial; M47 stepless; C40 slow.</li>
+<li>(counted within the 32: dB for Sculptor/Niche/DF64) - 73 vs 65 dB Niche; 71 dB DF64 (unsourced tables).</li>
+<li>(counted within the 32: Akiyama 2003 grinding volatiles) - abstract-level only.</li>
+</ol>
+<p>(Calls numbered by purpose; total WebSearch calls = 32.)</p>
+<h2 id="findings">Findings</h2>
+<h3 id="1-identifying-the-grinder">1. Identifying the grinder</h3>
+<p>Evidence level: retailer/review pages, 2026; prices vary by source.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Burr</th>
+<th>Adjust</th>
+<th>Price observed</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1Zpresso J-Ultra</td>
+<td>48 mm conical, steel</td>
+<td>8 micron/click, external dial, foldable handle</td>
+<td>~$199 US store/Amazon</td>
+<td>Reviewers’ espresso pick; superseded J-Max <a href="https://roastaroma.com/gear/1zpresso-j-ultra">roastaroma</a>, <a href="https://coffeegearzone.com/1zpresso-j-ultra-review/">coffeegearzone</a></td>
+</tr>
+<tr class="even">
+<td>1Zpresso J-Max</td>
+<td>48 mm conical</td>
+<td>8.8 micron</td>
+<td>US<span class="math inline">179 − 209/<em>C</em><em>A</em></span>249-299 (old listing)</td>
+<td>Former flagship espresso <a href="https://roastaroma.com/gear/compare/1zpresso-j-max-vs-1zpresso-j-ultra">roastaroma compare</a></td>
+</tr>
+<tr class="odd">
+<td>1Zpresso K-Ultra</td>
+<td>48 mm</td>
+<td>20 micron/click</td>
+<td>$259 (list $289)</td>
+<td>Handle tucks in; multi-method <a href="https://coffeegearzone.com/1zpresso-k-ultra-vs-x-ultra/">coffeegearzone</a></td>
+</tr>
+<tr class="even">
+<td>1Zpresso X-Ultra</td>
+<td>40 mm conical</td>
+<td>12.5 micron</td>
+<td>$159 (list $169)</td>
+<td>Smallest, most portable <a href="https://coffeegearzone.com/1zpresso-x-ultra-review/">coffeegearzone</a></td>
+</tr>
+<tr class="odd">
+<td>Kinu M47 Phoenix</td>
+<td>47/32 mm Black Fusion conical</td>
+<td>stepless, 50 divisions x 0.01 mm</td>
+<td>~£189-195, ~€182-220, ~US$214</td>
+<td>Stainless body; 1.4 kg (Simplicity 1.65, Classic 1.85); heavy, very espresso-capable <a href="https://www.homegrounds.co/kinu-m47-review/">homegrounds</a>, <a href="https://eightouncecoffee.com/products/kinu-m47-phoenix-grinder">Eight Ounce</a></td>
+</tr>
+<tr class="even">
+<td>Kingrinder K6</td>
+<td>~48 mm (disputed; one source says Ti-coated steel)</td>
+<td>click</td>
+<td>~$99-110</td>
+<td>Budget, aluminium <a href="https://thecoffeelocator.com/grinders/kingrinder-k6-review/">thecoffeelocator</a></td>
+</tr>
+<tr class="odd">
+<td>Timemore C3 ESP</td>
+<td>38 mm stainless</td>
+<td>click</td>
+<td>~$79-99 US; £89 UK</td>
+<td><a href="https://coffeegeek.com/guides/feature-guides/best-budget-coffee-grinders-for-2026/">CoffeeGeek budget guide</a></td>
+</tr>
+<tr class="even">
+<td>Timemore C5 ESP Pro</td>
+<td>42 mm heptagonal</td>
+<td>click</td>
+<td>$115 (Timemore store)</td>
+<td>Aluminium alloy body 53 mm <a href="https://www.timemore.com/products/timemore-manual-coffee-grinder-chestnut-c5-series">Timemore</a></td>
+</tr>
+<tr class="odd">
+<td>Comandante C40</td>
+<td>Nitro Blade conical</td>
+<td>click</td>
+<td>~€219 (old guide)</td>
+<td>Filter reference; ~50 s for 20 g; wood handle/body, less likely <a href="https://coffeechronicler.com/gear/grinders/manual/best-manual-coffee-grinder/">thewaytocoffee/coffeechronicler</a></td>
+</tr>
+<tr class="even">
+<td>Weber HG-2</td>
+<td>flat/conical (not verified here)</td>
+<td>-</td>
+<td>~$1,495-1,750 US; EUR 1,598 ex-tax</td>
+<td>Very high-end <a href="https://roastaroma.com/gear/weber-workshops-hg-2">roastaroma</a>, <a href="https://www.espressocoffeeshop.com/en/coffee-grinders/1708-weber-workshops-hg-2-macinacaffe-.html">espressocoffeeshop</a></td>
+</tr>
+<tr class="odd">
+<td>Helor 101 / Lido E-T</td>
+<td>-</td>
+<td>-</td>
+<td>$189-259 / $195 (old guide, unconfirmed)</td>
+<td><a href="https://coffeegeek.co/en/list-premium-hand-coffee-grinders/">coffeegeek.co list</a></td>
+</tr>
+</tbody>
+</table></div>
+<p>I found no source that describes the “knurled barrel” cue explicitly, so it is not a discriminator I can offer from evidence. Practical identification: check for brand engraving on the barrel/crank, the adjustment mechanism (external top dial = 1Zpresso J/K series; bottom ring or stepless numbered dial = Kinu/Comandante), burr size and weight (Kinu 1.4-1.85 kg, notably heavy), and handle (foldable = 1Zpresso). Not covered by search: Fiorenzato Pietro, Lagom Mini, specifics of the Orphan Lido.</p>
+<p>Espresso suitability (opinion/review): J-Ultra and Kinu M47 are the espresso picks; X-Ultra, K-Ultra and C40 are filter-leaning <a href="https://homecoffeeexpert.com/1zpresso-j-ultra-review/">homecoffeeexpert</a>, <a href="https://www.thewaytocoffee.com/best-manual-coffee-grinder/">thewaytocoffee</a>.</p>
+<h3 id="2-motorising-manufacturer-stance">2. Motorising: manufacturer stance</h3>
+<ul>
+<li>1Zpresso official FAQ endorses a drill: a 6.35 mm electric screwdriver/drill fits all its grinders and need not be powerful; advises short runs (one or two cups) to avoid heat <a href="https://1zpresso.coffee/faq/">1zpresso FAQ</a>. Warranty is one year for materials/workmanship; rust and wear not covered <a href="https://1zpresso.coffee/returnpolicy/">return policy</a>. No explicit statement on drill damage.</li>
+<li>AeroPress (different product) explicitly excludes drill-adapter damage from warranty <a href="https://aeropress.com/pages/aeropress-manual-grinder-instructions-page">AeroPress</a>.</li>
+<li>Third parties sell motor kits: Gawoody 1Zpresso Motor Kit <a href="https://www.gawoody.com/product-page/gawoody-motor-kit-for-1zpresso">gawoody</a>, advertised ~160 rpm per search summary (not verified on page).</li>
+<li>Kinu, Timemore, Kingrinder, Comandante official positions: not found.</li>
+</ul>
+<h3 id="3-drilldriver-community-practice-rpm-and-torque">3. Drill/driver community practice, RPM and torque</h3>
+<p>Evidence is forum anecdote unless noted.</p>
+<ul>
+<li>Stall RPM tests with tachometer (light roast, pourover grind): ~80 rpm 1Zpresso K-Plus, ~70 Kingrinder K2, ~50 ZP6, ~20 K0 <a href="https://www.home-barista.com/grinders/hand-manual-grinder-drill-turned-t92641.html">Home-Barista</a>. Pourover grind understates espresso load.</li>
+<li>Torque: ODrive forum poster measured ~3 Nm at a fine setting and designed for 6 Nm <a href="https://discourse.odriverobotics.com/t/research-motorizing-manual-coffee-grinder/6979">ODrive</a>. CoffeeGeek (Mark Prince, opinion) estimates 3-4 Nm continuous for a comfortable hand grind; 3.6 V screwdrivers (Amazon Basics 2.5 Nm, HOTO 6 Nm peak) struggled for true espresso, with the battery sagging <a href="https://coffeegeek.com/opinions/coffee-at-the-moment/the-cordless-espresso-grinder-conundrum-why-torque-is-hard/">CoffeeGeek</a>. The article also mentions 25-30 Nm “overhead” via gearing, which conflicts; unresolved.</li>
+<li>Speed: one commenter says gains stop ~80 rpm because beans stop feeding <a href="https://www.home-barista.com/grinders/motorizing-hand-grinder-t11285.html">Home-Barista</a>; hand speed ~120 rpm <a href="https://www.coffeeforums.co.uk/threads/using-an-electric-screwdriver-on-a-hand-grinder.57975/">coffeeforums</a>; a Feldgrind user capped ~350-400 rpm on low range <a href="https://www.home-barista.com/grinders/adapter-for-motorizing-hand-grinder-feldgrind-t93943.html">Home-Barista</a>; an HG-1 builder with a constant-torque 120 W motor used 15-80 rpm, mostly 40-50 for espresso <a href="https://www.home-barista.com/grinders/motorized-hg-1-with-various-speed-t53547.html">Home-Barista</a>; a K6 conversion builder reports prior builds at 80-200 rpm limited by stall, heat, gravity feed <a href="https://www.justinjchae.com/projects/coffee-grinder-conversion">Justin Chae</a>. A user on 400 rpm took ~1 min for 14 g and felt little heating.</li>
+<li>Heat/fines vs RPM: general-grinder claims (high RPM shatters, widens distribution, more heat) come from vendor blogs; one vendor lab-style comparison 500 vs 1500 rpm <a href="https://completehomebarista.com/guides/grinder-rpm-speed-espresso-extraction/">source</a>. Not validated for drill-driven hand burrs. Fines reduce bed permeability (peer-reviewed) <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10920694/">PMC10920694</a>. Retention effects of drill vs hand: no data found.</li>
+<li>Implication for design (inference): target high torque (&gt;=6 Nm at crank with margin, a gearmotor or stepper with reduction) at 40-120 rpm, not a fast drill. A stepper/BLDC with planetary gearing gives controllable low rpm; a drill’s low gear works but is bulky.</li>
+</ul>
+<h3 id="4-3d-printed-stands-couplers-manual-preserving-designs">4. 3D-printed stands, couplers; manual-preserving designs</h3>
+<ul>
+<li>Printables: Trifecta 1Zpresso K-series/ZP6 motorisation <a href="https://www.printables.com/model/836816-trifecta-fancy-1zpresso-grinder-motorization-k-ser">thcecilia</a> (page not readable here); coffee grinder nut adapter <a href="https://www.printables.com/model/73286-coffee-grinder-nut-adapter-for-cordless-drill-oper">73286</a>; drive adapter <a href="https://www.printables.com/model/233386-coffee-hand-grinder-drive-adapter">233386</a>; Porlex <a href="https://www.printables.com/model/673529-porlex-coffee-grinder-drill-adapter-14-63mm-shaft">673529</a>; Hario <a href="https://www.printables.com/model/622426-hario-handgrinder-14-inch-adapter">622426</a>. MakerWorld: open-source motorised conversion, 24 V, 90-100 rpm <a href="https://makerworld.com/en/models/1491498-open-source-hand-grinder-motorized-conversion">1491498</a>; ZP6-A2 Hybrid using a Femobook A2 motor block (high-torque low-rpm).</li>
+<li>Warning from a Printables description: if the adapter is not seated it “will round out the socket” (search paraphrase).</li>
+<li>Manual-use preservation: no verified example of a sprag/one-way clutch fitted to a hand grinder. Sprag clutches are a standard part <a href="https://en.wikipedia.org/wiki/Sprag_clutch">Wikipedia</a>; woodgears.ca kept the crank attached as emergency use <a href="https://woodgears.ca/kitchen/coffee_grinder.html">woodgears</a>. Hand grinders do not freewheel; the crank spins with the motor unless a clutch or removable coupler is added. My design suggestion (not sourced): a removable coupler at the crank nut, or sprag between motor output and grinder shaft so hand cranking does not back-drive the gearbox (a worm/high-ratio gearbox would otherwise make hand cranking impossible). Magnetic coupling: no evidence found; torque 3-6 Nm makes magnet couplers impractical (inference).</li>
+</ul>
+<h3 id="5-grind-by-weight-and-automation">5. Grind-by-weight and automation</h3>
+<ul>
+<li>jaapp/smart-grind-by-weight <a href="https://github.com/jaapp/smart-grind-by-weight">GitHub</a>: ESP32-S3 AMOLED + HX711 + load cell, ~EUR 30-40 parts, Eureka Mignon Specialita brain swap, target +-0.03 g (design goal, no measured data), predictive latency/flow algorithm, labelled experimental, as-is.</li>
+<li>jb-xyz/openGBW <a href="https://github.com/jb-xyz/openGBW">GitHub</a>: ESP32, HX711 + 500 g load cell, OLED, rotary encoder, relay in parallel with push button (50 ms impulse mode or continuous), Eureka Mignon XL case; no numeric accuracy claim; auto offset after each grind.</li>
+<li>ahuber21/coffee-grinder-scale: ESP32 but ADS1232; notes the 220 V Mignon supply cannot run the ESP32 [GitHub](https://coffee-grinder-scale index via github.imc.re/ahuber21/coffee-grinder-scale). Jerey/coffee-automation <a href="https://www.github.com/Jerey/coffee-automation">GitHub</a>; CaffePeso scale <a href="https://www.home-barista.com/repairs/caffepeso-open-source-espresso-scale-t103525.html">Home-Barista</a>.</li>
+<li>Niche advertises +-0.2 g consistency per a Duo review summary.</li>
+<li>None is for a hand grinder; the concept transfers by switching the motor driver on load-cell weight (inference).</li>
+</ul>
+<h3 id="6-freshness">6. Freshness</h3>
+<ul>
+<li>Evidence: grinding vents volatiles; Akiyama et al. 2003 JAFC captured volatiles released during grinding (nutty, smoky notes richer than in ground-coffee headspace) <a href="https://pages.uoregon.edu/chendon/coffee_literature/old_literature/2003%20J.%20Agric.%20Food%20Chem.,%20Volatiles%20released%20during%20grinding.pdf">paper PDF</a>. Industrial estimate ~14% volatile loss during grinding (old patent text). Ground coffee in paper lost ~35% volatiles in 30 days (secondary summary). CO2 continues to release after grinding over ~4-8 days (patent background, not a study).</li>
+<li>Storage: SCA literature review: nitrogen flushing gave 6 months vs 3 months sensory shelf life (2001 study); temperature correlates with CO2/volatile loss, largest losses in first days <a href="https://sca.coffee/sca-news/2012/02/15/what-is-the-shelf-life-of-roasted-coffee-a-literature-review-on-coffee-staling-bjcx7">SCA</a>. 2025 Foods study: vacuum best for beans, valved foil best for ground, at 25 C <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12607991/">PMC12607991</a>. Freezing: Penn State finding that freezing helps dark roasts (secondary, unverified) <a href="https://www.mentalfloss.com/article/81672/keeping-coffee-beans-freezer-may-improve-taste-study-finds">Mental Floss</a>. A temperature/storage volatile study exists <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11675256/">PMC11675256</a>.</li>
+<li>Grind-ahead (anecdote only): Home-Barista user found 12 h pre-ground sweeter than fresh but poor extraction viewed; another said noticeable degradation after 24 h, dead at 48 h, 6-12 h acceptable; a 359-shot Medium log found no trend <a href="https://medium.com/data-science/coffee-grounds-freshness-for-espresso-78a447f84fcd">Medium</a>, <a href="https://www.home-barista.com/knockbox/pre-grinding-coffee-for-later-t100030.html">Home-Barista</a>.</li>
+<li>Implication (inference): grinding ~8 h before wake-up in a sealed container is likely a modest loss; best design grinds at wake-up (noise vs bed) or grinds the night before into a sealed dosing cup. No controlled sensory data on this window.</li>
+</ul>
+<h3 id="7-buy-instead-2026-us-unless-noted-secondary">7. Buy-instead (2026, US$ unless noted, secondary)</h3>
+<ul>
+<li>Niche Zero: ~$599-689 US; GBP 559 direct (UK) <a href="https://stillwatercoffee.ca/blogs/brew_hacks/turin-df64-vs-niche-zero-vs-timemore-064s">Stillwater</a>, <a href="https://knowledgelib.io/home/kitchen/coffee-grinders/2026">Knowledgelib</a>.</li>
+<li>Niche Duo: 83 mm flat, two burr sets; GBP 549-799 depending on source; no USD price found; reviewers mixed (fines, cleanliness) <a href="https://www.brewcoffeehome.com/niche-duo-vs-zero/">brewcoffeehome</a>.</li>
+<li>DF64 Gen 2: $399-450 <a href="https://www.coffeeness.de/en/timemore-sculptor-064s-review/">coffeeness</a>.</li>
+<li>Timemore Sculptor 064S: ~$599 <a href="https://roastaroma.com/gear/timemore-sculptor-064s">roastaroma</a>; 064S II orders opened Oct 2026, shipping early 2027 (per one source).</li>
+<li>Eureka Mignon Specialita: ~<span class="math inline">549(</span>449-749 band).</li>
+<li>Lagom P64/P100: no price confirmed; HB thread says P100 ~$1,000 above P64 with SSP burrs, Lagom with SSP $1,585 (old).</li>
+<li>Noise: Bean Brew Digest 1 m, dB(A): Eureka Silenzio 59, DF64 Gen 2 62, Comandante C40 hand 43 <a href="https://beanbrewdigest.com/equipment-gear/what-is-the-most-quiet-coffee-grinder-available">beanbrewdigest</a>. Coffee Chronicler at 20 cm: hand ~72-74, quietest electric ~80, DF64 Gen 2 noticeably louder <a href="https://coffeechronicler.com/gear/grinders/best-quiet/">coffeechronicler</a>. Niche Zero 65 dB (unsourced table) vs ~73 dB (forum) <a href="https://completehomebarista.com/coffee-grinders/burr-grinder-noise-comparison/">completehomebarista</a>. Specialita ~80 dB at 20 cm <a href="https://www.quietest.org/quietest-coffee-grinder-decibels/">quietest.org</a>. Distances differ; not comparable.</li>
+</ul>
+<h2 id="quote-bank">Quote bank</h2>
+<blockquote>
+<p>The 6.35mm electronic screwdriver/drill is applicable to all the 1Zpresso grinders and it doesn’t need to be a powerful one.</p>
+</blockquote>
+<p>1Zpresso (manufacturer FAQ), n/a, undated, PRIMARY, <a href="https://1zpresso.coffee/faq/">source</a></p>
+<blockquote>
+<p>We suggest using a drill for one or two cups within a short period of time, or it could get hot and affect the taste.</p>
+</blockquote>
+<p>1Zpresso (manufacturer FAQ), n/a, undated, PRIMARY, <a href="https://1zpresso.coffee/faq">source</a></p>
+<blockquote>
+<p>our warranty does not cover damage to the Grinder both cosmetic and mechanical through use of the Power Drill Adapter</p>
+</blockquote>
+<p>AeroPress (manufacturer instructions page; wording as in search extract), undated, PRIMARY (different product), <a href="https://aeropress.com/pages/aeropress-manual-grinder-instructions-page">source</a></p>
+<blockquote>
+<p>With a fine grind setting I measured about 3 Nm, so assuming 6 to have some headroom.</p>
+</blockquote>
+<p>ODrive forum poster (unnamed hobbyist), undated, WEAK (single forum post), <a href="https://discourse.odriverobotics.com/t/research-motorizing-manual-coffee-grinder/6979">source</a></p>
+<blockquote>
+<p>Newly Released Mod - Buyer Beware!</p>
+</blockquote>
+<p>jaapp, README author of smart-grind-by-weight, undated, PRIMARY, <a href="https://github.com/jaapp/smart-grind-by-weight">source</a></p>
+<blockquote>
+<p>the accuracy will increase with each grind</p>
+</blockquote>
+<p>jb-xyz, openGBW README, undated, PRIMARY, <a href="https://github.com/jb-xyz/openGBW">source</a></p>
+<blockquote>
+<p>The 12 hours pre-ground coffee was better tasting and sweeter than the fresh ground batch.</p>
+</blockquote>
+<p>Home-Barista forum user (anonymous), undated, WEAK, <a href="https://www.home-barista.com/brewing/experiments-with-preground-coffee-for-espresso-and-brew-pot-t6722.html">source</a></p>
+<blockquote>
+<p>We suggest using… (see above). Other quotes held to paraphrase: CoffeeGeek’s 3-4 Nm estimate (Mark Prince, opinion piece) is paraphrased only.</p>
+</blockquote>
+<h2 id="disagreements-failure-modes-and-caveats">Disagreements, failure modes and caveats</h2>
+<ul>
+<li>Torque: ~3 Nm (forum measurement) vs 3-4 Nm (CoffeeGeek estimate); CoffeeGeek also mentions 25-30 Nm overhead, inconsistent with its tool ratings. Drill spec “400-600 Nm” claims on forum are likely in-lb or max-stall misreads; treat as unreliable.</li>
+<li>Speed: manufacturer says any drill; community says low rpm (~50-150) and enough torque; 3.6 V screwdrivers stall at espresso.</li>
+<li>Heat: 1Zpresso warns of heat on prolonged use; user reports little heating at 400 rpm for 14 g. No measurements.</li>
+<li>Burr material of K6 disputed; M47 vs J-Ultra opinions conflict (one reviewer found M47 harder to use with no consistency gain).</li>
+<li>Niche Zero dB: 65 vs 73; DF64 62 vs ~71 vs “86” in another chart.</li>
+<li>Freshness: grind-ahead evidence is anecdote and conflicting (sweeter at 12 h vs dead at 48 h).</li>
+<li>Motor risks (inference): side load on crank bearing and shaft from drill; rounded nut sockets; no manufacturer warranty protection; ESP32 powering from 220 V Mignon supply may fail.</li>
+<li>Failure stories specific to drilling hand grinders: none found.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>1Zpresso FAQ, 1zpresso.coffee/faq, undated: official, primary.</li>
+<li>1Zpresso return policy, 1zpresso.coffee/returnpolicy: official.</li>
+<li>AeroPress grinder instructions, aeropress.com: official, different product.</li>
+<li>Home-Barista threads t92641, t11285, t93943, t53547, t77059, t100030, t6722, t72555, t103525: forum, anecdotal.</li>
+<li>ODrive discourse thread 6979: hobbyist engineering, one measurement.</li>
+<li>CoffeeGeek (Mark Prince) torque article; CoffeeGeek budget/manual guides 2025-26: reputable outlet, opinion.</li>
+<li>github.com/jaapp/smart-grind-by-weight, jb-xyz/openGBW, ahuber21/coffee-grinder-scale, Jerey/coffee-automation: primary READMEs (first two read directly).</li>
+<li>Printables/MakerWorld models listed above: maker pages, unverified here.</li>
+<li>SCA literature review (2012): reputable secondary review.</li>
+<li>PMC12607991 (2025), PMC11675256, PMC10920694: peer-reviewed.</li>
+<li>Akiyama et al. 2003 JAFC PDF at pages.uoregon.edu: peer-reviewed; abstract-level only.</li>
+<li>Review/retail sites (roastaroma, coffeegearzone, coffeeness, beanbrewdigest, coffeechronicler, stillwatercoffee.ca, knowledgelib, completehomebarista, Kaffeemacher, Eight Ounce): mixed quality, SEO-driven; prices indicative.</li>
+</ul>
+<h2 id="gaps">Gaps</h2>
+<ul>
+<li>Printables/Thingiverse pages not fetchable (printables.com not allowed); designs unverified for torque, clutch or manual-use support.</li>
+<li>No verified sprag-clutch or magnetic-coupling hand-grinder build.</li>
+<li>No controlled data on drill rpm vs fines, heat, retention.</li>
+<li>No peer-reviewed minutes/hours grind-age sensory study; Penn State freezing study not verified; no good-quality ground-coffee freezer data.</li>
+<li>Lagom P64/P100 and Niche Duo USD prices; Sculptor dB; reliable like-for-like dB table.</li>
+<li>Fiorenzato Pietro, Helor 101, Lido specifics; knurling identification; official Kinu/Timemore/Kingrinder motor stances.</li>
+<li>GitHub repos for motorised hand grinders: search surface returned nothing.</li>
+</ul>
+<h2 id="verification-log-independent-fact-check">Verification log (independent fact-check)</h2>
+<p>Checked 2026-11-10 with 16 WebSearch calls (no non-GitHub WebFetch). Search results are model-written summaries, so a verbatim quote is marked VERIFIED only when its exact wording surfaced in the results.</p>
+<ul>
+<li><strong>PARTIAL</strong> — Quote: “applicable to all the 1Zpresso grinders… doesn’t need to be a powerful one” (1Zpresso FAQ). Note: the substance (any 6.35 mm drill, no power needed) is confirmed on the FAQ and in a Home-Barista quote of it. The exact wording surfaced only in summaries, and a near-identical line appears on DACLL’s FAQ, so the wording may be shared across brands. Use a paraphrase or re-check the page. URL: <a href="https://1zpresso.coffee/faq/">https://1zpresso.coffee/faq/</a></li>
+<li><strong>PARTIAL</strong> — Quote: “We suggest using a drill for one or two cups within a short period…” (attributed to 1Zpresso FAQ). Note: the verbatim wording was found on DACLL’s FAQ (<a href="https://www.dacll.com/faq-ezp-6.html">https://www.dacll.com/faq-ezp-6.html</a>), not 1Zpresso’s. The 1Zpresso attribution is unconfirmed; the one-to-two-cup advice itself is only paraphrased for 1Zpresso. Re-attribute or drop the quote marks. URL: <a href="https://1zpresso.coffee/faq/">https://1zpresso.coffee/faq/</a></li>
+<li><strong>PARTIAL</strong> — Quote: “our warranty does not cover damage to the Grinder both cosmetic and mechanical…” (AeroPress). Note: the warranty exclusion for cosmetic and mechanical damage from the Power Drill Adapter is confirmed on AeroPress’s own support pages, but only as a paraphrase in the results. Verbatim wording not seen. URL: <a href="https://aeropress.com/pages/aeropress-manual-grinder-instructions-page">https://aeropress.com/pages/aeropress-manual-grinder-instructions-page</a></li>
+<li><strong>VERIFIED</strong> — Quote: “the accuracy will increase with each grind” (openGBW README). Note: the exact sentence surfaced in the README text (“the accuracy will increase with each grind as the scale auto adjusts the grinding offset”), and forks carry the same sentence. Primary source. URL: <a href="https://github.com/jb-xyz/openGBW">https://github.com/jb-xyz/openGBW</a></li>
+<li><strong>VERIFIED</strong> — Quote: “With a fine grind setting I measured about 3 Nm, so assuming 6 to have some headroom” (ODrive forum). Note: exact wording surfaced in the thread excerpt. It is one anonymous forum post, so the evidence weight stays WEAK. URL: <a href="https://discourse.odriverobotics.com/t/research-motorizing-manual-coffee-grinder/6979">https://discourse.odriverobotics.com/t/research-motorizing-manual-coffee-grinder/6979</a></li>
+<li><strong>PARTIAL</strong> — Quote: “The 12 hours pre-ground coffee was better tasting and sweeter than the fresh ground batch.” (Home-Barista). Note: the thread exists and reports that a 12-hour pre-ground batch was preferred. The exact wording was not shown in results. The thread is one informal test, and other sources (Better Coffee Lab) point the other way. URL: <a href="https://www.home-barista.com/brewing/experiments-with-preground-coffee-for-espresso-and-brew-pot-t6722.html">https://www.home-barista.com/brewing/experiments-with-preground-coffee-for-espresso-and-brew-pot-t6722.html</a></li>
+<li><strong>NOT_FOUND</strong> — Quote: “Newly Released Mod - Buyer Beware!” (jaapp README). Note: searches of the jaapp repo and related pages did not return this text. Drop the quote or fetch the README directly. URL: <a href="https://github.com/jaapp/smart-grind-by-weight">https://github.com/jaapp/smart-grind-by-weight</a></li>
+<li><strong>PARTIAL</strong> — Finding: Akiyama et al. 2003 JAFC, grinding volatiles. Note: the paper exists (J. Agric. Food Chem. 2003, 51, 1961-1969, “Analysis of Volatile Compounds Released during the Grinding of Roasted Coffee Beans Using SPME”). It states that grinding aromas are lost easily during industrial processing. The file’s claim that they are richer than ground-coffee headspace was not confirmed. Cite the title and the loss point only. URL: <a href="https://pages.uoregon.edu/chendon/coffee_literature/old_literature/2003%20J.%20Agric.%20Food%20Chem.,%20Volatiles%20released%20during%20grinding.pdf">https://pages.uoregon.edu/chendon/coffee_literature/old_literature/2003%20J.%20Agric.%20Food%20Chem.,%20Volatiles%20released%20during%20grinding.pdf</a></li>
+<li><strong>PARTIAL</strong> — Finding: Bean Brew Digest dB(A): Silenzio 59, DF64 Gen 2 62, Comandante C40 43. Note: the figures appear on the Bean Brew Digest guide (secondary, retail blog). The 43 dB is a peak measured during full-torque cranking, which the file omits. The “1 m” distance was not confirmed in the results. Other sites (Quietest.org) report hand grinders at roughly 70-75 dB on a different basis, so the figures are not comparable. URL: <a href="https://beanbrewdigest.com/equipment-gear/what-is-the-most-quiet-coffee-grinder-available">https://beanbrewdigest.com/equipment-gear/what-is-the-most-quiet-coffee-grinder-available</a></li>
+<li><strong>VERIFIED</strong> — Finding: 1Zpresso J-Ultra ~$199. Note: $199 confirmed on the manufacturer store and by Tom’s Guide (Amazon US). Some resellers charge $213-222. Secondary press plus primary store listing. URL: <a href="https://1zpresso.coffee/product/jultra">https://1zpresso.coffee/product/jultra</a></li>
+<li><strong>VERIFIED</strong> — Finding: 1Zpresso X-Ultra $159 (list $169). Note: the manufacturer’s US store shows current $159, original $169, tax excluded. The page is undated, so the price may have moved. Other retailers list $181 or more. URL: <a href="https://1zpresso.coffee/product/xultra">https://1zpresso.coffee/product/xultra</a></li>
+<li><strong>PARTIAL</strong> — Finding: Niche Zero ~$599-689 US; GBP 559 direct. Note: a 2026 price guide gives $599-649 USD and a May 2026 review cites about $629. The UK figure of £559 appears at Balance Coffee; Niche’s own UK store showed £538.80 inc. VAT. The $689 upper bound was not found. Correct the US range to about $599-649. Searches were run on the price and burr specs (63 mm conical), not on the $689 figure. URL: <a href="https://completehomebarista.com/guides/niche-zero-price-guide-2026/">https://completehomebarista.com/guides/niche-zero-price-guide-2026/</a></li>
+<li><strong>VERIFIED</strong> — Finding: DF64 Gen 2 $399-450. Note: the US maker’s store lists $399 (sale) against a $450 regular price. Other retailers show $389-400 and one shows a $599 regular price. Prices are volatile; check live listings. URL: <a href="https://df64coffee.com/a/s/products/df64-gen-2-single-dose-coffee-grinder">https://df64coffee.com/a/s/products/df64-gen-2-single-dose-coffee-grinder</a></li>
+<li><strong>VERIFIED</strong> — Finding: SCA review, nitrogen-flushed coffee sensory shelf life 6 months vs 3 months (2001). Note: the SCA literature review states it, citing Alves et al. 2001 (ASIC, Trieste). An abstract on ResearchGate gives the same 6 vs 3 months at 25 C / 65% RH. The full 2001 text was not read. URL: <a href="https://sca.coffee/sca-news/2012/02/15/what-is-the-shelf-life-of-roasted-coffee-a-literature-review-on-coffee-staling-bjcx7">https://sca.coffee/sca-news/2012/02/15/what-is-the-shelf-life-of-roasted-coffee-a-literature-review-on-coffee-staling-bjcx7</a></li>
+<li><strong>CONTRADICTED</strong> — Finding: Kinu M47 Phoenix 1.4 kg. Note: the researcher’s own cited source (Home Grounds) lists the Phoenix at 1.6 lb (about 0.73 kg). Green Plantation and MyCoffeeStage also give about 715 g. Only Eight Ounce Coffee gives 1.4 kg. Use about 0.7 kg, or drop the figure. URL: <a href="https://www.homegrounds.co/kinu-m47-review/">https://www.homegrounds.co/kinu-m47-review/</a></li>
+</ul>
+
+    </article>
+  </div>
+</main>
+</body>
+</html>

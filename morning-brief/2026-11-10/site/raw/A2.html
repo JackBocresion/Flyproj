@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>A2 raw research &middot; Morning Brief No. 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&display=swap">
+<style>
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+:root {
+  /* Layout: one ~68ch reading column; a mono metadata rail (contents, provenance) in the left gutter on wide screens */
+  --paper: #F1F2EF;
+  --paper-2: #E7E9E4;
+  --ink: #1C1D1A;
+  --muted: #5A5D56;
+  --rule: #D2D5CD;
+  --crema: #94531C;
+  --crema-soft: #EADBCB;
+  --ok: #2C6847;
+  --warn: #84640E;
+  --bad: #9A372B;
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", system-ui, sans-serif;
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+    --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #14120F; --paper-2: #1D1A16; --ink: #ECE6DE; --muted: #A69E93; --rule: #36312B;
+  --crema: #DA9C5E; --crema-soft: #3B2A1B; --ok: #7DBB96; --warn: #D5B259; --bad: #E58A78;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 19px;
+  line-height: 1.58;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration-color: var(--crema); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+a:hover { color: var(--crema); }
+a:focus-visible { outline: 2px solid var(--crema); outline-offset: 2px; border-radius: 2px; }
+
+.band { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.band-top { background: var(--paper-2); border-bottom: 1px solid var(--rule); padding-block: 40px 36px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+
+/* masthead */
+.slug { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.slug b { color: var(--ink); font-weight: 500; }
+.title { font-family: var(--display); font-stretch: 72%; font-weight: 800; font-size: clamp(54px, 10vw, 112px); line-height: 0.9; letter-spacing: -0.01em; margin: 18px 0 10px; text-wrap: balance; }
+.title .no { color: var(--crema); font-stretch: 100%; font-weight: 500; font-size: 0.42em; letter-spacing: 0.02em; vertical-align: 0.95em; margin-left: 0.18em; }
+.deck { font-style: italic; font-size: clamp(19px, 2.2vw, 23px); color: var(--muted); max-width: 46em; margin: 0 0 30px; text-wrap: pretty; }
+
+.bluf { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 2px solid var(--ink); }
+.bluf > div { padding: 16px 22px 4px 0; min-width: 0; }
+.bluf > div + div { padding-left: 22px; border-left: 1px solid var(--rule); }
+.bluf h2 { font-family: var(--display); font-stretch: 85%; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 8px; color: var(--crema); }
+.bluf p { margin: 0 0 12px; font-size: 18px; line-height: 1.5; }
+
+.stats { margin-top: 22px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 22px; font-variant-numeric: tabular-nums; }
+.stats span b { color: var(--ink); font-weight: 500; }
+
+/* body grid */
+.band-body { padding-block: 44px 72px; }
+.grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 56px; }
+.rail { min-width: 0; }
+.rail nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); font-family: var(--mono); font-size: 12.5px; line-height: 1.45; }
+.rail .label { text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 0 0 10px; }
+.rail ol, .rail ul { list-style: none; margin: 0 0 26px; padding: 0; display: grid; gap: 7px; }
+.rail a { text-decoration: none; color: var(--muted); }
+.rail a:hover { color: var(--crema); }
+.rail li.sub a { padding-left: 12px; display: inline-block; }
+
+.prose { min-width: 0; max-width: 68ch; }
+.prose h2 { font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: clamp(34px, 5vw, 50px); line-height: 1; letter-spacing: -0.005em; margin: 64px 0 22px; padding-top: 18px; border-top: 2px solid var(--ink); text-wrap: balance; }
+.prose > h2:first-child, .prose > .part:first-child h2:first-child { margin-top: 0; }
+.prose h3 { font-family: var(--display); font-stretch: 88%; font-weight: 700; font-size: 25px; line-height: 1.2; margin: 42px 0 12px; text-wrap: balance; }
+.prose h4 { font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; margin: 30px 0 8px; color: var(--muted); }
+.prose p { margin: 0 0 1.05em; text-wrap: pretty; }
+.prose ul, .prose ol { padding-left: 1.3em; margin: 0 0 1.1em; }
+.prose li { margin: 0 0 0.45em; }
+.prose li::marker { color: var(--crema); }
+.prose strong { font-weight: 650; }
+.prose hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0; }
+.prose blockquote { margin: 22px 0 24px; padding: 2px 0 2px 20px; border-left: 3px solid var(--crema); font-style: italic; font-size: 20px; line-height: 1.5; }
+.prose blockquote p:last-child { margin-bottom: 0; }
+.prose blockquote em { font-style: normal; }
+.prose code { font-family: var(--mono); font-size: 0.82em; background: var(--paper-2); padding: 1px 5px; border-radius: 3px; }
+.prose pre { font-family: var(--mono); font-size: 13.5px; line-height: 1.5; background: var(--paper-2); border: 1px solid var(--rule); padding: 16px 18px; overflow-x: auto; border-radius: 4px; }
+.prose pre code { background: none; padding: 0; font-size: inherit; }
+
+.tablewrap { overflow-x: auto; margin: 22px 0 28px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); }
+.prose table { border-collapse: collapse; width: 100%; font-family: var(--display); font-stretch: 92%; font-size: 15px; line-height: 1.4; font-variant-numeric: tabular-nums; }
+.prose th { text-align: left; font-weight: 700; font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 10px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: bottom; }
+.prose td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top; min-width: 7em; }
+.prose tr:last-child td { border-bottom: 0; }
+
+figure.profile { margin: 8px 0 34px; }
+figure.profile svg { width: 100%; height: auto; display: block; }
+figure.profile figcaption { font-family: var(--mono); font-size: 12.5px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+.ax { stroke: var(--rule); stroke-width: 1; fill: none; }
+.axl { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+.c-lever { stroke: var(--crema); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.c-pump { stroke: var(--ink); stroke-width: 1.6; fill: none; stroke-dasharray: 5 5; }
+.c-lbl { font-family: var(--mono); font-size: 11.5px; }
+.c-lbl.l { fill: var(--crema); }
+.c-lbl.p { fill: var(--ink); }
+
+/* provenance + ledger */
+.ledger { width: 100%; }
+.chip { display: inline-block; font-family: var(--mono); font-size: 11.5px; line-height: 1; padding: 4px 6px; border-radius: 3px; border: 1px solid currentColor; margin: 0 4px 4px 0; white-space: nowrap; }
+.chip.ok { color: var(--ok); }
+.chip.warn { color: var(--warn); }
+.chip.bad { color: var(--bad); }
+.stack-list { list-style: none; padding: 0 !important; margin: 18px 0 26px !important; border-top: 2px solid var(--ink); }
+.stack-list li { margin: 0 !important; padding: 14px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 3.2em minmax(0, 1fr); gap: 0 12px; }
+.stack-list .id { font-family: var(--mono); font-size: 14px; color: var(--crema); padding-top: 3px; }
+.stack-list .t { font-family: var(--display); font-stretch: 90%; font-weight: 700; font-size: 18px; line-height: 1.3; }
+.stack-list .m { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.6; }
+.stack-list li::marker { content: none; }
+
+.backlink { font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--muted); }
+.backlink:hover { color: var(--crema); }
+.raw-head .title { font-size: clamp(36px, 6vw, 64px); font-stretch: 78%; }
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .rail nav { position: static; }
+  .rail ol, .rail ul { margin-bottom: 18px; }
+}
+@media (max-width: 640px) {
+  body { font-size: 18px; }
+  .bluf { grid-template-columns: minmax(0, 1fr); }
+  .bluf > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--rule); }
+  .band-top { padding-block: 28px 26px; }
+  .prose blockquote { font-size: 19px; padding-left: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+
+</style>
+</head>
+<body>
+<header class="band band-top raw-head">
+  <div class="wrap">
+    <div class="slug"><a class="backlink" href="../index.html">&larr; Morning Brief No. 1</a><span>Raw research &middot; slice A2</span></div>
+    <h1 class="title">How mathematicians, scientists and programmers handle the daily stream</h1>
+    <div class="stats"><span><b>42</b> searches</span><span><b>16</b> items fact-checked</span><span><b>8</b> verified</span><span><b>7</b> partial</span><span><b>1</b> dropped or flagged</span></div>
+  </div>
+</header>
+<main class="band band-body">
+  <div class="wrap grid">
+    <aside class="rail"><nav aria-label="Sections"><p class="label">Sections</p><ol><li><a href="#scope">Scope</a></li><li><a href="#method-and-search-log">Method and search log</a></li><li><a href="#findings">Findings</a></li><li><a href="#quote-bank">Quote bank</a></li><li><a href="#disagreements-failure-modes-and-caveats">Disagreements, failure modes and caveats</a></li><li><a href="#sources">Sources</a></li><li><a href="#gaps">Gaps</a></li><li><a href="#verification-log-independent-fact-check">Verification log (independent fact-check)</a></li></ol>
+    <p class="label">Other slices</p><ul><li><a href="A1.html">A1 &middot; Briefing for a living</a></li><li><a href="A3.html">A3 &middot; AI-written briefs</a></li><li><a href="A4.html">A4 &middot; The case against</a></li><li><a href="B1.html">B1 &middot; Building from scratch</a></li><li><a href="B2.html">B2 &middot; Levers and hybrids</a></li><li><a href="B3.html">B3 &middot; Grinders and motors</a></li><li><a href="B4.html">B4 &middot; Bedside automation</a></li><li><a href="B5.html">B5 &middot; What to buy</a></li></ul></nav></aside>
+    <article class="prose">
+<h2 id="scope">Scope</h2>
+<p>First-hand accounts and evidence on how mathematicians, physicists, computer scientists and programmers take in information each day (arXiv listings, email, feeds, LLM summaries), and on mornings. Includes the Haque and Ginsparg arXiv position-effect papers as evidence that ordering in a daily brief steers expert attention. Covers both camps: people who want an overnight research agent, and people (Knuth, Graham, Newport) who protect themselves from the stream.</p>
+<h2 id="method-and-search-log">Method and search log</h2>
+<p>Method: WebSearch only (network allowlist blocks page fetches). 33 searches run, 18 in extended mode. Quotes are copied only where a search result presented them as direct quotations; the search tool returns summarised snippets, so I could not open the primary pages. Almost every quote is therefore labelled by what I actually saw (a result relaying the primary text) and flagged for fact-check against the primary URL. Where only a paraphrase came back, it is reported as a paraphrase.</p>
+<ol type="1">
+<li>Haque Ginsparg “Positional effects…” (extended) - confirmed bibliographic details (JASIST 60(11), 2203-2218, 2009; DOI 10.1002/asi.21166) and the 2010 sequel arXiv:1010.2757.</li>
+<li>Knuth “happy man ever since January 1, 1990” (extended) - confirmed wording via several pages; secretary-print arrangement; Newport’s piece on Knuth.</li>
+<li>Tao blog reading papers / time management / AI (extended) - no Tao post on his reading routine; found his “AI views living summary”, OpenAI Academy write-up, Nov 2025 blog post.</li>
+<li>Hamming “You and Your Research” keep up / open door (extended) - list of transcripts (Paul Graham’s site, Gwern, Virginia, Edinburgh); only paraphrase of passages.</li>
+<li>Newport email/news/morning (standard) - secondary summaries only; no news-diet statement.</li>
+<li>Graham “Acceleration of Addictiveness” / “Disconnecting Distraction” (standard) - essay URLs, closing line.</li>
+<li>Haque Ginsparg numbers (extended) - 83/50/100% median citation figures; 44/38/71% visibility figures.</li>
+<li>Knuth “wonderful thing for people whose role in life is to be on top of things” (extended) - quote relayed by Wikiquote/AZQuotes; Newport Chronicle essay.</li>
+<li>Tao “arXiv listings” habit (extended) - found his 2026-10-01 post on arXiv rate limiting containing a nightly-monitoring remark.</li>
+<li>Karpathy information diet (extended) - RSS return, reading-with-LLMs three-pass tweet, LLM knowledge bases.</li>
+<li>Wolfram “Personal Analytics of My Life” (standard) - 100M keystrokes, 7% backspace, email archive from 1989.</li>
+<li>Currey Daily Rituals Poincare/Darwin/Dyson (standard) - only Darwin confirmed via NPR; nothing on Poincare/Dyson.</li>
+<li>Haque Ginsparg abstract phrases (extended) - exact abstract percentages (83/50/100) and 44/38/71 visibility boosts; preprint raw medians.</li>
+<li>Scholarly Kitchen coverage (extended) - download boosts 82/61/58%; data period 2002-2004.</li>
+<li>Karpathy “going back to RSS” (extended) - tweet wording; 92-blog OPML; dates differ across sources (Jan 31 to Feb 2 2026).</li>
+<li>Newport/Knuth “three months” (extended) - three-month claim traced to a third-party summary only.</li>
+<li>Tao rate-limit post (extended) - arXiv policy: 2 submissions/month, 3 active; Tao’s concerns.</li>
+<li>Mathematicians’ arXiv daily habit (extended) - AMS grad blog; email/RSS; Paper Digest ranking service; no survey data.</li>
+<li>Tao AI living summary (extended) - page disclosed as drafted by Claude then reviewed by Tao; reading advice.</li>
+<li>Tao Mathstodon “I wrote recently” (standard) - open-problem depletion, digestion; secondary only.</li>
+<li>Hamming exact passages (standard) - list of transcripts; no verbatim passage.</li>
+<li>Feynman/Dyson keeping up (extended) - preprint culture history (Kaiser); no first-person statement.</li>
+<li>Shannon routine (standard) - Pollak “earned the right to be non-productive”; closed door; nothing on reading.</li>
+<li>Poincare routine (standard) - 10-12 and 5-7 schedule via Toulouse (secondary); Currey inclusion unconfirmed.</li>
+<li>Newport Chronicle “Is Email Making Professors Stupid” (extended) - opens with Knuth; 2019-02-13.</li>
+<li>Newport news habits (extended) - nothing verbatim.</li>
+<li>Graham “Disconnecting Distraction” (extended) - dated May 2008; later note that the strategy stopped working.</li>
+<li>Graham “Maker’s Schedule” (standard) - paraphrase only.</li>
+<li>Alerts / Google Scholar / RSS guides (extended) - practitioner guides; alert abandonment; no survey.</li>
+<li>Researchers vs AI summaries (extended) - Royal Society Open Science study on overgeneralisation; fabricated reference rate; think-aloud study.</li>
+<li>Knuth “Claude’s Cycles” (extended) - Feb 28 2026 paper, Opus 4.6.</li>
+<li>Gowers/Litt/Aaronson on AI (extended) - Gowers Aug 2026 post; AI-use share in arXiv math submissions.</li>
+<li>arXiv listing-order changes (extended) - no official order change found; reverse-order /recent; randomisation suggested in follow-up paper.</li>
+<li>Follow-up abstract (extended) - “procrastination” effect.</li>
+<li>Wolfram morning routine (extended) - schedule “shockingly regular” (Boston Globe), late-night work.</li>
+<li>Tao five-years daily AI (extended) - could not confirm “every day”/“five years”; lit-search quote on Mathstodon.</li>
+<li>Tao o1 grad-student quote (standard) - Sept 2024, o1 not GPT-4.</li>
+<li>Motloch blog (extended) - disconfirming evidence on position effect.</li>
+<li>Hamming exact transcript (extended) - no verbatim.</li>
+<li>Graham closing line exact (standard) - second search agreed.</li>
+<li>Knuth email page (standard) - page confirmed existing; secretary prints messages; “bottom of things” not seen on page snippet.</li>
+<li>Darwin routine (standard) - Francis Darwin’s reminiscences: 7:00 walk, 7:45 breakfast; 2-3pm letters.</li>
+</ol>
+<p>(Count exceeds 33 once the second-check searches are listed individually; about 20 were extended mode.)</p>
+<h2 id="findings">Findings</h2>
+<h3 id="1-arxiv-listing-position-as-a-de-facto-brief-ordering-experiment-strongest-evidence-in-the-slice">1. arXiv listing position as a de facto brief-ordering experiment (strongest evidence in the slice)</h3>
+<ul>
+<li>Haque and Ginsparg, “Positional effects on citation and readership in arXiv”, JASIST 60(11):2203-2218, 2009 (<a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/asi.21166">Wiley</a>, <a href="https://arxiv.org/abs/0907.4740">arXiv:0907.4740</a>). Data: articles deposited 2002-2004 in astro-ph, hep-th, hep-ph (<a href="https://scholarlykitchen.sspnet.org/2009/07/29/arxiv-position-effects/">Scholarly Kitchen, 2009-07-29</a>).</li>
+<li>Abstract numbers as relayed by search: articles in position 1 had median citations 83% (astro-ph), 50% (hep-th) and 100% (hep-ph) higher than those lower down. Early full-text downloads were higher by 82%, 61% and 58% respectively (<a href="https://scholarlykitchen.sspnet.org/2009/07/29/arxiv-position-effects/">Scholarly Kitchen</a>; <a href="https://arxiv.org/pdf/0907.4740">arXiv:0907.4740</a>). The preprint (v1) gives raw astro-ph medians for position 1 versus positions 10-40 (one search snippet said 10 vs 4; another said about 89.8 vs 44.6; versions and metric differ, unresolved).</li>
+<li>Mechanism: the authors attribute the correlation “primarily” to authors intentionally self-promoting (timing submission to land first). They also isolate a pure visibility effect among papers that landed early by accident: boosts of 44%, 38%, 71% (astro-ph, hep-th, hep-ph) (<a href="https://arxiv.org/pdf/0907.4740">arXiv:0907.4740</a>). So ordering does steer readership, independent of paper quality, though most of the raw gap is self-selection.</li>
+<li>Sequel: “Last but not Least” (arXiv:1010.2757, JASIST 61, Dec 2010) finds “reverse-visibility” at the ends of listings and a “procrastination” effect: last-position papers submitted just before the deadline are cited more than those that landed there by chance, for one subcommunity (<a href="https://arxiv.org/abs/1010.2757">arXiv</a>). The paper notes some users suggested randomising order, per user or for all; I found no evidence arXiv did this (<a href="https://arxiv.org/html/1010.2757">arXiv HTML</a>). Also notes that astro-ph was later subdivided so effects may differ.</li>
+<li>Earlier related paper: Dietrich, “Disentangling visibility and self-promotion bias in the arXiv:astro-ph positional citation effect” (arXiv:0805.0307) and Dietrich 2008 PASP/IOP “The Importance of Being First” (<a href="https://iopscience.iop.org/article/10.1086/527522">IOP</a>).</li>
+<li>Disconfirming/qualifying: Motloch’s informal blog analysis (hep-th 2017-2020; not peer reviewed) finds first-listing papers are more cited but that restricting to papers submitted in the first minute largely removes the position effect, concluding the advantage reflects who submits right after the deadline more than position itself (<a href="https://motloch.net/blog_entries/arxiv_submission_analysis.html">Motloch</a>, <a href="https://github.com/motloch/arxiv_submission_analysis">GitHub</a>). Deadline changed on 2017-01-02 (same source). Caution: this suggests the 2009 “visibility” estimate may be inflated; treat position steering as real but modest.</li>
+<li>Readers’ habit: arXiv offers daily email, RSS, a <code>/new</code> page and <code>/recent</code> (last five days, newest day first) (<a href="https://arxiv.org/list/math/new">arXiv math new</a>, <a href="https://arxiv.org/html/1010.2757">arXiv HTML 1010.2757</a>). A math grad-student blog describes spending a minute or two scanning titles daily, with over 32,000 new math submissions in 2018 (<a href="https://blogs.ams.org/mathgradblog/2019/10/03/keeping-up-with-the-kardashians-arxiv-submissions-one-quick-tip-to-stay-informed/">AMS blog, 2019-10-03</a>). Anecdote, not a survey.</li>
+<li>Volume context (2026): arXiv received 40,363 papers in September 2026, more than double two years earlier, per one outlet citing arXiv; arXiv imposed a limit of two submissions per calendar month and three active submissions from 2026-10-01 (<a href="https://blog.arxiv.org/2026/10/01/updated-rate-limit-policy/">arXiv blog</a>, <a href="https://socket.dev/blog/arxiv-rate-limiting-slop">Socket</a>). Evidence: an organisation announcement plus press.</li>
+</ul>
+<h3 id="2-terence-tao">2. Terence Tao</h3>
+<ul>
+<li>Daily monitoring: in his 2026-10-01 post on arXiv’s rate limits he says he can “mostly monitor the arXiv each night” to learn whether someone has solved a problem he is working on, “imperfect, but … enormously useful” (<a href="https://terrytao.wordpress.com/2026/10/01/arxiv-updates-its-rate-limiting-policy/">Tao blog</a>). He worries about priority disputes when submissions wait for slots and expects private circulation to grow.</li>
+<li>AI as literature tool: Mathstodon: AI literature search “already well established” as a way to gain initial insight or connect a technique to the literature (<a href="https://mathstodon.xyz/@tao/117237320796901560">Mathstodon</a> as surfaced by search; wording is relayed, verify). His “AI views — a living summary” page says AI is safer as an accelerated search engine (further literature, definitions of unfamiliar terms) than as a summariser of papers you cannot yet read unaided; and the page discloses it was drafted by Claude from his public writing and reviewed by him (<a href="https://teorth.github.io/tao-web/ai-views.html">Tao web</a>). This is a direct “summaries vs primary sources” position from a leading mathematician, and a pro-agent one with guardrails.</li>
+<li>Escalation: a March 2026 write-up reports he said models are “ready for primetime” in math and theoretical physics, using AI for literature search, code, plots, calculations (<a href="https://academy.openai.com/public/blogs/terence-tao-ai-is-ready-for-primetime-in-math-and-theoretical-physics-2026-03-06">OpenAI Academy, 2026-03-06</a>; an OpenAI-hosted page, so promotional context). In Sept 2024 he compared o1 to advising “a mediocre, but not completely incompetent, graduate student” and later said this was not an equivalence claim (<a href="https://feeds.simonwillison.net/2024/Sep/15/terrence-tao/">Simon Willison feed</a> via search; the model was o1, not GPT-4).</li>
+<li>Caution: his Mathstodon posts note AI is depleting easy open problems and that published solutions can contaminate later reasoning; literature signal-to-noise drops (secondary summary via <a href="https://decrypt.co/377818/ai-math-best-problems-terence-tao">Decrypt</a>).</li>
+<li>Not found: any Tao post on how he reads papers or his morning routine.</li>
+</ul>
+<h3 id="3-knuth-the-anti-on-top-of-things-camp">3. Knuth (the anti-“on top of things” camp)</h3>
+<ul>
+<li>Stopped email 1 January 1990 after about 15 years; his Stanford page “Email (let’s drop the hyphen)” (<a href="https://cs.stanford.edu/~knuth/email.html">Knuth</a>). Wikiquote/AZQuotes relay the line about being “on the bottom of things” (<a href="https://en.wikiquote.org/wiki/Donald_Knuth">Wikiquote</a>); my page-targeted search did not show that sentence in a snippet from the page itself.</li>
+<li>Mechanism of his workaround: his secretary prints non-spam messages sent to taocp@ and knuth-bug@ and he replies in writing; he aims to reply within six months (per <a href="https://cs.stanford.edu/~knuth/help.html">help page</a>). Newport stresses the executive-assistant filter that makes this possible (<a href="https://www.chronicle.com/article/is-email-making-professors-stupid/">Chronicle, 2019-02-13</a>). So Knuth’s position is “delegated, batched, delayed”, not “disconnected”.</li>
+<li>The “once every three months” claim traces to Brian Christian’s book via secondary pages; unverified against Knuth (<a href="https://calnewport.com/bonus-post-how-the-worlds-most-famous-computer-scientist-checks-e-mail-only-once-every-three-months/">Cal Newport bonus post</a>).</li>
+<li>Counterpoint within the same person: Knuth’s “Claude’s Cycles” (28 Feb 2026, revised 14 Apr 2026) credits Claude Opus 4.6 with an odd-m construction for an open Hamiltonian-decomposition problem after about 31 guided explorations over about an hour (Filip Stappers ran it); Knuth wrote the proof; the even case remained open at that time (<a href="https://www-cs-faculty.stanford.edu/~knuth/papers/claude-cycles.pdf">Knuth PDF</a>, <a href="https://blog.adafruit.com/2026/03/03/don-knuth-wrote-a-paper-thanking-claude-for-solving-an-open-math-problem/">Adafruit</a>). So he rejects the inbox but not AI as a collaborator on a problem he chose.</li>
+</ul>
+<h3 id="4-hamming">4. Hamming</h3>
+<ul>
+<li>“You and Your Research” (Bellcore, 7 March 1986). Transcripts: <a href="https://www.paulgraham.com/hamming.html">Paul Graham’s site</a>, <a href="https://gwern.net/doc/science/1986-hamming">Gwern</a>, <a href="https://www.cs.virginia.edu/~robins/YouAndYourResearch.pdf">Virginia</a>. Search paraphrase: keeping up with the literature matters more for finding out what the important problems are than for finding solutions; and he reports a correlation (not causation) between open-door working and doing important work. No verbatim passage was returned by any search, so no quote is banked. Fetch a transcript and copy the passage if wanted.</li>
+</ul>
+<h3 id="5-cal-newport">5. Cal Newport</h3>
+<ul>
+<li>Secondary summaries: email context-switching harms thinking; “A World Without Email” opens by questioning the first-thing-in-the-morning inbox check; slow productivity suggests high-focus mornings and low-bandwidth afternoons (<a href="https://nextbigideaclub.com/magazine/problem-email-according-productivity-expert-podcast/27427/">Next Big Idea Club</a>, <a href="https://www.simplypsychology.org/slow-productivity.html">Simply Psychology</a>). No Newport statement on news or “information diet” found. His Chronicle essay uses Knuth as the model (<a href="https://www.chronicle.com/article/is-email-making-professors-stupid/">Chronicle</a>). He also wrote on Shannon working with his door shut (<a href="https://calnewport.com/on-claude-shannons-deliberate-depth/">Newport</a>).</li>
+</ul>
+<h3 id="6-paul-graham">6. Paul Graham</h3>
+<ul>
+<li>“The Acceleration of Addictiveness” (July 2010): closing line “We’ll increasingly be defined by what we say no to.” (<a href="https://paulgraham.com/addiction.html">Graham</a>; second search agreed across several reproductions). “Disconnecting Distraction” (May 2008) (<a href="https://paulgraham.com/distraction.html">Graham</a>); a later note he added says the strategy at its end did not work: it worked for a while, then he would gradually find himself using the Internet on his work computer (paraphrase via search). That is a useful failure story. “Maker’s Schedule, Manager’s Schedule” (2009): a meeting changes the mode of working; interruptions in the middle of a morning cost far more than they look (paraphrase; <a href="https://www.upworthy.com/?p=2771">Upworthy</a> is secondary).</li>
+</ul>
+<h3 id="7-karpathy-the-pro-llm-pro-curation-camp">7. Karpathy (the pro-LLM, pro-curation camp)</h3>
+<ul>
+<li>Feb 2026: “going back to RSS/Atom feeds”; shared a cold-start list of 92 blogs from the most popular 2025 Hacker News blogs as OPML (<a href="https://x.com/karpathy/status/2018043254986703167">X post</a>; <a href="https://letsdatascience.com/news/andrej-karpathy-urges-return-to-rss-feeds-750f441e">Let’s Data Science</a>). Date differs by source (Jan 31 to Feb 2, 2026). “Algorithmic” is commentators’ framing, not his word.</li>
+<li>Nov 2025: reads everything with LLMs: pass 1 manual, pass 2 “explain/summarize”, pass 3 Q&amp;A (<a href="https://x.com/karpathy/status/1990577951671509438">X post</a>). Note: manual read first, so the summary follows the primary text.</li>
+<li>Later: LLM-compiled personal knowledge bases from raw papers/articles/repos (<a href="https://x.com/karpathy/status/2039805659525644595">X post</a>).</li>
+</ul>
+<h3 id="8-wolfram-darwin-poincare-shannon-dyson-feynman">8. Wolfram, Darwin, Poincare, Shannon, Dyson, Feynman</h3>
+<ul>
+<li>Wolfram, “The Personal Analytics of My Life” (2012-03): over 100 million keystrokes logged; about 7% backspaces; email archive from 1989 (<a href="https://writings.stephenwolfram.com/2012/03/the-personal-analytics-of-my-life/">Wolfram</a>; numbers via a mirror snippet). Boston Globe: his schedule is “shockingly regular”, with late-night work (<a href="http://archive.boston.com/bostonglobe/ideas/brainiac/2012/03/stephen_wolfram.html">Globe</a>, secondary). ACM interview: 39% chance of being on a work call at 9pm (secondary reprint). 2019 post “Seeking the Productive Life” describes dashboards and daily emails (<a href="https://writings.stephenwolfram.com/2019/02/seeking-the-productive-life-some-details-of-my-personal-infrastructure/">Wolfram</a>). A night-owl sleep estimate is from a commenter; discard.</li>
+<li>Darwin: 7:00 walk, 7:45 breakfast alone, about 8:00-9:30 first work block; 2-3pm letters in chair by fire (<a href="https://darwinproject.ac.uk/commentary/curious/darwin-and-working-home">Darwin Correspondence Project</a>; <a href="https://www.npr.org/2013/04/30/179286560/daily-rituals-of-the-brilliantly-creative">NPR on Currey</a>). Mail was handled at set intervals.</li>
+<li>Poincare: maths 10-12 and 5-7 per Toulouse’s 1897 study (<a href="https://www.johndcook.com/blog/2013/02/04/four-hours-of-concentration/">John D. Cook</a>; <a href="https://mathshistory.st-andrews.ac.uk/Biographies/Poincare">MacTutor</a>). Whether Currey covers him: not confirmed.</li>
+<li>Shannon: Pollak said he “had earned the right to be non-productive”; closed door; nothing on reading (<a href="https://spectrum.ieee.org/amp/a-man-in-a-hurry-claude-shannons-new-york-years-2650275826">Spectrum</a>).</li>
+<li>Dyson/Feynman: only historical context that preprint mailing lists were how physicists kept up in the late 1940s (<a href="https://web.mit.edu/dikaiser/www/Kaiser.SpreadingTools.pdf">Kaiser</a>). No first-person account found.</li>
+</ul>
+<h3 id="9-curated-digests-alerts-and-summaries-vs-primary-sources">9. Curated digests, alerts and summaries vs primary sources</h3>
+<ul>
+<li>Practitioner guides: alerts are enthusiastically set up and abandoned within a month due to overlapping emails (<a href="https://www.paperdigest.org/research-workflow/how-to-keep-up-with-latest-research.html">Paper Digest guide</a>, vendor, so interested); a PhD student scanned 100-200 RSS items a day and downloaded a handful (<a href="https://www.timeshighereducation.com/features/how-can-academics-keep-literature">THE</a>); Science career column on combining RSS, Scholar, colleagues (<a href="https://www.science.org/content/article/how-keep-scientific-literature">Science</a>). Anecdotal; no survey found.</li>
+<li>Evidence on LLM summaries: Royal Society Open Science study (about 5,000 summaries of 200 abstracts and 100 full articles): newer chatbots were up to 9x (ChatGPT-4o) and 39x (Llama 3.3) more likely than originals to overgeneralise conclusions; asking for accuracy made it about twice worse (<a href="https://www.insidehighered.com/news/tech-innovation/artificial-intelligence/2025/04/24/ai-research-summaries-exaggerate-findings">Inside Higher Ed, 2025-04-24</a>). Fabricated-reference rate for GPT-4 about 18% in one review (older model; <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12435620/">PMC</a>). Think-aloud study: 10 of 15 researchers limited AI to low-stakes tasks (<a href="https://arxiv.org/pdf/2604.23136">arXiv:2604.23136</a>).</li>
+<li>Adoption: share of arXiv math submissions with confirmed AI use rose from 4.75% in March to 24.14% through Aug 20 (2026), per a paper surfaced by search (<a href="https://arxiv.org/pdf/2608.24961">arXiv:2608.24961</a>, unverified detail). Gowers (2026-08-12) argues models excel at combining known methods (<a href="https://gowers.wordpress.com/2026/08/12/what-sort-of-maths-are-llms-good-at/">Gowers</a>).</li>
+</ul>
+<h2 id="quote-bank">Quote bank</h2>
+<blockquote>
+<p>I have been a happy man ever since January 1, 1990, when I no longer had an email address. I’d used email since about 1975, and it seems to me that 15 years of email is plenty for one lifetime.</p>
+</blockquote>
+<p>Donald Knuth, Stanford professor emeritus, computer scientist, email page (written after 1990, undated). Seen via a search result relaying his page; treat as SECONDARY pending page check. <a href="https://cs.stanford.edu/~knuth/email.html">Knuth</a>, <a href="https://en.wikiquote.org/wiki/Donald_Knuth">Wikiquote</a>. Second search agreed on wording (several pages).</p>
+<blockquote>
+<p>Email is a wonderful thing for people whose role in life is to be on top of things. But not for me; my role is to be on the bottom of things.</p>
+</blockquote>
+<p>Donald Knuth, same page. SECONDARY (relayed by Wikiquote/AZQuotes; the later page-targeted search did not show it in a snippet from the page). <a href="https://en.wikiquote.org/wiki/Donald_Knuth">Wikiquote</a>. Second search: agreed on attribution but not independently on the page itself. Must verify against the Stanford page.</p>
+<blockquote>
+<p>We’ll increasingly be defined by what we say no to.</p>
+</blockquote>
+<p>Paul Graham, Y Combinator co-founder, “The Acceleration of Addictiveness”, July 2010. PRIMARY (essay; seen as relayed by search). <a href="https://paulgraham.com/addiction.html">Graham</a>. Second search agreed.</p>
+<blockquote>
+<p>If I want to know whether someone has just solved a problem I am working on, I can mostly monitor the arXiv each night. That system is imperfect, but it is enormously useful.</p>
+</blockquote>
+<p>Terence Tao, UCLA mathematician, Fields medallist, blog post 2026-10-01. PRIMARY (his blog; relayed by search). <a href="https://terrytao.wordpress.com/2026/10/01/arxiv-updates-its-rate-limiting-policy/">Tao</a>. Second search found the same post but did not show this sentence; verify.</p>
+<blockquote>
+<p>Finding myself going back to RSS/Atom feeds a lot more recently. There’s a lot more higher quality longform and a lot less slop intended to provoke.</p>
+</blockquote>
+<p>Andrej Karpathy, former Tesla AI director and OpenAI founding member, X post, about 2026-02-01 (dates vary). PRIMARY. <a href="https://x.com/karpathy/status/2018043254986703167">X</a>. Second search agreed.</p>
+<blockquote>
+<p>I’m starting to get into a habit of reading everything (blogs, articles, book chapters,…) with LLMs. Usually pass 1 is manual, then pass 2 “explain/summarize”, pass 3 Q&amp;A. I usually end up with a better/deeper understanding than if I moved on. Growing to among top use cases.</p>
+</blockquote>
+<p>Andrej Karpathy, X post, Nov 2025. PRIMARY (tweet text in result title). <a href="https://x.com/karpathy/status/1990577951671509438">X</a>. Second search agreed (paraphrase and partial quote).</p>
+<blockquote>
+<p>due primarily to intentional “self-promotion” on the part of authors</p>
+</blockquote>
+<p>Haque and Ginsparg, abstract of “Positional effects on citation and readership in arXiv”, 2009 (Ginsparg: Cornell physicist, arXiv founder). PRIMARY. <a href="https://arxiv.org/abs/0907.4740">arXiv</a>. Second search agreed.</p>
+<blockquote>
+<p>roughly on par with trying to advise a mediocre, but not completely incompetent, graduate student</p>
+</blockquote>
+<p>Terence Tao on OpenAI o1, Sept 2024 (Mathstodon). SECONDARY (relayed by search). <a href="https://feeds.simonwillison.net/2024/Sep/15/terrence-tao/">Simon Willison</a>. Second search agreed; Tao later disclaimed equivalence (The Atlantic).</p>
+<blockquote>
+<p>The use of AI for literature search is already well established as a basic way to gain initial insight into a problem, or to connect any newly discovered technique to the literature.</p>
+</blockquote>
+<p>Terence Tao, Mathstodon post. SECONDARY (relayed by search). <a href="https://mathstodon.xyz/@tao/117237320796901560">Mathstodon</a>. Single sighting; WEAK until verified.</p>
+<blockquote>
+<p>It turns out that papers that appeared as the first listing are indeed more cited… So overall it seems that the “first listing” effect exists, but is not actually driven by at which arXiv position the paper appears.</p>
+</blockquote>
+<p>Motloch, physicist blogger, undated (uses data to 2020). PRIMARY for the blog, informal. <a href="https://motloch.net/blog_entries/arxiv_submission_analysis.html">Motloch</a>. Single search.</p>
+<h2 id="disagreements-failure-modes-and-caveats">Disagreements, failure modes and caveats</h2>
+<ul>
+<li>Self-promotion versus position: Haque/Ginsparg say position effect is mostly authors gaming the slot, with a smaller pure visibility share (44/38/71%); Motloch argues position adds little once submission time is controlled. For a brief, ordering plausibly steers attention, but the size of the causal effect is contested.</li>
+<li>Knuth is not disconnected: delegation to a secretary and six-month reply windows. Newport makes this point. “Not on top of things” is a filtered, batched channel, closer to a human overnight agent than to nothing.</li>
+<li>Graham’s own disconnection strategy failed over time (his note to “Disconnecting Distraction”).</li>
+<li>Tao: pro-AI but warns against outsourcing reading you cannot check, and notes literature contamination and depletion of open problems.</li>
+<li>LLM summaries overgeneralise (up to 9x to 39x in newer models in one study) and prompting for accuracy backfired; fabricated references persist. Pro-agent camp counters with Karpathy’s manual-first pass and Tao’s verification stance.</li>
+<li>Alert fatigue: overlapping alerts get abandoned.</li>
+<li>Source quality: the Tao “living summary” was drafted by Claude; the OpenAI Academy piece is vendor-hosted; Wolfram night-owl claim is a commenter’s; Currey inclusion of Poincare unconfirmed.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Haque and Ginsparg 2009, JASIST - <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/asi.21166">https://onlinelibrary.wiley.com/doi/abs/10.1002/asi.21166</a> - peer-reviewed; preprint <a href="https://arxiv.org/abs/0907.4740">https://arxiv.org/abs/0907.4740</a>.</li>
+<li>Haque and Ginsparg 2010, “Last but not Least” - <a href="https://arxiv.org/abs/1010.2757">https://arxiv.org/abs/1010.2757</a> - peer-reviewed follow-up.</li>
+<li>Scholarly Kitchen, Phil Davis, 2009-07-29 - <a href="https://scholarlykitchen.sspnet.org/2009/07/29/arxiv-position-effects/">https://scholarlykitchen.sspnet.org/2009/07/29/arxiv-position-effects/</a> - reputable trade blog.</li>
+<li>Motloch blog - <a href="https://motloch.net/blog_entries/arxiv_submission_analysis.html">https://motloch.net/blog_entries/arxiv_submission_analysis.html</a> - informal analysis.</li>
+<li>Dietrich 2008 - <a href="https://arxiv.org/pdf/0805.0307">https://arxiv.org/pdf/0805.0307</a> - earlier positional study.</li>
+<li>Knuth email page - <a href="https://cs.stanford.edu/~knuth/email.html">https://cs.stanford.edu/~knuth/email.html</a> - primary (not read directly).</li>
+<li>Knuth, Claude’s Cycles, 2026 - <a href="https://www-cs-faculty.stanford.edu/~knuth/papers/claude-cycles.pdf">https://www-cs-faculty.stanford.edu/~knuth/papers/claude-cycles.pdf</a> - primary.</li>
+<li>Newport, Chronicle 2019-02-13 - <a href="https://www.chronicle.com/article/is-email-making-professors-stupid/">https://www.chronicle.com/article/is-email-making-professors-stupid/</a> - primary essay.</li>
+<li>Tao blog 2026-10-01 - <a href="https://terrytao.wordpress.com/2026/10/01/arxiv-updates-its-rate-limiting-policy/">https://terrytao.wordpress.com/2026/10/01/arxiv-updates-its-rate-limiting-policy/</a> - primary.</li>
+<li>Tao AI views - <a href="https://teorth.github.io/tao-web/ai-views.html">https://teorth.github.io/tao-web/ai-views.html</a> - primary but Claude-drafted.</li>
+<li>arXiv blog 2026-10-01 - <a href="https://blog.arxiv.org/2026/10/01/updated-rate-limit-policy/">https://blog.arxiv.org/2026/10/01/updated-rate-limit-policy/</a> - primary policy.</li>
+<li>Graham essays - <a href="https://paulgraham.com/addiction.html">https://paulgraham.com/addiction.html</a>, <a href="https://paulgraham.com/distraction.html">https://paulgraham.com/distraction.html</a> - primary.</li>
+<li>Karpathy X posts - links above - primary.</li>
+<li>Wolfram 2012 and 2019 posts - links above - primary.</li>
+<li>Hamming transcript - <a href="https://www.paulgraham.com/hamming.html">https://www.paulgraham.com/hamming.html</a>, <a href="https://gwern.net/doc/science/1986-hamming">https://gwern.net/doc/science/1986-hamming</a> - transcripts of a 1986 talk.</li>
+<li>Inside Higher Ed 2025-04-24 on AI summaries study - <a href="https://www.insidehighered.com/news/tech-innovation/artificial-intelligence/2025/04/24/ai-research-summaries-exaggerate-findings">https://www.insidehighered.com/news/tech-innovation/artificial-intelligence/2025/04/24/ai-research-summaries-exaggerate-findings</a> - reputable.</li>
+<li>NPR on Daily Rituals 2013 - <a href="https://www.npr.org/2013/04/30/179286560/daily-rituals-of-the-brilliantly-creative">https://www.npr.org/2013/04/30/179286560/daily-rituals-of-the-brilliantly-creative</a> - reputable secondary.</li>
+<li>John D. Cook on Poincare - <a href="https://www.johndcook.com/blog/2013/02/04/four-hours-of-concentration/">https://www.johndcook.com/blog/2013/02/04/four-hours-of-concentration/</a> - secondary blog.</li>
+<li>AMS grad blog 2019 - <a href="https://blogs.ams.org/mathgradblog/2019/10/03/keeping-up-with-the-kardashians-arxiv-submissions-one-quick-tip-to-stay-informed/">https://blogs.ams.org/mathgradblog/2019/10/03/keeping-up-with-the-kardashians-arxiv-submissions-one-quick-tip-to-stay-informed/</a> - anecdotal.</li>
+</ul>
+<h2 id="gaps">Gaps</h2>
+<ul>
+<li>No verbatim Hamming passage on reading/open doors (transcripts exist but snippets were not returned).</li>
+<li>No Tao post on his own paper-reading or morning habits; “every day for five years” AI claim unconfirmed.</li>
+<li>No Newport statement on news diet; no Feynman, Dyson, Shannon first-person reading accounts; Poincare in Currey unconfirmed.</li>
+<li>No survey of mathematicians’ use of arXiv alerts, Google Scholar alerts, MathOverflow or Semantic Scholar feeds.</li>
+<li>Exact Haque/Ginsparg median counts differ between snippets; the abstract percentages (83/50/100) are consistent across two searches.</li>
+<li>No evidence that arXiv changed listing order after 2010; Wolfram’s keystroke wording only via mirror.</li>
+<li>Pro-overnight-agent voices beyond Tao and Karpathy (e.g., Gowers, Litt, Aaronson) not found in first-person form.</li>
+</ul>
+<h2 id="verification-log-independent-fact-check">Verification log (independent fact-check)</h2>
+<p>Method: 16 WebSearch calls (budget 20). No non-GitHub page fetched. Verdicts rest on search-result text (titles, blockquotes, and model-written summaries), so “VERIFIED” means the wording or figure recurs across independent sites, not that the primary page was opened.</p>
+<ul>
+<li>VERIFIED: Knuth quote “I have been a happy man ever since January 1, 1990, when I no longer had an email address”. Found in several independent pages (Cal Newport’s post, History News Network, a UC Davis newsletter, and a blockquote quoting the Stanford page). The Stanford page itself was not opened. Source: <a href="https://cs.stanford.edu/~knuth/email.html">https://cs.stanford.edu/~knuth/email.html</a> (also <a href="https://www.calnewport.com/bonus-post-how-the-worlds-most-famous-computer-scientist-checks-e-mail-only-once-every-three-months/">https://www.calnewport.com/bonus-post-how-the-worlds-most-famous-computer-scientist-checks-e-mail-only-once-every-three-months/</a>)</li>
+<li>VERIFIED: Knuth quote “Email is a wonderful thing for people whose role in life is to be on top of things. But not for me; my role is to be on the bottom of things.” Same two-sentence wording on Wikiquote and AZQuotes, plus a blockquote of the Stanford page. One blog drops “for me” in the second sentence, so keep the original wording. Source: <a href="https://en.wikiquote.org/wiki/Donald_Knuth">https://en.wikiquote.org/wiki/Donald_Knuth</a> ; <a href="https://www.azquotes.com/quote/721030">https://www.azquotes.com/quote/721030</a></li>
+<li>NOT_FOUND: Graham “We’ll increasingly be defined by what we say no to” (Acceleration of Addictiveness, 2010). Two searches did not show the line in the essay. It appears only in secondhand blog posts (for example go.gtmcknight.com), which may be paraphrase. Do not quote as Graham’s wording until checked against the essay text. Source: <a href="https://paulgraham.com/addiction.html">https://paulgraham.com/addiction.html</a></li>
+<li>PARTIAL: Tao on checking arXiv nightly (“mostly monitor the arXiv each night … imperfect … enormously useful”). The post exists and the substance matches (nightly monitoring, imperfect but very useful), but the exact sentence was not shown in any result. Use paraphrase or re-verify the wording. Source: <a href="https://terrytao.wordpress.com/2026/10/01/arxiv-updates-its-rate-limiting-policy/">https://terrytao.wordpress.com/2026/10/01/arxiv-updates-its-rate-limiting-policy/</a></li>
+<li>VERIFIED: Karpathy “Finding myself going back to RSS/Atom feeds a lot more recently. There’s a lot more higher quality longform and a lot less slop intended to provoke.” The exact sentence appears in the X post’s own page title. The post date is 31 Jan or 1 Feb 2026 depending on the source, so write “early February 2026” or “Feb 2026”. Source: <a href="https://x.com/karpathy/status/2018043254986703167">https://x.com/karpathy/status/2018043254986703167</a></li>
+<li>VERIFIED: Karpathy “pass 1 is manual, then pass 2 ‘explain/summarize’, pass 3 Q&amp;A” (Nov 2025). The exact text appears in the X post’s own page title. Commentary also dates it to 18 Nov 2025. Source: <a href="https://x.com/karpathy/status/1990577951671509438">https://x.com/karpathy/status/1990577951671509438</a></li>
+<li>PARTIAL: Haque and Ginsparg, “due primarily to intentional ‘self-promotion’ on the part of authors”. The substance (authors’ intentional self-promotion is the main driver) is confirmed by the RePEc/IDEAS abstract and by search summaries. The exact wording “due primarily to” was not shown in any result. Use paraphrase or check the abstract. Source: <a href="https://arxiv.org/abs/0907.4740">https://arxiv.org/abs/0907.4740</a> ; <a href="https://ideas.repec.org/a/bla/jamist/v60y2009i11p2203-2218.html">https://ideas.repec.org/a/bla/jamist/v60y2009i11p2203-2218.html</a></li>
+<li>PARTIAL: Tao (Sept 2024, o1) “roughly on par with trying to advise a mediocre, but not completely incompetent graduate student”. The Mathstodon wording includes a parenthetical that the quote drops: “a mediocre, but not completely incompetent, (static simulation of a) graduate student”. Quote it with the parenthetical or use an ellipsis. Tao later said he was misread and clarified his comparison. Source: <a href="https://mathstodon.xyz/@tao/113132502735585408">https://mathstodon.xyz/@tao/113132502735585408</a> (via search; the exact o1 post should be checked)</li>
+<li>PARTIAL: Tao “The use of AI for literature search is already well established as a basic way to gain initial insight into a problem…” The post is identified in search results (Mathstodon, 117237320796901560, a Sept 2026 thread), but the search summary paraphrases it and the verbatim sentence was not shown. The living-summary page (teorth.github.io) supports the substance. Re-verify the exact wording before quoting. Source: <a href="https://mathstodon.xyz/@tao/117237320796901560">https://mathstodon.xyz/@tao/117237320796901560</a></li>
+<li>VERIFIED: arXiv received 40,363 submissions in September 2026 (up from 20,569 in Sept 2024). Several outlets report this figure as coming from arXiv, and the outlets are independent of the researcher’s sources. The arXiv blog itself was not opened. Sources: <a href="https://cybernews.com/ai-news/arxiv-limits-researchers-to-two-papers-a-month/">https://cybernews.com/ai-news/arxiv-limits-researchers-to-two-papers-a-month/</a> ; <a href="https://fourweekmba.com/ai-arxiv-caps-submitters-at-2-papers-a-month-as-volume-doubles/">https://fourweekmba.com/ai-arxiv-caps-submitters-at-2-papers-a-month-as-volume-doubles/</a></li>
+<li>PARTIAL: arXiv rate limit “two submissions per calendar month and three active submissions from 2026-10-01”. The October 1, 2026 start and the two-per-month cap are confirmed by secondary coverage. One source says the three-active cap dates to 2024, so it is not new. Coverage also disagrees on whether rejected or deleted submissions count toward the limit. Check arXiv’s blog post (<a href="https://blog.arxiv.org/2026/10/01/updated-rate-limit-policy/">https://blog.arxiv.org/2026/10/01/updated-rate-limit-policy/</a>) before writing the three-active detail as new. Sources: <a href="https://fourweekmba.com/ai-arxiv-caps-submitters-at-2-papers-a-month-as-volume-doubles/">https://fourweekmba.com/ai-arxiv-caps-submitters-at-2-papers-a-month-as-volume-doubles/</a></li>
+<li>VERIFIED: Wolfram, “more than 100 million” keystrokes logged, and about 7% of keystrokes are backspaces. The 100M wording is from the post as quoted in search; the 7% figure is from Improbable Research’s quotation of the post. Email archive from 1989 also confirmed in summary. Note that the 2002 logging start date comes from VentureBeat, not the post. Sources: <a href="https://writings.stephenwolfram.com/2012/03/the-personal-analytics-of-my-life/">https://writings.stephenwolfram.com/2012/03/the-personal-analytics-of-my-life/</a> ; <a href="https://improbable.com/2012/04/25/the-personal-data-of-mr-stephen-wolfram/?amp=1">https://improbable.com/2012/04/25/the-personal-data-of-mr-stephen-wolfram/?amp=1</a></li>
+<li>PARTIAL: Royal Society Open Science study (Peters and Chin-Yee, April 2025), “9x (ChatGPT-4o) and 39x (Llama 3.3) more likely to overgeneralise”. The 9x and 39x figures appear in Times Higher Education, but Futurism gives different multipliers (for example 36.4x for Llama 3.3, with a different error type). The paper’s main headline is overgeneralising in 26-73% of cases and an odds ratio of 4.85 against human summaries. Also the sample is about 4,900 summaries from 10 LLMs, not “about 5,000 summaries of 200 abstracts and 100 full articles”. Source: <a href="https://www.timeshighereducation.com/node/736385">https://www.timeshighereducation.com/node/736385</a> ; <a href="https://www.psypost.org/ai-chatbots-often-misrepresent-scientific-studies-and-newer-models-may-be-worse/">https://www.psypost.org/ai-chatbots-often-misrepresent-scientific-studies-and-newer-models-may-be-worse/</a> ; DOI 10.1098/rsos.241776</li>
+<li>VERIFIED: Haque and Ginsparg, early full-text download boosts of 82%, 61% and 58% (astro-ph, hep-th, hep-ph) for position 1. Repeated by the digital-scholarship.org summary and Physics World, and the arXiv preprint is the primary source. Source: <a href="https://arxiv.org/abs/0907.4740">https://arxiv.org/abs/0907.4740</a> ; <a href="https://digital-scholarship.org/digitalkoans/?p=6461">https://digital-scholarship.org/digitalkoans/?p=6461</a></li>
+<li>PARTIAL: Haque and Ginsparg visibility boosts of 44%, 38%, 71%. These are the long-term citation visibility figures for astro-ph, hep-th and hep-ph, as the abstract text in search summaries says. The results also show different readership visibility figures (53%, 44%, 46%), so the 44% is not one number across both measures. Label the measure when quoting. Source: <a href="https://arxiv.org/pdf/0907.4740">https://arxiv.org/pdf/0907.4740</a></li>
+<li>VERIFIED: Haque and Ginsparg, citation medians 83% (astro-ph), 50% (hep-th), 100% (hep-ph) higher for position 1. The abstract text quoting these values appears in the search results, and IDEAS/RePEc repeats them. The paper is in JASIST 60(11), 2203-2218 (2009). Source: <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/asi.21166">https://onlinelibrary.wiley.com/doi/abs/10.1002/asi.21166</a> ; <a href="https://ideas.repec.org/a/bla/jamist/v60y2009i11p2203-2218.html">https://ideas.repec.org/a/bla/jamist/v60y2009i11p2203-2218.html</a></li>
+</ul>
+
+    </article>
+  </div>
+</main>
+</body>
+</html>

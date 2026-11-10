@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 270" role="img" aria-label="Pressure over time: a spring-lever shot preinfuses near 1 bar for about 10 seconds, jumps to about 8.6 bar when the lever is released, then eases to about 4 bar by 34 seconds. A pump machine ramps to a flat 9 bar."><style>.ax{stroke:#D2D5CD;stroke-width:1;fill:none}.axl{fill:#5A5D56;font-family:monospace;font-size:11px}.c-lever{stroke:#94531C;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}.c-pump{stroke:#1C1D1A;stroke-width:1.6;fill:none;stroke-dasharray:5 5}.c-lbl{font-family:monospace;font-size:11.5px}.c-lbl.l{fill:#94531C}.c-lbl.p{fill:#1C1D1A}</style><rect width="680" height="270" fill="#FFFFFF"/>
+  <line class="ax" x1="56" y1="226" x2="656" y2="226"/>
+  <line class="ax" x1="56" y1="169" x2="656" y2="169" stroke-dasharray="2 4"/>
+  <line class="ax" x1="56" y1="112" x2="656" y2="112" stroke-dasharray="2 4"/>
+  <line class="ax" x1="56" y1="55" x2="656" y2="55" stroke-dasharray="2 4"/>
+  <line class="ax" x1="56" y1="36" x2="56" y2="226"/>
+  <text class="axl" x="46" y="230" text-anchor="end">0</text>
+  <text class="axl" x="46" y="173" text-anchor="end">3</text>
+  <text class="axl" x="46" y="116" text-anchor="end">6</text>
+  <text class="axl" x="46" y="59" text-anchor="end">9</text>
+  <text class="axl" x="46" y="30" text-anchor="end">bar</text>
+  <text class="axl" x="56" y="246" text-anchor="middle">0</text>
+  <text class="axl" x="206" y="246" text-anchor="middle">10</text>
+  <text class="axl" x="356" y="246" text-anchor="middle">20</text>
+  <text class="axl" x="506" y="246" text-anchor="middle">30</text>
+  <text class="axl" x="656" y="246" text-anchor="end">40 s</text>
+  <path class="c-pump" d="M56 226 L108.5 55 L506 55"/>
+  <path class="c-lever" d="M56 203.2 L191 203.2 C206 203.2 210 64 228.5 62.6 L566 150"/>
+  <circle cx="228.5" cy="62.6" r="4.5" fill="#94531C"/>
+  <text class="c-lbl p" x="300" y="44">pump machine: ramps to a flat 9 bar</text>
+  <text class="c-lbl l" x="300" y="200">spring lever: ~8.6 bar at release, easing to ~4</text>
+  <text class="c-lbl l" x="62" y="191">preinfusion ~1 bar</text>
+  <text class="axl" x="198" y="140" text-anchor="end">lever released</text>
+</svg>
